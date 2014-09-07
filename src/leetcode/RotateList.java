@@ -1,5 +1,7 @@
 package leetcode;
 
+import leetcode.util.ListNode;
+
 public class RotateList
 {
 	public ListNode rotateRight(ListNode head, int n)

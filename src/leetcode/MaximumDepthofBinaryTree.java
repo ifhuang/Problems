@@ -1,5 +1,7 @@
 package leetcode;
 
+import leetcode.util.TreeNode;
+
 public class MaximumDepthofBinaryTree
 {
 	public int maxDepth(TreeNode root)

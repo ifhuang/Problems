@@ -1,26 +1,41 @@
 package leetcode;
 
+import java.util.Stack;
+
+import leetcode.util.ListNode;
+
 public class Solution
 {
-	public int numTrees(int n)
+	public void reorderList(ListNode head)
 	{
-		if (n == 0)
-			return 1;
-		if (n == 1)
-			return 1;
-		int num = 0;
-		for (int i = 1; i <= n / 2; i++)
+		if (head == null || head.next == null || head.next.next == null)
+			return;
+		ListNode p = head;
+		Stack<ListNode> stack = new Stack<>();
+		while (p.next != null)
 		{
-			num += 2 * (numTrees(i - 1) * numTrees(n - i));
+			p = p.next;
+			stack.push(p);
 		}
-		if (n % 2 == 1)
-			num += numTrees(n / 2) * numTrees(n / 2);
-		return num;
+		insert(head, stack);
 	}
 
-	public static void main(String[] args)
+	private void insert(ListNode head, Stack<ListNode> stack)
 	{
-		Solution s = new Solution();
-		System.out.println("" + s.numTrees(3));
+		if (head == null || head.next == null || head.next.next == null)
+			return;
+		ListNode p = stack.pop();
+		ListNode pre = stack.peek();
+		pre.next = p.next;
+		p.next = head.next;
+		head.next = p;
+		insert(head.next.next, stack);
+	}
+
+	public static void main(String[] args) throws Exception
+	{
+		Solution solution = new Solution();
+		ListNode list = ListNode.createListFromFile("data/list");
+		solution.reorderList(list);
 	}
 }
