@@ -12,8 +12,8 @@ import java.util.NoSuchElementException;
  */
 public class ImmutableQueue<E>
 {
-	private final ImmutableStack<E> enqueueStack;
-	private final ImmutableStack<E> dequeueStack;
+	private ImmutableStack<E> enqueueStack;
+	private ImmutableStack<E> dequeueStack;
 
 	/**
 	 * requires default constructor.
@@ -79,10 +79,11 @@ public class ImmutableQueue<E>
 		if (size() == 0)
 			throw new NoSuchElementException();
 		if (dequeueStack.size() == 0)
-			return new ImmutableQueue<>(new ImmutableStack<E>(), enqueueStack
-					.reverseStack().pop());
-		else
-			return new ImmutableQueue<>(enqueueStack, dequeueStack.pop());
+		{
+			dequeueStack = enqueueStack.reverseStack();
+			enqueueStack = new ImmutableStack<>();
+		}
+		return new ImmutableQueue<>(enqueueStack, dequeueStack.pop());
 	}
 
 	/**
@@ -105,10 +106,11 @@ public class ImmutableQueue<E>
 		if (size() == 0)
 			throw new NoSuchElementException();
 		if (dequeueStack.size() == 0)
-			return enqueueStack.reverseStack().peek();
-		else
-			return dequeueStack.peek();
-
+		{
+			dequeueStack = enqueueStack.reverseStack();
+			enqueueStack = new ImmutableStack<>();
+		}
+		return dequeueStack.peek();
 	}
 
 	/**
