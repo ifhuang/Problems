@@ -21,7 +21,25 @@ public class VClustering
 	private static Set<Integer> y_split = new TreeSet<>();
 
 	/**
-	 * initialize sorted list of y value
+	 * 0. usage
+	 * 
+	 * @param c
+	 * @param args
+	 */
+	public static void Usage(Class<?> c, String[] args)
+	{
+		System.err.print("Usage: ");
+		System.err.print(c.getSimpleName());
+		for (String string : args)
+		{
+			System.err.print(" [" + string + "]");
+		}
+		System.err.println();
+		System.exit(1);
+	}
+
+	/**
+	 * 1. initialize sorted list of y value
 	 * 
 	 * @param path
 	 * @return
@@ -40,15 +58,14 @@ public class VClustering
 	}
 
 	/**
-	 * recursive v-clustering algorithm
+	 * 2. recursive v-clustering algorithm
 	 * 
 	 * @param start
 	 *            start index in original list
 	 * @param list
 	 * @param delta
-	 * @return
 	 */
-	public Set<Integer> cluster(int start, List<Integer> list, double delta)
+	public void cluster(int start, List<Integer> list, double delta)
 	{
 		double var = getVAR(list);
 		double minWeightedVAR = weightedVAR(0, list);
@@ -63,18 +80,26 @@ public class VClustering
 				minIndex = i;
 			}
 		}
-		if (var - minWeightedVAR < delta / n)
-			return y_split;
-		else
+		if (var - minWeightedVAR >= delta / n)
 		{
 			y_split.add(start + minIndex);
 			cluster(start, list.subList(0, minIndex), delta);
 			cluster(start + minIndex, list.subList(minIndex, n), delta);
-			return y_split;
 		}
 	}
 
 	/**
+	 * 3. return y index split set
+	 * 
+	 * @return
+	 */
+	public static Set<Integer> getY_split()
+	{
+		return y_split;
+	}
+
+	/**
+	 * 4. output cluster results
 	 * 
 	 * @param in
 	 * @param out
@@ -139,28 +164,22 @@ public class VClustering
 		return sum / list.size();
 	}
 
-	private static void Usage(Class<?> c, String[] args)
-	{
-		System.err.print("Usage: ");
-		System.err.print(c.getSimpleName());
-		for (String string : args)
-		{
-			System.err.print(" [" + string + "]");
-		}
-		System.err.println();
-		System.exit(1);
-	}
-
 	public static void main(String[] args) throws Exception
 	{
 		if (args.length != 2)
 			Usage(VClustering.class, new String[] { "Tuv.txt", "Tuv-out.txt" });
 		VClustering vc = new VClustering();
 		List<Integer> list = vc.init(args[0]);
-		Set<Integer> set = vc.cluster(0, list, 40000);
+		System.out.println("init done, list size: " + list.size());
+		vc.cluster(0, list, 40000);
+		System.out.println("cluster done");
+		Set<Integer> set = getY_split();
+		System.out.println("y index split set: " + set);
 		List<Integer> level = new ArrayList<>();
 		for (int i : set)
 			level.add(list.get(i));
+		System.out.println("y split list: " + level);
 		vc.output(args[0], args[1], level);
+		System.out.println("output done");
 	}
 }
