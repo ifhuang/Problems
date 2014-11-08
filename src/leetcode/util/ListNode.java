@@ -51,4 +51,14 @@ public class ListNode
 		}
 		return new ListNode(data);
 	}
+
+	public static void print(ListNode head)
+	{
+		while (head.next != null)
+		{
+			System.out.print(head.val + ",");
+			head = head.next;
+		}
+		System.out.println(head.val);
+	}
 }
