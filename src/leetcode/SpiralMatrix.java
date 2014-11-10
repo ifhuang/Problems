@@ -95,7 +95,7 @@ public class SpiralMatrix
 		else
 			return true;
 	}
-	
+
 	public static void main(String[] args)
 	{
 		SpiralMatrix solution = new SpiralMatrix();

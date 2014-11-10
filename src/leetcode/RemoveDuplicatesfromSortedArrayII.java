@@ -60,6 +60,6 @@ public class RemoveDuplicatesfromSortedArrayII
 		RemoveDuplicatesfromSortedArrayII solution = new RemoveDuplicatesfromSortedArrayII();
 		int[] A = new int[] { 1, 1, 1, 2, 2, 2, 3, 3 };
 		int B = solution.removeDuplicates(A);
-		System.out.println(""+B);
+		System.out.println("" + B);
 	}
 }

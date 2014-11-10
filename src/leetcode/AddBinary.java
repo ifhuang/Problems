@@ -16,8 +16,8 @@ public class AddBinary
 			int lengthB = b.length();
 			char lastA = a.charAt(lengthA - 1);
 			char lastB = b.charAt(lengthB - 1);
-			String preA = a.substring(0, lengthA-1);
-			String preB = b.substring(0, lengthB-1);
+			String preA = a.substring(0, lengthA - 1);
+			String preB = b.substring(0, lengthB - 1);
 			if (lastA == '0' && lastB == '0')
 			{
 				return addBinary(preA, preB) + '0';

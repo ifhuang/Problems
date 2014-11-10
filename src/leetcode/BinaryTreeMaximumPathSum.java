@@ -6,14 +6,17 @@ public class BinaryTreeMaximumPathSum
 {
 	private int max;
 
-	public int maxPathSum(TreeNode root) {
+	public int maxPathSum(TreeNode root)
+	{
 		max = Integer.MIN_VALUE;
 		maxNow(root);
 		return max;
 	}
 
-	private int maxNow(TreeNode x) {
-		if (x == null) {
+	private int maxNow(TreeNode x)
+	{
+		if (x == null)
+		{
 			return 0;
 		}
 		int left = maxNow(x.left);
