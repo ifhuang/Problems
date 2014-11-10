@@ -27,6 +27,8 @@ public class ItzChess
 						.charAt(3);
 			}
 			int count = 0;
+			int x;
+			int y;
 			for (int i = 0; i < 8; i++)
 				for (int j = 0; j < 8; j++)
 				{
@@ -59,8 +61,8 @@ public class ItzChess
 										: count;
 							break;
 						case 'Q':
-							int x = i;
-							int y = j;
+							x = i;
+							y = j;
 							while (x > 0)
 							{
 								x--;
@@ -275,12 +277,12 @@ public class ItzChess
 										: count;
 							break;
 						case 'P':
-							if (i < 7)
+							if (j < 7)
 							{
-								if (j > 0)
-									count = chess[i + 1][j - 1] != '.' ? count + 1
+								if (i > 0)
+									count = chess[i - 1][j + 1] != '.' ? count + 1
 											: count;
-								if (j < 7)
+								if (i < 7)
 									count = chess[i + 1][j + 1] != '.' ? count + 1
 											: count;
 							}
