@@ -1,40 +1,35 @@
 package leetcode;
 
+// https://oj.leetcode.com/problems/longest-palindromic-substring/
 public class LongestPalindromicSubstring
 {
 	public String longestPalindrome(String s)
 	{
-		if (s == null || s.equals("") || s.length() == 1)
-			return s;
-		int length = s.length();
-		boolean[][] isPalindrome = new boolean[length][length];
-		for (int i = 0; i < length; i++)
+		int n = s.length();
+		boolean[][] dp = new boolean[n][n];
+		int a = 0, b = 1;
+		for (int i = 0; i < n - 1; i++)
 		{
-			isPalindrome[i][i] = true;
-			if (i != length - 1 && s.charAt(i) == s.charAt(i + 1))
+			dp[i][i] = true;
+			dp[i][i + 1] = s.charAt(i) == s.charAt(i + 1);
+			if (dp[i][i + 1])
 			{
-				isPalindrome[i][i + 1] = true;
+				a = i;
+				b = i + 1 + 1;
 			}
 		}
-		for (int d = 2; d < length; d++)
-		{
-			for (int i = 0; i + d < length; i++)
+		dp[n - 1][n - 1] = true;
+		for (int diff = 2; diff < n; diff++)
+			for (int st = 0; st + diff < n; st++)
 			{
-				if (s.charAt(i) == s.charAt(i + d)
-						&& isPalindrome[i + 1][i + d - 1])
-					isPalindrome[i][i + d] = true;
-			}
-		}
-		for (int d = length - 1; d > 0; d--)
-		{
-			for (int i = 0; i + d < length; i++)
-			{
-				if (isPalindrome[i][i + d])
+				dp[st][st + diff] = dp[st + 1][st + diff - 1]
+						&& s.charAt(st) == s.charAt(st + diff);
+				if (dp[st][st + diff])
 				{
-					return s.substring(i, i + d + 1);
+					a = st;
+					b = st + diff + 1;
 				}
 			}
-		}
-		return s.substring(0, 0);
+		return s.substring(a, b);
 	}
 }
