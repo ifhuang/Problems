@@ -1,50 +1,41 @@
 package leetcode;
 
+// https://oj.leetcode.com/problems/string-to-integer-atoi/
 public class StringtoInteger
 {
 	public int atoi(String str)
 	{
-		if (str == null || str.equals(""))
+		if (str == null || str.length() == 0)
 			return 0;
-
-		int i = 0;
-		for (; i < str.length(); i++)
-		{
-			if (str.charAt(i) != ' ' && str.charAt(i) != '\t'
-					&& str.charAt(i) != '\n')
-				break;
-		}
-		if (i == str.length())
+		int n = str.length();
+		int now = 0;
+		while (now < n && Character.isWhitespace(str.charAt(now)))
+			now++;
+		if (now == n)
 			return 0;
-
-		int flag = 1;
-		if (str.charAt(i) == '+')
+		int sign = 1;
+		if (str.charAt(now) == '-')
 		{
-			i++;
+			sign = -1;
+			now++;
 		}
-		else if (str.charAt(i) == '-')
+		else if (str.charAt(now) == '+')
+			now++;
+		long sum = 0;
+		while (now < n)
 		{
-			flag = -1;
-			i++;
-		}
-
-		long result = 0;
-		for (; i < str.length(); i++)
-		{
-			if (str.charAt(i) >= '0' && str.charAt(i) <= '9')
-			{
-				result *= 10;
-				result += str.charAt(i) - 48;
-				if (flag == 1 && result >= Integer.MAX_VALUE)
-					return Integer.MAX_VALUE;
-				else if (flag == -1 && -result <= Integer.MIN_VALUE)
-					return Integer.MIN_VALUE;
-			}
-			else
-			{
+			char c = str.charAt(now);
+			if (!Character.isDigit(c))
 				break;
-			}
+			int next = Character.getNumericValue(c);
+			sum *= 10;
+			sum += next;
+			if (sign == 1 && sum >= Integer.MAX_VALUE)
+				return Integer.MAX_VALUE;
+			else if (sign == -1 && sum - 1 >= Integer.MAX_VALUE) // careful
+				return Integer.MIN_VALUE;
+			now++;
 		}
-		return flag * (int) result;
+		return sign * (int) sum;
 	}
 }
