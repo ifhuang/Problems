@@ -3,48 +3,38 @@ package leetcode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
+// https://oj.leetcode.com/problems/4sum/
 public class FourSum
 {
-	public ArrayList<ArrayList<Integer>> fourSum(int[] num, int target)
+	public List<List<Integer>> fourSum(int[] num, int target)
 	{
-		if (num == null || num.length < 4)
-			return new ArrayList<>();
 		Arrays.sort(num);
-		HashSet<ArrayList<Integer>> set = new HashSet<>();
+		Set<List<Integer>> set = new HashSet<>();
 		for (int i = 0; i < num.length - 3; i++)
 			for (int j = i + 1; j < num.length - 2; j++)
-			{
-				int low = j + 1;
-				int high = num.length - 1;
-				while (low < high)
+				for (int k = j + 1, m = num.length - 1; k < m;)
 				{
-					int sum = num[i] + num[j] + num[low] + num[high];
-					if (sum == target)
+					int r = target - num[i] - num[j];
+					int s = num[k] + num[m];
+					if (r == s)
 					{
-						ArrayList<Integer> one = new ArrayList<>();
-						one.add(num[i]);
-						one.add(num[j]);
-						one.add(num[low]);
-						one.add(num[high]);
-						set.add(one);
-						low++;
+						List<Integer> list = new ArrayList<>();
+						list.add(num[i]);
+						list.add(num[j]);
+						list.add(num[k]);
+						list.add(num[m]);
+						set.add(list);
+						k++;
+						m--;
 					}
-					else if (sum > target)
-					{
-						high--;
-					}
+					else if (r > s)
+						k++;
 					else
-					{
-						low++;
-					}
+						m--;
 				}
-			}
-		ArrayList<ArrayList<Integer>> list = new ArrayList<>();
-		for (ArrayList<Integer> arrayList : set)
-		{
-			list.add(arrayList);
-		}
-		return list;
+		return new ArrayList<>(set);
 	}
 }
