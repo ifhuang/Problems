@@ -1,147 +1,24 @@
 package leetcode;
 
+// https://oj.leetcode.com/problems/roman-to-integer/
 public class RomantoInteger
 {
+	private static int[] val = new int[] { 1000, 900, 500, 400, 100, 90, 50,
+			40, 10, 9, 5, 4, 1 };
+	private static String[] sym = { "M", "CM", "D", "CD", "C", "XC", "L", "XL",
+			"X", "IX", "V", "IV", "I" };
+
 	public int romanToInt(String s)
 	{
-		if (s == null || s.equals(""))
-			return 0;
-
-		int sum = 0;
-		int i = 0;
-
-		while (s.charAt(i) == 'M')
-		{
-			sum += 1000;
-			i++;
-			if (i == s.length())
-				return sum;
-		}
-
-		if (s.charAt(i) == 'C' && i < s.length() - 1 && s.charAt(i + 1) == 'M')
-		{
-			sum += 900;
-			i += 2;
-		}
-		else if (s.charAt(i) == 'C' && i < s.length() - 1
-				&& s.charAt(i + 1) == 'D')
-		{
-			sum += 400;
-			i += 2;
-		}
-		else if (s.charAt(i) == 'D')
-		{
-			sum += 500;
-			i++;
-			if (i == s.length())
-				return sum;
-			while (s.charAt(i) == 'C')
-			{
-				sum += 100;
-				i++;
-				if (i == s.length())
-					return sum;
-			}
-		}
-		else if (s.charAt(i) == 'C')
-		{
-			sum += 100;
-			i++;
-			if (i == s.length())
-				return sum;
-			while (s.charAt(i) == 'C')
-			{
-				sum += 100;
-				i++;
-				if (i == s.length())
-					return sum;
-			}
-		}
-		if (i == s.length())
-			return sum;
-
-		if (s.charAt(i) == 'X' && i < s.length() - 1 && s.charAt(i + 1) == 'C')
-		{
-			sum += 90;
-			i += 2;
-		}
-		else if (s.charAt(i) == 'X' && i < s.length() - 1
-				&& s.charAt(i + 1) == 'L')
-		{
-			sum += 40;
-			i += 2;
-		}
-		else if (s.charAt(i) == 'L')
-		{
-			sum += 50;
-			i++;
-			if (i == s.length())
-				return sum;
-			while (s.charAt(i) == 'X')
-			{
-				sum += 10;
-				i++;
-				if (i == s.length())
-					return sum;
-			}
-		}
-		else if (s.charAt(i) == 'X')
-		{
-			sum += 10;
-			i++;
-			if (i == s.length())
-				return sum;
-			while (s.charAt(i) == 'X')
-			{
-				sum += 10;
-				i++;
-				if (i == s.length())
-					return sum;
-			}
-		}
-		if (i == s.length())
-			return sum;
-
-		if (s.charAt(i) == 'I' && i < s.length() - 1 && s.charAt(i + 1) == 'X')
-		{
-			sum += 9;
-			i += 2;
-		}
-		else if (s.charAt(i) == 'I' && i < s.length() - 1
-				&& s.charAt(i + 1) == 'V')
-		{
-			sum += 4;
-			i += 2;
-		}
-		else if (s.charAt(i) == 'V')
-		{
-			sum += 5;
-			i++;
-			if (i == s.length())
-				return sum;
-			while (s.charAt(i) == 'I')
-			{
-				sum += 1;
-				i++;
-				if (i == s.length())
-					return sum;
-			}
-		}
-		else if (s.charAt(i) == 'I')
-		{
-			sum += 1;
-			i++;
-			if (i == s.length())
-				return sum;
-			while (s.charAt(i) == 'I')
-			{
-				sum += 1;
-				i++;
-				if (i == s.length())
-					return sum;
-			}
-		}
-
-		return sum;
+		int num = 0;
+		while (!s.isEmpty())
+			for (int i = 0; i < sym.length; i++)
+				if (s.startsWith(sym[i]))
+				{
+					num += val[i];
+					s = s.substring(sym[i].length());
+					break;
+				}
+		return num;
 	}
 }

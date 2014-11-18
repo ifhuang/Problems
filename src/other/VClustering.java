@@ -120,7 +120,7 @@ public class VClustering
 			int j = 0;
 			int n = list.size();
 			for (; j < n; j++)
-				if (i <= list.get(j))
+				if (i < list.get(j))
 				{
 					fw.write(j + "\n");
 					break;

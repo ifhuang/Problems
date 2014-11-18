@@ -1,32 +1,20 @@
 package leetcode;
 
+// https://oj.leetcode.com/problems/longest-common-prefix/
 public class LongestCommonPrefix
 {
 	public String longestCommonPrefix(String[] strs)
 	{
-		if (strs == null || strs.length == 0)
+		if (strs == null || strs.length == 0 || strs[0].length() == 0)
 			return "";
-		if (strs.length == 1)
-			return strs[0];
-		StringBuffer stringBuffer = new StringBuffer();
-		for (int i = 0;; i++)
+		char c = strs[0].charAt(0);
+		strs[0] = strs[0].substring(1);
+		for (int i = 1; i < strs.length; i++)
 		{
-			if (i == strs[0].length())
-				break;
-			char c = strs[0].charAt(i);
-			int j;
-			for (j = 1; j < strs.length; j++)
-			{
-				if (i == strs[j].length())
-					break;
-				if (c != strs[j].charAt(i))
-					break;
-			}
-			if (j == strs.length)
-				stringBuffer.append(c);
-			else
-				break;
+			if (strs[i].length() == 0 || strs[i].charAt(0) != c)
+				return "";
+			strs[i] = strs[i].substring(1);
 		}
-		return stringBuffer.toString();
+		return c + longestCommonPrefix(strs);
 	}
 }

@@ -3,33 +3,34 @@ package leetcode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class ThreeSum
 {
-	public ArrayList<ArrayList<Integer>> threeSum(int[] num)
+	public List<List<Integer>> threeSum(int[] num)
 	{
-		if (num == null || num.length < 3)
-			return new ArrayList<>();
+		Set<List<Integer>> set = new HashSet<>();
 		Arrays.sort(num);
-		HashSet<ArrayList<Integer>> set = new HashSet<>();
 		for (int i = 0; i < num.length - 2; i++)
-			for (int j = i + 1; j < num.length - 1; j++)
+			for (int j = i + 1, k = num.length - 1; j < k;)
 			{
-				int c = 0 - num[i] - num[j];
-				if (Arrays.binarySearch(num, j + 1, num.length, c) > 0)
+				int r = -num[i];
+				if (num[j] + num[k] == r)
 				{
-					ArrayList<Integer> one = new ArrayList<>();
-					one.add(num[i]);
-					one.add(num[j]);
-					one.add(c);
-					set.add(one);
+					List<Integer> list = new ArrayList<>();
+					list.add(num[i]);
+					list.add(num[j]);
+					list.add(num[k]);
+					set.add(list);
+					j++;
+					k--;
 				}
+				else if (num[j] + num[k] > r)
+					k--;
+				else
+					j++;
 			}
-		ArrayList<ArrayList<Integer>> list = new ArrayList<>();
-		for (ArrayList<Integer> arrayList : set)
-		{
-			list.add(arrayList);
-		}
-		return list;
+		return new ArrayList<>(set);
 	}
 }
