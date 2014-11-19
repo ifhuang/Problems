@@ -2,66 +2,36 @@ package leetcode;
 
 import java.util.Stack;
 
+// https://oj.leetcode.com/problems/valid-parentheses/
 public class ValidParentheses
 {
 	public boolean isValid(String s)
 	{
-		if (s == null || s.equals(""))
-			return true;
 		Stack<Character> stack = new Stack<>();
 		for (int i = 0; i < s.length(); i++)
 		{
-			switch (s.charAt(i))
+			char c = s.charAt(i);
+			switch (c)
 			{
 				case '(':
-				case '[':
 				case '{':
-					stack.push(s.charAt(i));
+				case '[':
+					stack.push(c);
 					break;
 				case ')':
-					if (stack.isEmpty())
-					{
+					if (stack.isEmpty() || stack.pop() != '(')
 						return false;
-					}
-					else
-					{
-						if (stack.pop() != '(')
-							return false;
-					}
-					break;
-				case ']':
-					if (stack.isEmpty())
-					{
-						return false;
-					}
-					else
-					{
-						if (stack.pop() != '[')
-							return false;
-					}
 					break;
 				case '}':
-					if (stack.isEmpty())
-					{
+					if (stack.isEmpty() || stack.pop() != '{')
 						return false;
-					}
-					else
-					{
-						if (stack.pop() != '{')
-							return false;
-					}
 					break;
-				default:
+				case ']':
+					if (stack.isEmpty() || stack.pop() != '[')
+						return false;
 					break;
 			}
 		}
-		if (stack.isEmpty())
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		return stack.isEmpty();
 	}
 }

@@ -2,34 +2,23 @@ package leetcode;
 
 import leetcode.util.ListNode;
 
+// https://oj.leetcode.com/problems/remove-nth-node-from-end-of-list/
 public class RemoveNthNodeFromEndofList
 {
 	public ListNode removeNthFromEnd(ListNode head, int n)
 	{
-		if (n < 1 || head == null)
-			return head;
-
-		ListNode p = head;
-		for (int i = 0; i < n - 1; i++)
-		{
-			p = p.next;
-		}
-		ListNode q = head;
-		ListNode r = null;
-		while (p.next != null)
-		{
-			p = p.next;
-			r = q;
-			q = q.next;
-		}
-		if (r == null)
-		{
+		ListNode last = head;
+		ListNode pre = head;
+		while (n-- > 0)
+			last = last.next;
+		if (last == null)
 			return head.next;
-		}
-		else
+		while (last.next != null)
 		{
-			r.next = q.next;
-			return head;
+			last = last.next;
+			pre = pre.next;
 		}
+		pre.next = pre.next.next;
+		return head;
 	}
 }

@@ -1,53 +1,39 @@
 package leetcode;
 
-import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.PriorityQueue;
 
 import leetcode.util.ListNode;
 
+// https://oj.leetcode.com/problems/merge-k-sorted-lists/
 public class MergekSortedLists
 {
-	public ListNode mergeKLists(ArrayList<ListNode> lists)
+	public ListNode mergeKLists(List<ListNode> lists)
 	{
-		if (lists == null)
+		if (lists == null || lists.size() == 0)
 			return null;
-		int i = 0;
-		for (; i < lists.size(); i++)
-		{
-			ListNode listNode = lists.get(i);
-			if (listNode != null)
-				break;
-		}
-		if (i == lists.size())
-		{
-			return null;
-		}
-
-		ListNode head = null;
-		ListNode minNode = null;
-		int index = 0;
-		int min = Integer.MAX_VALUE;
-		for (i = 0; i < lists.size(); i++)
-		{
-			ListNode listNode = lists.get(i);
-			if (listNode == null)
-			{
-				continue;
-			}
-			else
-			{
-				if (listNode.val < min)
+		PriorityQueue<ListNode> pq = new PriorityQueue<>(lists.size(),
+				new Comparator<ListNode>()
 				{
-					min = listNode.val;
-					minNode = listNode;
-					index = i;
-				}
-			}
+					@Override
+					public int compare(ListNode arg0, ListNode arg1)
+					{
+						return arg0.val - arg1.val;
+					}
+				});
+		for (ListNode list : lists)
+			if (list != null)
+				pq.add(list);
+		ListNode dummy = new ListNode(0);
+		ListNode p = dummy;
+		while (!pq.isEmpty())
+		{
+			p.next = pq.poll();
+			p = p.next;
+			if (p.next != null)
+				pq.add(p.next);
 		}
-
-		head = new ListNode(minNode.val);
-		lists.set(index, minNode.next);
-		head.next = mergeKLists(lists);
-
-		return head;
+		return dummy.next;
 	}
 }

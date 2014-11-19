@@ -2,47 +2,33 @@ package leetcode;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
+// https://oj.leetcode.com/problems/generate-parentheses/
 public class GenerateParentheses
 {
-	public ArrayList<String> generateParenthesis(int n)
+	public List<String> generateParenthesis(int n)
 	{
-		if (n < 1)
+		Set<String> set = new HashSet<>();
+		if (n == 0)
 		{
-			return null;
+			set.add("");
+			return new ArrayList<>(set);
 		}
-		else if (n == 1)
-		{
-			String string = "()";
-			ArrayList<String> list = new ArrayList<>();
-			list.add(string);
-			return list;
-		}
-		else
-		{
-			ArrayList<String> list = generateParenthesis(n - 1);
-			HashSet<String> set = new HashSet<>();
-			for (String string : list)
+		List<String> small = generateParenthesis(n - 1);
+		for (String s : small)
+			for (int i = 0; i <= s.length(); i++)
 			{
-				StringBuffer sb = new StringBuffer(string);
-				for (int i = 0; i < sb.length(); i++)
+				StringBuilder sb = new StringBuilder(s);
+				sb.insert(i, "(");
+				for (int j = i + 1; j <= s.length() + 1; j++)
 				{
-					StringBuffer sb2 = new StringBuffer(sb);
-					sb2.insert(i, '(');
-					for (int j = i + 1; j < sb2.length(); j++)
-					{
-						StringBuffer sb3 = new StringBuffer(sb2);
-						sb3.insert(j, ')');
-						set.add(sb3.toString());
-					}
+					StringBuilder sb2 = new StringBuilder(sb);
+					sb2.insert(j, ")");
+					set.add(sb2.toString());
 				}
 			}
-			ArrayList<String> result = new ArrayList<>();
-			for (String string : set)
-			{
-				result.add(string);
-			}
-			return result;
-		}
+		return new ArrayList<>(set);
 	}
 }
