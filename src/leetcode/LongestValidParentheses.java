@@ -1,74 +1,30 @@
 package leetcode;
 
-import java.util.Stack;
-
+// https://oj.leetcode.com/problems/longest-valid-parentheses/
 public class LongestValidParentheses
 {
 	public int longestValidParentheses(String s)
 	{
-		if (s == null)
+		int len = s.length();
+		if (len == 0)
 			return 0;
-		Stack<Character> stack = new Stack<>();
-		int length = 0;
-		int maxLength = 0;
-		for (int i = 0; i < s.length(); i++)
+		int max = 0;
+		int[] dp = new int[len];
+		dp[len - 1] = 0;
+		for (int i = len - 2; i >= 0; i--)
 		{
-			char c = s.charAt(i);
-			if (c == '(')
+			if (s.charAt(i) == '(')
 			{
-				stack.push(c);
-			}
-			else if (c == ')')
-			{
-				if (stack.isEmpty())
+				int j = (i + 1) + dp[i + 1];
+				if (j < len && s.charAt(j) == ')')
 				{
-				}
-				else
-				{
-					if (stack.contains('('))
-					{
-						stack.remove(stack.lastIndexOf('('));
-						stack.push('2');
-					}
-					else
-					{
-						while (!stack.isEmpty())
-						{
-							stack.pop();
-							length += 2;
-						}
-						maxLength = maxLength > length ? maxLength : length;
-						length = 0;
-					}
+					dp[i] = dp[i + 1] + 2;
+					if (j + 1 < len)
+						dp[i] += dp[j + 1];
 				}
 			}
-			else
-			{
-			}
+			max = Math.max(max, dp[i]);
 		}
-		if (stack.isEmpty())
-		{
-		}
-		else
-		{
-			while (!stack.isEmpty())
-			{
-				char c = stack.pop();
-				if (c == '2')
-				{
-					length += 2;
-				}
-				else if (c == '(')
-				{
-					maxLength = maxLength > length ? maxLength : length;
-					length = 0;
-				}
-				else
-				{
-				}
-			}
-			maxLength = maxLength > length ? maxLength : length;
-		}
-		return maxLength;
+		return max;
 	}
 }

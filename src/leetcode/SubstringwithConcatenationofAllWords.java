@@ -2,56 +2,39 @@ package leetcode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+// https://oj.leetcode.com/problems/substring-with-concatenation-of-all-words/
 public class SubstringwithConcatenationofAllWords
 {
-	public ArrayList<Integer> findSubstring(String S, String[] L)
+	public List<Integer> findSubstring(String S, String[] L)
 	{
-		ArrayList<Integer> indexList = new ArrayList<>();
-		if (S == null || S.equals("") || L == null || L.length == 0)
-			return indexList;
-		int m = L.length;
-		int n = L[0].length();
-		for (int i = 0; i < S.length() - m * n + 1; i++)
+		List<Integer> list = new ArrayList<>();
+		int a = L[0].length();
+		int n = a * L.length;
+		Map<String, Integer> map = new HashMap<>();
+		for (int i = 0; i < L.length; i++)
+			if (map.containsKey(L[i]))
+				map.put(L[i], map.get(L[i]) + 1);
+			else
+				map.put(L[i], 1);
+		for (int i = 0; i < S.length() - n + 1; i++)
 		{
-			HashMap<String, Integer> map = new HashMap<>();
-			for (int j = 0; j < m; j++)
+			Map<String, Integer> tmpMap = new HashMap<>(map);
+			for (int j = i; j < i + n; j += a)
 			{
-				if (map.containsKey(L[j]))
-				{
-					map.put(L[j], map.get(L[j]) + 1);
-				}
+				String sub = S.substring(j, j + a);
+				if (tmpMap.containsKey(sub) && tmpMap.get(sub) > 1)
+					tmpMap.put(sub, tmpMap.get(sub) - 1);
+				else if (tmpMap.containsKey(sub) && tmpMap.get(sub) == 1)
+					tmpMap.remove(sub);
 				else
-				{
-					map.put(L[j], 1);
-				}
-
-			}
-			int j = 0;
-			for (; j < m; j++)
-			{
-				String string = S.substring(i + n * j, i + n * j + n);
-				if (map.containsKey(string))
-				{
-					if (map.get(string) > 0)
-					{
-						map.put(string, map.get(string) - 1);
-					}
-					else
-					{
-						break;
-					}
-				}
-				else
-				{
 					break;
-				}
 			}
-			if (j == m)
-			{
-				indexList.add(i);
-			}
+			if (tmpMap.isEmpty())
+				list.add(i);
 		}
-		return indexList;
+		return list;
 	}
 }

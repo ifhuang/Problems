@@ -1,21 +1,27 @@
 package leetcode;
 
-import java.util.Arrays;
-
+// https://oj.leetcode.com/problems/search-insert-position/
 public class SearchInsertPosition
 {
 	public int searchInsert(int[] A, int target)
 	{
-		if (A == null || A.length == 0)
-			return 0;
-		int index = Arrays.binarySearch(A, target);
-		if (index < 0)
+		int len = A.length;
+		int low = 0;
+		int high = len - 1;
+		int mid = low;
+		while (low < high)
 		{
-			return -index - 1;
+			mid = (low + high) >>> 1;
+			if (A[mid] > target)
+				high = mid - 1;
+			else if (A[mid] < target)
+				low = mid + 1;
+			else
+				return mid;
 		}
+		if (A[low] >= target)
+			return low;
 		else
-		{
-			return index;
-		}
+			return low + 1;
 	}
 }

@@ -1,38 +1,29 @@
 package leetcode;
 
-import java.util.Arrays;
-
+// https://oj.leetcode.com/problems/next-permutation/
 public class NextPermutation
 {
 	public void nextPermutation(int[] num)
 	{
-		if (num == null || num.length < 2)
-			return;
 		int i = num.length - 1;
 		for (; i > 0; i--)
-		{
-			if (num[i] > num[i - 1])
+			if (num[i - 1] < num[i])
 				break;
-		}
-		if (i == 0)
+		if (i > 0)
 		{
-			Arrays.sort(num);
-			return;
+			int j = num.length - 1;
+			for (; j >= i; j--)
+				if (num[j] > num[i - 1])
+					break;
+			int t = num[i - 1];
+			num[i - 1] = num[j];
+			num[j] = t;
 		}
-		int a = i - 1;
-		int min = num[i];
-		int minIndex = i;
-		for (; i < num.length; i++)
+		for (int j = num.length - 1; i < j; i++, j--)
 		{
-			if (num[i] < min && num[i] > num[a])
-			{
-				min = num[i];
-				minIndex = i;
-			}
+			int t = num[i];
+			num[i] = num[j];
+			num[j] = t;
 		}
-		int tmp = num[a];
-		num[a] = num[minIndex];
-		num[minIndex] = tmp;
-		Arrays.sort(num, a + 1, num.length);
 	}
 }
