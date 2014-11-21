@@ -1,94 +1,85 @@
 package leetcode;
 
 import java.util.HashSet;
+import java.util.Set;
 import java.util.Stack;
 
-import leetcode.util.Pair;
-
+// https://oj.leetcode.com/problems/sudoku-solver/
 public class SudokuSolver
 {
 	public void solveSudoku(char[][] board)
 	{
-		Stack<Pair> stack = new Stack<>();
-		int flag = 0;
-		char old = '1';
-		for (int row = 0; row < 9; row++)
-			for (int col = 0; col < 9; col++)
-			{
-				if (board[row][col] == '.')
+		int n = 9;
+		Stack<State> stack = new Stack<>();
+		char now = '0';
+		for (int i = 0; i < n; i++)
+			for (int j = 0; j < n; j++)
+				if (board[i][j] == '.')
 				{
-					char c = '1';
-					if (flag == 1)
+					now++;
+					board[i][j] = now;
+					while (!check(board, i, j))
 					{
-						c = old;
-						flag = 0;
-					}
-					for (; c <= '9'; c++)
-					{
-						board[row][col] = c;
-						if (check(board, row, col))
+						now++;
+						if (now > '9')
 							break;
+						board[i][j] = now;
 					}
-					if (c <= '9')
+					if (now > '9')
 					{
-						stack.push(new Pair(row, col, c));
+						board[i][j] = '.';
+						State s = stack.pop();
+						board[s.x][s.y] = '.';
+						while (s.n == '9')
+						{
+							s = stack.pop();
+							board[s.x][s.y] = '.';
+						}
+						i = s.x;
+						j = s.y - 1;
+						now = s.n;
 					}
 					else
 					{
-						board[row][col] = '.';
-						Pair pair = stack.pop();
-						row = pair.x;
-						col = pair.y;
-						old = pair.c;
-						while (old == '9')
-						{
-							board[row][col] = '.';
-							pair = stack.pop();
-							row = pair.x;
-							col = pair.y;
-							old = pair.c;
-						}
-						board[row][col] = '.';
-						old++;
-						if (col == 0)
-						{
-							col = 9;
-							row--;
-						}
-						else
-						{
-							col--;
-						}
-						flag = 1;
+						stack.push(new State(i, j, now));
+						now = '0';
 					}
 				}
-			}
 	}
 
-	private boolean check(char[][] board, int row, int col)
+	private boolean check(char[][] board, int r, int c)
 	{
-		HashSet<Character> set = new HashSet<>();
-		for (int colindex = 0; colindex < 9; colindex++)
-		{
-			if (board[row][colindex] != '.')
-				if (!set.add(board[row][colindex]))
+		int n = 9;
+		Set<Character> set = new HashSet<>();
+		for (int j = 0; j < n; j++)
+			if (board[r][j] != '.')
+				if (!set.add(board[r][j]))
 					return false;
-		}
-		set.clear();
-
-		for (int rowindex = 0; rowindex < 9; rowindex++)
-		{
-			if (board[rowindex][col] != '.')
-				if (!set.add(board[rowindex][col]))
+		set = new HashSet<>();
+		for (int j = 0; j < n; j++)
+			if (board[j][c] != '.')
+				if (!set.add(board[j][c]))
 					return false;
-		}
-		set.clear();
-
-		for (int rowindex = row / 3 * 3; rowindex < row / 3 * 3 + 3; rowindex++)
-			for (int colindex = col / 3 * 3; colindex < col / 3 * 3 + 3; colindex++)
-				if (board[rowindex][colindex] != '.')
-					if (!set.add(board[rowindex][colindex]))
+		set = new HashSet<>();
+		for (int i = r / 3 * 3; i < r / 3 * 3 + 3; i++)
+			for (int j = c / 3 * 3; j < c / 3 * 3 + 3; j++)
+				if (board[i][j] != '.')
+					if (!set.add(board[i][j]))
 						return false;
 		return true;
+	}
+}
+
+class State
+{
+	public int x;
+	public int y;
+	public char n;
+
+	public State(int x, int y, char n)
+	{
+		this.x = x;
+		this.y = y;
+		this.n = n;
 	}
 }

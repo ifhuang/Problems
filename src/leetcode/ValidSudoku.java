@@ -1,45 +1,41 @@
 package leetcode;
 
 import java.util.HashSet;
+import java.util.Set;
 
+// https://oj.leetcode.com/problems/valid-sudoku/
 public class ValidSudoku
 {
 	public boolean isValidSudoku(char[][] board)
 	{
-		for (int row = 0; row < 9; row++)
+		int n = 9;
+		for (int i = 0; i < n; i++)
 		{
-			HashSet<Character> set = new HashSet<>();
-			for (int col = 0; col < 9; col++)
+			Set<Character> set = new HashSet<>();
+			for (int j = 0; j < n; j++)
+				if (board[i][j] != '.')
+					if (!set.add(board[i][j]))
+						return false;
+		}
+		for (int i = 0; i < n; i++)
+		{
+			Set<Character> set = new HashSet<>();
+			for (int j = 0; j < n; j++)
+				if (board[j][i] != '.')
+					if (!set.add(board[j][i]))
+						return false;
+		}
+		for (int i = 0; i < n; i++)
+		{
+			Set<Character> set = new HashSet<>();
+			for (int j = 0; j < n; j++)
 			{
-				if (board[row][col] != '.')
-					if (!set.add(board[row][col]))
+				int x = i / 3 * 3 + j / 3;
+				int y = i % 3 * 3 + j % 3;
+				if (board[x][y] != '.')
+					if (!set.add(board[x][y]))
 						return false;
 			}
-		}
-
-		for (int col = 0; col < 9; col++)
-		{
-			HashSet<Character> set = new HashSet<>();
-			for (int row = 0; row < 9; row++)
-			{
-				if (board[row][col] != '.')
-					if (!set.add(board[row][col]))
-						return false;
-			}
-		}
-
-		for (int sub = 0; sub < 9; sub++)
-		{
-			HashSet<Character> set = new HashSet<>();
-			int x = sub % 3;
-			int y = sub / 3;
-			for (int row = y * 3; row < y * 3 + 3; row++)
-				for (int col = x * 3; col < x * 3 + 3; col++)
-				{
-					if (board[row][col] != '.')
-						if (!set.add(board[row][col]))
-							return false;
-				}
 		}
 		return true;
 	}
