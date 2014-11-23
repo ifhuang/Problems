@@ -1,33 +1,27 @@
 package leetcode;
 
+// https://oj.leetcode.com/problems/first-missing-positive/
 public class FirstMissingPositive
 {
 	public int firstMissingPositive(int[] A)
 	{
-		if (A == null || A.length == 0)
-			return 1;
-		int i = 0;
-		while (i < A.length)
+		int len = A.length;
+		for (int i = 0; i < len;)
 		{
-			if (A[i] > 0 && A[i] <= A.length && A[i] != i + 1
-					&& A[A[i] - 1] != A[i])
+			int index = A[i] - 1;
+			if (index != i && index >= 0 && index < len
+					&& A[index] - 1 != index)
 			{
-				int tmp = A[i];
-				A[i] = A[A[i] - 1];
-				A[tmp - 1] = tmp;
+				int t = A[index];
+				A[index] = A[i];
+				A[i] = t;
 			}
 			else
-			{
 				i++;
-			}
 		}
-		for (int j = 0; j < A.length; j++)
-		{
-			if (A[j] != j + 1)
-			{
-				return j + 1;
-			}
-		}
-		return A.length + 1;
+		for (int i = 0; i < len; i++)
+			if (A[i] - 1 != i)
+				return i + 1;
+		return len + 1;
 	}
 }

@@ -1,47 +1,29 @@
 package leetcode;
 
+// https://oj.leetcode.com/problems/count-and-say/
 public class CountandSay
 {
 	public String countAndSay(int n)
 	{
-		if (n < 1)
-			return "";
-		String input = "1";
-		n--;
-		String result = input;
-		while (n > 0)
-		{
-			result = count(result);
-			n--;
-		}
-		return result;
-	}
-
-	private String count(String input)
-	{
-		if (input == null || input.equals(""))
-		{
-			return "";
-		}
-		StringBuffer sb = new StringBuffer();
+		if (n == 1)
+			return "1";
+		String pre = countAndSay(n - 1);
 		int count = 1;
-		char c = input.charAt(0);
-		for (int i = 1; i < input.length(); i++)
+		char now = pre.charAt(0);
+		StringBuilder sb = new StringBuilder();
+		for (int i = 1; i < pre.length(); i++)
 		{
-			if (input.charAt(i) == c)
-			{
+			char c = pre.charAt(i);
+			if (c == pre.charAt(i - 1))
 				count++;
-			}
 			else
 			{
-				sb.append(count);
-				sb.append(c);
+				sb.append(count).append(now);
 				count = 1;
-				c = input.charAt(i);
+				now = c;
 			}
 		}
-		sb.append(count);
-		sb.append(c);
+		sb.append(count).append(now);
 		return sb.toString();
 	}
 }

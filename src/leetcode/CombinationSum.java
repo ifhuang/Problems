@@ -2,44 +2,34 @@ package leetcode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
+// https://oj.leetcode.com/problems/combination-sum/
 public class CombinationSum
 {
-	public ArrayList<ArrayList<Integer>> combinationSum(int[] candidates,
-			int target)
+	public List<List<Integer>> combinationSum(int[] candidates, int target)
 	{
-		if (candidates == null || candidates.length == 0)
-		{
-			return new ArrayList<>();
-		}
-		ArrayList<ArrayList<Integer>> result = new ArrayList<>();
+		Set<List<Integer>> ans = new HashSet<>();
 		Arrays.sort(candidates);
-		find(candidates, target, 0, new ArrayList<Integer>(), result);
-		return result;
+		search(candidates, target, 0, ans, new ArrayList<Integer>());
+		return new ArrayList<>(ans);
 	}
 
-	private void find(int[] candidates, int target, int start,
-			ArrayList<Integer> list, ArrayList<ArrayList<Integer>> result)
+	private void search(int[] candidates, int target, int start,
+			Set<List<Integer>> ans, List<Integer> pre)
 	{
 		if (target < 0)
-		{
 			return;
-		}
 		else if (target == 0)
-		{
-			result.add(new ArrayList<>(list));
-			return;
-		}
+			ans.add(pre);
 		else
-		{
 			for (int i = start; i < candidates.length; i++)
 			{
-				if (i != 0 && candidates[i] == candidates[i - 1])
-					continue;
-				list.add(candidates[i]);
-				find(candidates, target - candidates[i], i, list, result);
-				list.remove(list.size() - 1);
+				List<Integer> pre2 = new ArrayList<>(pre);
+				pre2.add(candidates[i]);
+				search(candidates, target - candidates[i], i, ans, pre2);
 			}
-		}
 	}
 }
