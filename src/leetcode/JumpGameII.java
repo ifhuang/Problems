@@ -1,24 +1,15 @@
 package leetcode;
 
+// https://oj.leetcode.com/problems/jump-game-ii/
 public class JumpGameII
 {
 	public int jump(int[] A)
 	{
-		if (A == null || A.length < 2)
-			return 0;
-		else
-		{
-			int[] min = new int[A.length];
-			for (int i = 0, l = 1; i < min.length; i++)
-				while (l < min.length && l - i <= A[i])
-					min[l++] = min[i] + 1;
-			return min[min.length - 1];
-		}
-	}
-
-	public static void main(String[] args)
-	{
-		JumpGameII solution = new JumpGameII();
-		System.out.println("" + solution.jump(new int[] { 2, 3, 1, 1, 4 }));
+		int len = A.length;
+		int[] ans = new int[len];
+		for (int i = 0, l = 1; i < len; i++)
+			while (l < len && l - i <= A[i])
+				ans[l++] = ans[i] + 1;
+		return ans[len - 1];
 	}
 }
