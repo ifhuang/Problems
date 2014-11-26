@@ -1,22 +1,19 @@
 package leetcode;
 
+// https://oj.leetcode.com/problems/rotate-image/
 public class RotateImage
 {
 	public void rotate(int[][] matrix)
 	{
-		if (matrix == null || matrix.length < 2)
-			return;
-		else
-		{
-			int row = matrix.length;
-			int col = matrix[0].length;
-			int[][] tmp = new int[row][col];
-			for (int i = 0; i < row; i++)
-				for (int j = 0; j < col; j++)
-					tmp[i][j] = matrix[i][j];
-			for (int i = 0; i < row; i++)
-				for (int j = 0; j < col; j++)
-					matrix[j][col - 1 - i] = tmp[i][j];
-		}
+		int len = matrix.length;
+		for (int i = 0; i < len / 2; i++)
+			for (int j = i; j < len - i - 1; j++)
+			{
+				int t = matrix[i][j];
+				matrix[i][j] = matrix[len - j - 1][i];
+				matrix[len - j - 1][i] = matrix[len - i - 1][len - j - 1];
+				matrix[len - i - 1][len - j - 1] = matrix[j][len - i - 1];
+				matrix[j][len - i - 1] = t;
+			}
 	}
 }
