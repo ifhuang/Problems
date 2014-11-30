@@ -5,19 +5,18 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+// https://oj.leetcode.com/problems/anagrams/
 public class Anagrams
 {
 	public List<String> anagrams(String[] strs)
 	{
-		List<String> list = new LinkedList<>();
-		if (strs == null)
-			return list;
+		List<String> ans = new ArrayList<>();
 		Map<Integer, String> map = new HashMap<>();
-		for (int i = 0; i < strs.length; i++)
+		int len = strs.length;
+		for (int i = 0; i < len; i++)
 		{
 			char[] tmp = strs[i].toCharArray();
 			Arrays.sort(tmp);
@@ -25,23 +24,28 @@ public class Anagrams
 		}
 		List<java.util.Map.Entry<Integer, String>> listMap = sortByValue(map,
 				true);
-		for (int i = 0; i < listMap.size() - 1; i++)
-			if (listMap.get(i).getValue().equals(listMap.get(i + 1).getValue()))
+		for (int i = 0; i < len - 1; i++)
+		{
+			String a = listMap.get(i).getValue();
+			String b = listMap.get(i + 1).getValue();
+			if (a.equals(b))
 			{
-				String sample = listMap.get(i).getValue();
-				list.add(strs[listMap.get(i).getKey()]);
-				int j = i + 1;
-				for (; j < listMap.size(); j++)
+				String sample = a;
+				ans.add(strs[listMap.get(i).getKey()]);
+				ans.add(strs[listMap.get(i + 1).getKey()]);
+				int j = i + 2;
+				for (; j < len; j++)
 					if (listMap.get(j).getValue().equals(sample))
-						list.add(strs[listMap.get(j).getKey()]);
+						ans.add(strs[listMap.get(j).getKey()]);
 					else
 						break;
 				i = j - 1;
 			}
-		return list;
+		}
+		return ans;
 	}
 
-	private static <K, V extends Comparable<? super V>> List<java.util.Map.Entry<K, V>> sortByValue(
+	private <K, V extends Comparable<? super V>> List<java.util.Map.Entry<K, V>> sortByValue(
 			Map<K, V> map, final boolean asc)
 	{
 		List<java.util.Map.Entry<K, V>> list = new ArrayList<>(map.entrySet());
