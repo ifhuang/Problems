@@ -1,5 +1,4 @@
 package leetcode.test;
 
-public class Solution
-{
+public class Solution {
 }

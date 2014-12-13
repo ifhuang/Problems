@@ -4,99 +4,72 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-public class NQueens
-{
-	class Pair
-	{
+// https://oj.leetcode.com/problems/n-queens/
+public class NQueens {
+	class Queen {
 		int x;
 		int y;
 
-		Pair(int x, int y)
-		{
+		Queen(int x, int y) {
 			this.x = x;
 			this.y = y;
 		}
 	}
-
-	public List<String[]> solveNQueens(int n)
-	{
-		List<String[]> list = new ArrayList<>();
-		if (n == 0)
-			return list;
-		if (n == 1)
-		{
+	public List<String[]> solveNQueens(int n) {
+		List<String[]> ans = new ArrayList<>();
+		if (n == 1) {
 			String[] s = new String[1];
 			s[0] = "Q";
-			list.add(s);
-			return list;
+			ans.add(s);
+			return ans;
 		}
-		int[][] check = new int[n][n];
+		Stack<Queen> stack = new Stack<>();
 		int x = 0;
 		int y = 0;
-		check[x][y] = 1;
-		Pair pair = new Pair(x, y);
-		Stack<Pair> stack = new Stack<>();
-		stack.push(pair);
+		stack.push(new Queen(x, y));
 		x++;
-		while (true)
-		{
-			if (y == n)
-			{
-				if (x == 0)
-					break;
-				pair = stack.pop();
-				x = pair.x;
-				y = pair.y;
-				check[x][y] = 0;
-			}
-			else if (check(check, x, y))
-			{
-				if (x == n - 1)
-				{
-					check[x][y] = 1;
-					String[] s = new String[n];
-					for (int i = 0; i < n; i++)
-					{
-						StringBuilder sb = new StringBuilder();
-						for (int j = 0; j < n; j++)
-							if (check[i][j] == 1)
-								sb.append("Q");
-							else
-								sb.append(".");
-						s[i] = sb.toString();
-					}
-					list.add(s);
-					check[x][y] = 0;
-				}
-				else
-				{
-					check[x][y] = 1;
-					pair = new Pair(x, y);
-					stack.push(pair);
+		while (x != 0 || y < n) {
+			while (y < n && !check(stack, x, y))
+				y++;
+			if (y < n) {
+				stack.push(new Queen(x, y));
+				if (finished(stack, n, ans)) {
+					stack.pop();
+					y++;
+				} else {
 					x++;
-					y = -1;
+					y = 0;
 				}
+			} else {
+				Queen pre = stack.pop();
+				x = pre.x;
+				y = pre.y + 1;
 			}
-			y++;
 		}
-		return list;
+		return ans;
 	}
 
-	private boolean check(int[][] check, int x, int y)
-	{
-		for (int i = 1; i <= x; i++)
-			if (check[x - i][y] == 1)
-				return false;
-			else if (y - i >= 0 && check[x - i][y - i] == 1)
-				return false;
-			else if (y + i < check.length && check[x - i][y + i] == 1)
+	private boolean check(Stack<Queen> stack, int x, int y) {
+		for (Queen q : stack)
+			if (q.x == x || q.y == y || Math.abs(q.x - x) == Math.abs(q.y - y))
 				return false;
 		return true;
 	}
 
-	public static void main(String[] args)
-	{
-		NQueens solution = new NQueens();
-		System.out.println(solution.solveNQueens(4));
+	private boolean finished(Stack<Queen> stack, int n, List<String[]> ans) {
+		if (stack.size() < n)
+			return false;
+		String[] strs = new String[n];
+		for (int i = 0; i < n; i++) {
+			StringBuilder sb = new StringBuilder();
+			for (int j = 0; j < n; j++)
+				if (j == stack.get(i).y)
+					sb.append('Q');
+				else
+					sb.append('.');
+			strs[i] = sb.toString();
+		}
+		ans.add(strs);
+		return true;
 	}
 }
