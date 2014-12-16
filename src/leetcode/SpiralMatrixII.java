@@ -1,92 +1,31 @@
 package leetcode;
 
-public class SpiralMatrixII
-{
-	public int[][] generateMatrix(int n)
-	{
-		int[][] result = new int[n][n];
-		if (n < 1)
-			return result;
-		else if (n == 1)
-		{
-			result[0][0] = 1;
-			return result;
+// https://oj.leetcode.com/problems/spiral-matrix-ii/
+public class SpiralMatrixII {
+	public int[][] generateMatrix(int n) {
+		int[][] ans = new int[n][n];
+		if (n == 0)
+			return ans;
+		int[][] d = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+		int x = 0;
+		int y = 0;
+		int s = 0;
+		ans[x][y] = 1;
+		for (int i = 2; i <= n * n; i++) {
+			if (!check(ans, x, y, d[s][0], d[s][1]))
+				s = (s + 1) % 4;
+			x += d[s][0];
+			y += d[s][1];
+			ans[x][y] = i;
 		}
-		else
-		{
-			int x = 0;
-			int y = 0;
-			result[x][y] = 1;
-			int state = 0;
-			int count = 2;
-			int max = n * n;
-			while (count <= max)
-			{
-				if (state == 0)
-				{
-					int x1 = x;
-					int y1 = y + 1;
-					if (check(result, x1, y1))
-					{
-						y++;
-						result[x][y] = count;
-						count++;
-					}
-					else
-						state = (state + 1) % 4;
-				}
-				else if (state == 1)
-				{
-					int x1 = x + 1;
-					int y1 = y;
-					if (check(result, x1, y1))
-					{
-						x++;
-						result[x][y] = count;
-						count++;
-					}
-					else
-						state = (state + 1) % 4;
-				}
-				else if (state == 2)
-				{
-					int x1 = x;
-					int y1 = y - 1;
-					if (check(result, x1, y1))
-					{
-						y--;
-						result[x][y] = count;
-						count++;
-					}
-					else
-						state = (state + 1) % 4;
-				}
-				else if (state == 3)
-				{
-					int x1 = x - 1;
-					int y1 = y;
-					if (check(result, x1, y1))
-					{
-						x--;
-						result[x][y] = count;
-						count++;
-					}
-					else
-						state = (state + 1) % 4;
-				}
-			}
-			return result;
-		}
+		return ans;
 	}
 
-	private boolean check(int[][] result, int x, int y)
-	{
-		int n = result.length;
-		if (x >= n || y >= n || x < 0 || y < 0)
-			return false;
-		else if (result[x][y] != 0)
-			return false;
-		else
-			return true;
+	private boolean check(int[][] matrix, int x, int y, int a, int b) {
+		int n = matrix.length;
+		int newX = x + a;
+		int newY = y + b;
+		return newX >= 0 && newX < n && newY >= 0 && newY < n
+				&& matrix[newX][newY] == 0;
 	}
 }
