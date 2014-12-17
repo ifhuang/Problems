@@ -1,15 +1,10 @@
 package leetcode;
 
-public class UniquePaths
-{
-	public int uniquePaths(int m, int n)
-	{
+// https://oj.leetcode.com/problems/unique-paths/
+public class UniquePaths {
+	public int uniquePaths(int m, int n) {
 		if (m > n)
-		{
-			int t = m;
-			m = n;
-			n = t;
-		}
+			return uniquePaths(n, m);
 		long up = 1;
 		for (int i = 1; i < m; i++)
 			up *= n - 1 + i;
