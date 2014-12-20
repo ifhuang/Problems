@@ -1,24 +1,20 @@
 package leetcode;
 
-public class SortColors
-{
-	public void sortColors(int[] A)
-	{
-		if (A == null || A.length < 2)
-			return;
-		int[] count = new int[3];
-		for (int i = 0; i < A.length; i++)
-		{
-			count[A[i]]++;
-		}
-		for (int i = 0; i < A.length; i++)
-		{
-			if (i < count[0])
-				A[i] = 0;
-			else if (i < count[0] + count[1])
-				A[i] = 1;
-			else
-				A[i] = 2;
-		}
+public class SortColors {
+	public void sortColors(int[] A) {
+		int len = A.length;
+		int zero = -1;
+		int one = -1;
+		int two = -1;
+		for (int i = 0; i < len; i++)
+			if (A[i] == 0) {
+				A[++two] = 2;
+				A[++one] = 1;
+				A[++zero] = 0;
+			} else if (A[i] == 1) {
+				A[++two] = 2;
+				A[++one] = 1;
+			} else
+				A[++two] = 2;
 	}
 }
