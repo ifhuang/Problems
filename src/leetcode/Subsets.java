@@ -4,39 +4,31 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Subsets
-{
-	public List<List<Integer>> subsets(int[] S)
-	{
-		List<List<Integer>> result = new ArrayList<>();
-		if (S == null || S.length == 0)
-		{
+// https://oj.leetcode.com/problems/subsets/
+public class Subsets {
+	public List<List<Integer>> subsets(int[] S) {
+		Arrays.sort(S);
+		return subsetsHelper(S, S.length - 1);
+	}
+
+	private List<List<Integer>> subsetsHelper(int[] S, int i) {
+		List<List<Integer>> ans = new ArrayList<>();
+		if (i == 0) {
 			List<Integer> list = new ArrayList<>();
-			result.add(list);
-			return result;
-		}
-		else if (S.length == 1)
-		{
-			List<Integer> list = new ArrayList<>();
-			result.add(list);
+			ans.add(list);
 			list = new ArrayList<>();
-			list.add(S[0]);
-			result.add(list);
-			return result;
-		}
-		else
-		{
-			Arrays.sort(S);
-			List<List<Integer>> pre = subsets(Arrays.copyOfRange(S, 0,
-					S.length - 1));
-			for (List<Integer> list : pre)
-			{
-				result.add(list);
-				List<Integer> list2 = new ArrayList<>(list);
-				list2.add(S[S.length - 1]);
-				result.add(list2);
+			list.add(S[i]);
+			ans.add(list);
+		} else {
+			List<List<Integer>> pre = subsetsHelper(S, i - 1);
+			List<List<Integer>> copy = new ArrayList<>(pre);
+			ans.addAll(copy);
+			for (List<Integer> list : copy) {
+				List<Integer> copy2 = new ArrayList<>(list);
+				copy2.add(S[i]);
+				ans.add(copy2);
 			}
-			return result;
 		}
+		return ans;
 	}
 }

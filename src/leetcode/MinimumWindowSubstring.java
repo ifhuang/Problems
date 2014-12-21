@@ -1,53 +1,46 @@
 package leetcode;
 
-public class MinimumWindowSubstring
-{
-	public String minWindow(String S, String T)
-	{
-		if (S == null || T == null || S.length() == 0 || T.length() == 0
-				|| S.length() < T.length())
-			return "";
-		int sL = S.length();
-		int tL = T.length();
+// https://oj.leetcode.com/problems/minimum-window-substring/
+public class MinimumWindowSubstring {
+	public String minWindow(String S, String T) {
 		int[] count = new int[128];
-		boolean[] in = new boolean[128];
-		int all = tL;
-		for (int i = 0; i < tL; i++)
-		{
-			count[T.charAt(i) - 'A']++;
-			in[T.charAt(i) - 'A'] = true;
+		boolean[] has = new boolean[128];
+		int tL = T.length();
+		for (int i = 0; i < tL; i++) {
+			int index = T.charAt(i) - 'A';
+			count[index]++;
+			has[index] = true;
 		}
-		int i = -1;
-		int j = 0;
+		int sL = S.length();
+		int post = -1;
+		int pre = -1;
+		int total = tL;
 		int start = 0;
-		int length = Integer.MAX_VALUE;
-		while (i < sL && j < sL)
-		{
-			if (all > 0)
-			{
-				i++;
-				if (i == sL)
+		int len = Integer.MAX_VALUE;
+		while (post < sL && pre < sL) {
+			if (total > 0) {
+				post++;
+				if (post == sL)
 					break;
-				count[S.charAt(i) - 'A']--;
-				if (in[S.charAt(i) - 'A'] && count[S.charAt(i) - 'A'] >= 0)
-					all--;
-			}
-			else
-			{
-				if (length > i - j + 1)
-				{
-					start = j;
-					length = i - j + 1;
+				int index = S.charAt(post) - 'A';
+				count[index]--;
+				if (has[index] && count[index] >= 0)
+					total--;
+			} else {
+				pre++;
+				if (pre == sL)
+					break;
+				int index = S.charAt(pre) - 'A';
+				int newLen = post - pre + 1;
+				if (has[index] && len > newLen) {
+					start = pre;
+					len = newLen;
 				}
-				count[S.charAt(j) - 'A']++;
-				if (in[S.charAt(j) - 'A'] && count[S.charAt(j) - 'A'] > 0)
-					all++;
-				j++;
+				count[index]++;
+				if (has[index] && count[index] > 0)
+					total++;
 			}
 		}
-		if (length == Integer.MAX_VALUE)
-			return "";
-		else
-			return S.substring(start, start + length);
+		return len == Integer.MAX_VALUE ? "" : S.substring(start, start + len);
 	}
 }
