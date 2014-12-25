@@ -2,37 +2,28 @@ package leetcode;
 
 import leetcode.util.ListNode;
 
-public class PartitionList
-{
-	public ListNode partition(ListNode head, int x)
-	{
-		if (head == null || head.next == null)
-			return head;
-		ListNode first = new ListNode(0);
-		first.next = head;
-		ListNode insertPre = first;
-		while (insertPre.next != null && insertPre.next.val < x)
-			insertPre = insertPre.next;
-		if (insertPre.next == null)
-			return first.next;
-		ListNode p = insertPre;
-		while (p.next != null)
-		{
-			ListNode pre = p;
-			p = p.next;
-			if (p.val < x)
-			{
-				pre.next = p.next;
-				p.next = insertPre.next;
-				insertPre.next = p;
+// https://oj.leetcode.com/problems/partition-list/
+public class PartitionList {
+	public ListNode partition(ListNode head, int x) {
+		ListNode dummy = new ListNode(0);
+		dummy.next = head;
+		ListNode insertPre = dummy;
+		ListNode pre = dummy;
+		ListNode now = dummy.next;
+		while (now != null)
+			if (now.val >= x) {
+				pre = now;
+				now = now.next;
+			} else if (insertPre == pre) {
+				insertPre = pre = now;
+				now = now.next;
+			} else {
+				pre.next = now.next;
+				now.next = insertPre.next;
+				insertPre.next = now;
 				insertPre = insertPre.next;
-				p = pre;
+				now = pre.next;
 			}
-		}
-		return first.next;
-	}
-
-	public static void main(String[] args)
-	{
+		return dummy.next;
 	}
 }

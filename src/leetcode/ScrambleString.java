@@ -1,37 +1,30 @@
 package leetcode;
 
-import java.util.Arrays;
-
-public class ScrambleString
-{
-	public boolean isScramble(String s1, String s2)
-	{
-		if (s1 == null && s2 == null)
+// https://oj.leetcode.com/problems/scramble-string/
+public class ScrambleString {
+	public boolean isScramble(String s1, String s2) {
+		if (s1.equals(s2))
 			return true;
-		else if (s1 == null || s2 == null || s1.length() != s2.length())
+		int l1 = s1.length();
+		int l2 = s2.length();
+		if (l1 != l2)
 			return false;
-		else if (s1.equals(s2))
-			return true;
-		char[] c1 = s1.toCharArray();
-		char[] c2 = s2.toCharArray();
-		Arrays.sort(c1);
-		Arrays.sort(c2);
-		for (int i = 0; i < c1.length; i++)
+		int num = 128;
+		int[] c1 = new int[num];
+		for (int i = 0; i < l1; i++)
+			c1[s1.charAt(i)]++;
+		int[] c2 = new int[num];
+		for (int i = 0; i < l2; i++)
+			c2[s2.charAt(i)]++;
+		for (int i = 0; i < num; i++)
 			if (c1[i] != c2[i])
 				return false;
-		for (int i = 1; i < c1.length; i++)
+		for (int i = 1; i < l1; i++)
 			if ((isScramble(s1.substring(0, i), s2.substring(0, i)) && isScramble(
-					s1.substring(i), s2.substring(i)))
-					|| (isScramble(s1.substring(0, i),
-							s2.substring(c1.length - i)) && isScramble(
-							s1.substring(i), s2.substring(0, c1.length - i))))
+					s1.substring(i, l1), s2.substring(i, l2)))
+					|| (isScramble(s1.substring(0, i), s2.substring(l2 - i, l2)) && isScramble(
+							s1.substring(i, l1), s2.substring(0, l2 - i))))
 				return true;
 		return false;
-	}
-
-	public static void main(String[] args)
-	{
-		ScrambleString solution = new ScrambleString();
-		System.out.println(solution.isScramble("abc", "bca"));
 	}
 }
