@@ -1,54 +1,42 @@
 package leetcode;
 
+import java.util.Arrays;
 import java.util.Stack;
 
-public class MaximalRectangle
-{
-	public int maximalRectangle(char[][] matrix)
-	{
-		if (matrix == null || matrix.length == 0 || matrix[0] == null
-				|| matrix[0].length == 0)
-			return 0;
+// https://oj.leetcode.com/problems/maximal-rectangle/
+public class MaximalRectangle {
+	public int maximalRectangle(char[][] matrix) {
 		int m = matrix.length;
-		int n = matrix[0].length;
-		int[][] heightMatrix = new int[m][n];
-		for (int i = 0; i < m; i++)
-			for (int j = 0; j < n; j++)
-				if (matrix[i][j] == '1')
-					heightMatrix[i][j] = i == 0 ? 1
-							: heightMatrix[i - 1][j] + 1;
-		int max = 0;
-		for (int i = 0; i < m; i++)
-			max = Math.max(max, largestRectangleArea(heightMatrix[i]));
-		return max;
-	}
-
-	private int largestRectangleArea(int[] height)
-	{
-		if (height == null || height.length == 0)
+		if (m == 0)
 			return 0;
-		else if (height.length == 1)
-			return height[0];
-		int max = 0;
+		int n = matrix[0].length;
+		int[] trans = new int[n];
+		for (int j = 0; j < n; j++)
+			trans[j] = matrix[0][j] - '0';
+		int ans = largestRectangleArea(trans);
+		for (int i = 1; i < m; i++) {
+			for (int j = 0; j < n; j++)
+				trans[j] = matrix[i][j] == '0' ? 0 : 1 + trans[j];
+			ans = Math.max(ans, largestRectangleArea(trans));
+		}
+		return ans;
+	}
+	private int largestRectangleArea(int[] height) {
 		Stack<Integer> stack = new Stack<>();
 		int i = 0;
-		while (i < height.length)
-			if (stack.isEmpty() || height[stack.peek()] < height[i])
+		int len = height.length + 1;
+		int[] copy = new int[len];
+		copy = Arrays.copyOf(height, len);
+		int ans = 0;
+		while (i < len) {
+			if (stack.isEmpty() || copy[stack.peek()] <= copy[i])
 				stack.push(i++);
-			else
-			{
-				int top = stack.pop();
-				int tmp = height[top]
-						* (stack.isEmpty() ? i : i - stack.peek() - 1);
-				max = Math.max(max, tmp);
+			else {
+				int t = stack.pop();
+				int w = stack.isEmpty() ? i : i - stack.peek() - 1;
+				ans = Math.max(ans, copy[t] * w);
 			}
-		while (!stack.isEmpty())
-		{
-			int top = stack.pop();
-			int tmp = height[top]
-					* (stack.isEmpty() ? i : i - stack.peek() - 1);
-			max = Math.max(max, tmp);
 		}
-		return max;
+		return ans;
 	}
 }
