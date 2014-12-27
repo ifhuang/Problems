@@ -3,24 +3,21 @@ package leetcode;
 import java.util.LinkedList;
 import java.util.List;
 
-public class GrayCode
-{
-	public List<Integer> grayCode(int n)
-	{
-		List<Integer> list = new LinkedList<>();
-		if (n < 1)
-		{
-			list.add(0);
-			return list;
+// https://oj.leetcode.com/problems/gray-code/
+public class GrayCode {
+	public List<Integer> grayCode(int n) {
+		List<Integer> ans = new LinkedList<>();
+		if (n == 0)
+			ans.add(0);
+		else {
+			List<Integer> pre = grayCode(n - 1);
+			int len = pre.size();
+			for (int i = 0; i < len; i++)
+				ans.add(pre.get(i));
+			int base = (int) Math.pow(2, n - 1);
+			for (int i = 0; i < len; i++)
+				ans.add(base + pre.get(len - i - 1));
 		}
-		else
-		{
-			list = grayCode(n - 1);
-			int size = list.size();
-			int stub = (int) Math.pow(2, n - 1);
-			for (int i = size - 1; i >= 0; i--)
-				list.add(stub + list.get(i));
-			return list;
-		}
+		return ans;
 	}
 }

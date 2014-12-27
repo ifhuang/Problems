@@ -6,44 +6,29 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class SubsetsII
-{
-	public List<List<Integer>> subsetsWithDup(int[] num)
-	{
-		List<List<Integer>> result = new ArrayList<>();
-		if (num == null || num.length == 0)
-		{
+// https://oj.leetcode.com/problems/subsets-ii/
+public class SubsetsII {
+	public List<List<Integer>> subsetsWithDup(int[] num) {
+		Arrays.sort(num);
+		return subsetHelper(num, num.length - 1);
+	}
+	private List<List<Integer>> subsetHelper(int[] num, int i) {
+		Set<List<Integer>> ans = new HashSet<>();
+		if (i == 0) {
 			List<Integer> list = new ArrayList<>();
-			result.add(list);
-			return result;
-		}
-		else if (num.length == 1)
-		{
-			List<Integer> list = new ArrayList<>();
-			result.add(list);
+			ans.add(list);
 			list = new ArrayList<>();
 			list.add(num[0]);
-			result.add(list);
-			return result;
-		}
-		else
-		{
-			Arrays.sort(num);
-			List<List<Integer>> pre = subsetsWithDup(Arrays.copyOfRange(num, 0,
-					num.length - 1));
-			Set<List<Integer>> set = new HashSet<>();
-			for (List<Integer> list : pre)
-			{
-				set.add(list);
-				List<Integer> list2 = new ArrayList<>(list);
-				list2.add(num[num.length - 1]);
-				set.add(list2);
+			ans.add(list);
+		} else {
+			List<List<Integer>> pre = subsetHelper(num, i - 1);
+			ans.addAll(pre);
+			for (List<Integer> list : pre) {
+				List<Integer> copy = new ArrayList<>(list);
+				copy.add(num[i]);
+				ans.add(copy);
 			}
-			for (List<Integer> list : set)
-			{
-				result.add(list);
-			}
-			return result;
 		}
+		return new ArrayList<>(ans);
 	}
 }
