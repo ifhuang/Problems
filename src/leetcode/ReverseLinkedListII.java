@@ -2,31 +2,30 @@ package leetcode;
 
 import leetcode.util.ListNode;
 
-public class ReverseLinkedListII
-{
-	public ListNode reverseBetween(ListNode head, int m, int n)
-	{
-		if (head == null || head.next == null || m == n)
-			return head;
-		int[] num = new int[n - m + 1];
-		ListNode p = head;
-		int count = 1;
-		while (count <= n)
-		{
-			if (count >= m)
-				num[count - m] = p.val;
-			count++;
-			p = p.next;
+// https://oj.leetcode.com/problems/reverse-linked-list-ii/
+public class ReverseLinkedListII {
+	public ListNode reverseBetween(ListNode head, int m, int n) {
+		ListNode dummy = new ListNode(0);
+		dummy.next = head;
+		ListNode pre = dummy;
+		ListNode now = head;
+		ListNode post = head.next;
+		while (m > 1) {
+			m--;
+			n--;
+			pre = now;
+			now = post;
+			post = post.next;
 		}
-		p = head;
-		count = 1;
-		while (count <= n)
-		{
-			if (count >= m)
-				p.val = num[n - count];
-			count++;
-			p = p.next;
+		while (n > 1) {
+			n--;
+			ListNode tmp = post;
+			post = post.next;
+			tmp.next = now;
+			now = tmp;
 		}
-		return head;
+		pre.next.next = post;
+		pre.next = now;
+		return dummy.next;
 	}
 }
