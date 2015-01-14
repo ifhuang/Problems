@@ -2,27 +2,27 @@ package leetcode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 import leetcode.util.TreeNode;
 
-public class BinaryTreeInorderTraversal
-{
-	public List<Integer> inorderTraversal(TreeNode root)
-	{
-		List<Integer> list = new ArrayList<>();
-		if (root == null)
-			return list;
-		List<Integer> left = inorderTraversal(root.left);
-		for (Integer integer : left)
-		{
-			list.add(integer);
+// https://oj.leetcode.com/problems/binary-tree-inorder-traversal/
+public class BinaryTreeInorderTraversal {
+	public List<Integer> inorderTraversal(TreeNode root) {
+		List<Integer> ans = new ArrayList<>();
+		Stack<TreeNode> stack = new Stack<>();
+		TreeNode p = root;
+		while (true) {
+			while (p != null) {
+				stack.push(p);
+				p = p.left;
+			}
+			if (stack.isEmpty())
+				break;
+			p = stack.pop();
+			ans.add(p.val);
+			p = p.right;
 		}
-		list.add(root.val);
-		List<Integer> right = inorderTraversal(root.right);
-		for (Integer integer : right)
-		{
-			list.add(integer);
-		}
-		return list;
+		return ans;
 	}
 }
