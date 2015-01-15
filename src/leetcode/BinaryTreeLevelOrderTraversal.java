@@ -1,53 +1,38 @@
 package leetcode;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
 import leetcode.util.TreeNode;
 
-public class BinaryTreeLevelOrderTraversal
-{
-	public List<List<Integer>> levelOrder(TreeNode root)
-	{
-		List<List<Integer>> result = new LinkedList<>();
-		if (root == null)
-			return result;
-		List<Integer> list = new LinkedList<>();
-		list.add(root.val);
-		result.add(list);
-		Queue<TreeNode> queue = new LinkedList<>();
-		if (root.left != null)
-			queue.add(root.left);
-		if (root.right != null)
-			queue.add(root.right);
-		if (queue.isEmpty())
-			return result;
-		queue.add(null);
-		list = new LinkedList<>();
-		while (!queue.isEmpty())
-		{
-			TreeNode node = queue.poll();
-			if (node == null)
-			{
-				result.add(list);
-				if (queue.isEmpty())
-					return result;
-				else
-				{
-					list = new LinkedList<>();
-					queue.add(null);
+// https://oj.leetcode.com/problems/binary-tree-level-order-traversal/
+public class BinaryTreeLevelOrderTraversal {
+	public List<List<Integer>> levelOrder(TreeNode root) {
+		List<List<Integer>> ans = new ArrayList<>();
+		if (root != null) {
+			Queue<TreeNode> queue = new LinkedList<>();
+			queue.offer(root);
+			TreeNode flag = null;
+			queue.offer(flag);
+			while (true) {
+				List<Integer> list = new ArrayList<>();
+				if (queue.peek() == flag)
+					break;
+				while (queue.peek() != flag) {
+					TreeNode p = queue.poll();
+					if (p.left != null)
+						queue.add(p.left);
+					if (p.right != null)
+						queue.add(p.right);
+					list.add(p.val);
 				}
-			}
-			else
-			{
-				list.add(node.val);
-				if (node.left != null)
-					queue.add(node.left);
-				if (node.right != null)
-					queue.add(node.right);
+				ans.add(list);
+				queue.poll();
+				queue.offer(flag);
 			}
 		}
-		return result;
+		return ans;
 	}
 }

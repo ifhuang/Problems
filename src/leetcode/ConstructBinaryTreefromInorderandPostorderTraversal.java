@@ -1,33 +1,26 @@
 package leetcode;
 
-import java.util.Arrays;
-
 import leetcode.util.TreeNode;
 
-public class ConstructBinaryTreefromInorderandPostorderTraversal
-{
-	public TreeNode buildTree(int[] inorder, int[] postorder)
-	{
-		if (postorder == null || postorder.length == 0)
+// https://oj.leetcode.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/
+public class ConstructBinaryTreefromInorderandPostorderTraversal {
+	public TreeNode buildTree(int[] inorder, int[] postorder) {
+		return buildTreeHelper(inorder, 0, inorder.length - 1, postorder, 0,
+				postorder.length - 1);
+	}
+	private TreeNode buildTreeHelper(int[] inorder, int instart, int inend,
+			int[] postorder, int poststart, int postend) {
+		if (poststart > postend)
 			return null;
-		else if (postorder.length == 1)
-		{
-			TreeNode node = new TreeNode(postorder[0]);
-			return node;
-		}
-		else
-		{
-			int length = postorder.length;
-			TreeNode root = new TreeNode(postorder[length - 1]);
-			int i = 0;
-			for (; i < inorder.length; i++)
-				if (inorder[i] == postorder[length - 1])
-					break;
-			root.left = buildTree(Arrays.copyOfRange(inorder, 0, i),
-					Arrays.copyOfRange(postorder, 0, i));
-			root.right = buildTree(Arrays.copyOfRange(inorder, i + 1, length),
-					Arrays.copyOfRange(postorder, i, length - 1));
-			return root;
-		}
+		TreeNode root = new TreeNode(postorder[postend]);
+		int index = instart;
+		for (; index <= inend; index++)
+			if (inorder[index] == root.val)
+				break;
+		root.left = buildTreeHelper(inorder, instart, index - 1, postorder,
+				poststart, poststart + index - instart - 1);
+		root.right = buildTreeHelper(inorder, index + 1, inend, postorder,
+				poststart + index - instart, postend - 1);
+		return root;
 	}
 }

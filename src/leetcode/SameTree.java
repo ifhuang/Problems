@@ -2,29 +2,15 @@ package leetcode;
 
 import leetcode.util.TreeNode;
 
-public class SameTree
-{
-	public boolean isSameTree(TreeNode p, TreeNode q)
-	{
+// https://oj.leetcode.com/problems/symmetric-tree/
+public class SameTree {
+	public boolean isSameTree(TreeNode p, TreeNode q) {
 		if (p == null && q == null)
 			return true;
-		if (checkNode(p, q))
-			return isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
+		else if (p == null || q == null)
+			return false;
 		else
-			return false;
-	}
-
-	private boolean checkNode(TreeNode p, TreeNode q)
-	{
-		if (p == null && q == null)
-			return true;
-		else if (p == null && q != null)
-			return false;
-		else if (p != null && q == null)
-			return false;
-		else if (p.val == q.val)
-			return true;
-		else
-			return false;
+			return p.val == q.val && isSameTree(p.left, q.left)
+					&& isSameTree(p.right, q.right);
 	}
 }
