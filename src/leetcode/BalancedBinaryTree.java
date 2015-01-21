@@ -2,32 +2,20 @@ package leetcode;
 
 import leetcode.util.TreeNode;
 
-public class BalancedBinaryTree
-{
-	public boolean isBalanced(TreeNode root)
-	{
-		if (root == null)
-			return true;
-		int left = maxDepth(root.left);
-		int right = maxDepth(root.right);
-		if (Math.abs(left - right) > 1)
-			return false;
-		if (!isBalanced(root.left))
-			return false;
-		if (!isBalanced(root.right))
-			return false;
-		return true;
+// https://oj.leetcode.com/problems/balanced-binary-tree/
+public class BalancedBinaryTree {
+	private boolean flag = true;
+	public boolean isBalanced(TreeNode root) {
+		depth(root);
+		return flag;
 	}
-
-	private int maxDepth(TreeNode root)
-	{
+	private int depth(TreeNode root) {
 		if (root == null)
 			return 0;
-		else if (root.left == null)
-			return 1 + maxDepth(root.right);
-		else if (root.right == null)
-			return 1 + maxDepth(root.left);
-		else
-			return 1 + Math.max(maxDepth(root.left), maxDepth(root.right));
+		int l = depth(root.left);
+		int r = depth(root.right);
+		if (Math.abs(l - r) > 1)
+			flag = false;
+		return Math.max(l, r) + 1;
 	}
 }
