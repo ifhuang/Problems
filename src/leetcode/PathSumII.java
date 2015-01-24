@@ -1,57 +1,29 @@
 package leetcode;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import leetcode.util.TreeNode;
 
-public class PathSumII
-{
-	public List<List<Integer>> pathSum(TreeNode root, int sum)
-	{
-		List<List<Integer>> result = new LinkedList<>();
-		if (root == null)
-			return result;
-		else if (root.left == null && root.right == null)
-		{
-			if (root.val == sum)
-			{
-				List<Integer> list = new LinkedList<>();
-				list.add(root.val);
-				result.add(list);
-			}
-			return result;
-		}
-		else
-		{
-			sum -= root.val;
-			if (root.left != null)
-			{
-				List<List<Integer>> left = pathSum(root.left, sum);
-				for (List<Integer> list : left)
-				{
-					list.add(0, root.val);
-					result.add(list);
-				}
-			}
-			if (root.right != null)
-			{
-				List<List<Integer>> left = pathSum(root.right, sum);
-				for (List<Integer> list : left)
-				{
-					list.add(0, root.val);
-					result.add(list);
-				}
-			}
-			return result;
-		}
+// https://oj.leetcode.com/problems/path-sum-ii/
+public class PathSumII {
+	public List<List<Integer>> pathSum(TreeNode root, int sum) {
+		List<List<Integer>> ans = new ArrayList<>();
+		List<Integer> list = new ArrayList<>();
+		dfs(ans, list, root, sum);
+		return ans;
 	}
-
-	public static void main(String[] args)
-	{
-		PathSumII solution = new PathSumII();
-		TreeNode root = new TreeNode(-2);
-		root.right = new TreeNode(-3);
-		System.out.println(solution.pathSum(root, -5));
+	private void dfs(List<List<Integer>> ans, List<Integer> list,
+			TreeNode root, int sum) {
+		if (root != null) {
+			list.add(root.val);
+			sum -= root.val;
+			if (root.left == null && root.right == null && sum == 0)
+				ans.add(list);
+			if (root.left != null)
+				dfs(ans, new ArrayList<>(list), root.left, sum);
+			if (root.right != null)
+				dfs(ans, new ArrayList<>(list), root.right, sum);
+		}
 	}
 }
