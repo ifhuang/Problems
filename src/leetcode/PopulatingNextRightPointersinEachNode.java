@@ -1,44 +1,21 @@
 package leetcode;
 
-import java.util.LinkedList;
-import java.util.Queue;
-
 import leetcode.util.TreeLinkNode;
 
-public class PopulatingNextRightPointersinEachNode
-{
-	public void connect(TreeLinkNode root)
-	{
-		if (root == null)
-			return;
-		Queue<TreeLinkNode> queue = new LinkedList<>();
-		root.next = null;
-		if (root.left == null || root.right == null)
-		{
-			return;
-		}
-		queue.add(root.left);
-		queue.add(root.right);
-		queue.add(null);
-		while (!queue.isEmpty())
-		{
-			TreeLinkNode node = queue.remove();
-			if (node != null)
-			{
-				node.next = queue.peek();
-				if (node.left != null && node.right != null)
-				{
-					queue.add(node.left);
-					queue.add(node.right);
-				}
+// https://oj.leetcode.com/problems/populating-next-right-pointers-in-each-node/
+public class PopulatingNextRightPointersinEachNode {
+	public void connect(TreeLinkNode root) {
+		TreeLinkNode leftMost = root;
+		while (leftMost != null) {
+			TreeLinkNode now = leftMost;
+			while (now != null) {
+				if (now.left != null)
+					now.left.next = now.right;
+				if (now.right != null && now.next != null)
+					now.right.next = now.next.left;
+				now = now.next;
 			}
-			else
-			{
-				if (!queue.isEmpty())
-					queue.add(null);
-				else
-					return;
-			}
+			leftMost = leftMost.left;
 		}
 	}
 }
