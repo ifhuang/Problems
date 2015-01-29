@@ -2,27 +2,20 @@ package leetcode;
 
 import leetcode.util.TreeNode;
 
-public class BinaryTreeMaximumPathSum
-{
-	private int max;
-
-	public int maxPathSum(TreeNode root)
-	{
-		max = Integer.MIN_VALUE;
-		maxNow(root);
-		return max;
+// https://oj.leetcode.com/problems/binary-tree-maximum-path-sum/
+public class BinaryTreeMaximumPathSum {
+	private int ans;
+	public int maxPathSum(TreeNode root) {
+		ans = Integer.MIN_VALUE;
+		helper(root);
+		return ans;
 	}
-
-	private int maxNow(TreeNode x)
-	{
-		if (x == null)
-		{
+	private int helper(TreeNode root) {
+		if (root == null)
 			return 0;
-		}
-		int left = maxNow(x.left);
-		int right = maxNow(x.right);
-		int tmp = x.val + left + right;
-		max = Math.max(max, tmp);
-		return Math.max(0, x.val + Math.max(left, right));
+		int left = Math.max(0, helper(root.left));
+		int right = Math.max(0, helper(root.right));
+		ans = Math.max(ans, root.val + left + right);
+		return root.val + Math.max(left, right);
 	}
 }
