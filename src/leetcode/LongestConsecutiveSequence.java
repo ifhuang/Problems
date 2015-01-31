@@ -1,36 +1,33 @@
 package leetcode;
 
-import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
-public class LongestConsecutiveSequence
-{
-	public int longestConsecutive(int[] num)
-	{
-		if (num == null || num.length == 0)
-			return 0;
-		if (num.length == 1)
-			return 1;
-		Arrays.sort(num);
-		int max = 1;
-		int count = 1;
-		for (int i = 1; i < num.length; i++)
-			if (num[i] == num[i - 1])
-				;
-			else if (num[i] == num[i - 1] + 1)
-				count++;
-			else
-			{
-				max = max > count ? max : count;
-				count = 1;
-			}
-		max = max > count ? max : count;
-		return max;
-	}
-
-	public static void main(String[] args)
-	{
-		LongestConsecutiveSequence solution = new LongestConsecutiveSequence();
-		int[] num = new int[] { 1, 2, 0, 1 };
-		System.out.println("" + solution.longestConsecutive(num));
-	}
+// https://oj.leetcode.com/problems/longest-consecutive-sequence/
+public class LongestConsecutiveSequence {
+  public int longestConsecutive(int[] num) {
+    int ans = 0;
+    Set<Integer> set = new HashSet<>();
+    for (int i : num)
+      set.add(i);
+    for (int i : num)
+      if (set.contains(i)) {
+        set.remove(i);
+        int len = 1;
+        int pre = i - 1;
+        while (set.contains(pre)) {
+          set.remove(pre);
+          pre--;
+          len++;
+        }
+        int post = i + 1;
+        while (set.contains(post)) {
+          set.remove(post);
+          post++;
+          len++;
+        }
+        ans = Math.max(ans, len);
+      }
+    return ans;
+  }
 }
