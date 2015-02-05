@@ -1,40 +1,22 @@
 package leetcode;
 
-public class GasStation
-{
-	public int canCompleteCircuit(int[] gas, int[] cost)
-	{
-		if (gas == null || gas.length == 0)
-			return -1;
-		else if (gas.length == 1 && gas[0] < cost[0])
-			return -1;
-		else if (gas.length == 1 && gas[0] >= cost[0])
-			return 0;
-		else
-		{
-			int length = gas.length;
-			int[] diff = new int[length];
-			for (int i = 0; i < length; i++)
-				diff[i] = gas[i] - cost[i];
-			for (int i = 0; i < length;)
-				if (diff[i] >= 0)
-				{
-					int sum = diff[i];
-					int j = i + 1;
-					for (; j < i + length; j++)
-					{
-						int index = (j + length) % length;
-						sum += diff[index];
-						if (sum < 0)
-							break;
-					}
-					if (j == i + length)
-						return i;
-					i = j;
-				}
-				else
-					i++;
-		}
-		return -1;
-	}
+// https://oj.leetcode.com/problems/gas-station/
+public class GasStation {
+  public int canCompleteCircuit(int[] gas, int[] cost) {
+    int start = 0;
+    int now = 0;
+    int gasSum = 0;
+    int costSum = 0;
+    int n = gas.length;
+    for (int i = 0; i < n; i++) {
+      gasSum += gas[i];
+      costSum += cost[i];
+      now += gas[i] - cost[i];
+      if (now < 0) {
+        start = i + 1;
+        now = 0;
+      }
+    }
+    return gasSum < costSum ? -1 : start;
+  }
 }
