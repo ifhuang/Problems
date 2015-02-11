@@ -1,52 +1,32 @@
 package leetcode;
 
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class WordBreakII
-{
-	public List<String> wordBreak(String s, Set<String> dict)
-	{
-		List<String> list = new LinkedList<>();
-		if (s == null || s.length() == 0)
-			return list;
-		if (dict == null || dict.size() == 0)
-			return list;
-
-		list.add("");
-		int length = s.length() + 1;
-		Map<Integer, List<String>> dp = new HashMap<>(length);
-		dp.put(length - 1, list);
-		for (int i = length - 2; i >= 0; i--)
-		{
-			List<String> copyItem = new LinkedList<>();
-			for (int j = i + 1; j < length; j++)
-				if (dict.contains(s.substring(i, j)))
-				{
-					List<String> item = dp.get(j);
-					for (String string : item)
-					{
-						if (string.equals(""))
-							copyItem.add(s.substring(i, j));
-						else
-							copyItem.add(s.substring(i, j) + " " + string);
-					}
-				}
-			dp.put(i, copyItem);
-		}
-		return dp.get(0);
-	}
-
-	public static void main(String[] args)
-	{
-		WordBreakII solution = new WordBreakII();
-		Set<String> dict = new HashSet<>();
-		dict.add("b");
-		System.out.println(solution.wordBreak("a", dict));
-
-	}
+// https://oj.leetcode.com/problems/word-break-ii/
+public class WordBreakII {
+  public List<String> wordBreak(String s, Set<String> dict) {
+    Map<Integer, List<String>> dp = new HashMap<>();
+    int n = s.length();
+    List<String> list = new ArrayList<>();
+    list.add("");
+    dp.put(n, list);
+    for (int i = n - 1; i >= 0; i--) {
+      list = new ArrayList<>();
+      for (int j = n; j > i; j--) {
+        String word = s.substring(i, j);
+        if (dict.contains(word))
+          for (String item : dp.get(j))
+            if (item.length() == 0)
+              list.add(word);
+            else
+              list.add(word + " " + item);
+      }
+      dp.put(i, list);
+    }
+    return dp.get(0);
+  }
 }
