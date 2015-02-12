@@ -1,25 +1,25 @@
 package leetcode;
 
-import java.util.HashSet;
-
 import leetcode.util.ListNode;
 
-public class LinkedListCycleII
-{
-	public ListNode detectCycle(ListNode head)
-	{
-		if (head == null)
-			return null;
-		HashSet<ListNode> set = new HashSet<>();
-		while (true)
-		{
-			if (set.contains(head))
-				return head;
-			else
-				set.add(head);
-			head = head.next;
-			if (head == null)
-				return null;
-		}
-	}
+// https://oj.leetcode.com/problems/linked-list-cycle-ii/
+public class LinkedListCycleII {
+  public ListNode detectCycle(ListNode head) {
+    ListNode f = head;
+    ListNode s = head;
+    while (s != null && s.next != null) {
+      f = f.next;
+      s = s.next.next;
+      if (f == s)
+        break;
+    }
+    if (s == null || s.next == null)
+      return null;
+    s = head;
+    while (f != s) {
+      f = f.next;
+      s = s.next;
+    }
+    return f;
+  }
 }

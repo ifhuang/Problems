@@ -2,27 +2,23 @@ package leetcode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 import leetcode.util.TreeNode;
 
-public class BinaryTreePreorderTraversal
-{
-	public List<Integer> preorderTraversal(TreeNode root)
-	{
-		List<Integer> list = new ArrayList<>();
-		if (root == null)
-			return list;
-		list.add(root.val);
-		List<Integer> left = preorderTraversal(root.left);
-		for (Integer integer : left)
-		{
-			list.add(integer);
-		}
-		List<Integer> right = preorderTraversal(root.right);
-		for (Integer integer : right)
-		{
-			list.add(integer);
-		}
-		return list;
-	}
+// https://oj.leetcode.com/problems/binary-tree-preorder-traversal/
+public class BinaryTreePreorderTraversal {
+  public List<Integer> preorderTraversal(TreeNode root) {
+    List<Integer> ans = new ArrayList<>();
+    Stack<TreeNode> stack = new Stack<>();
+    while (root != null || !stack.isEmpty()) {
+      while (root != null) {
+        ans.add(root.val);
+        stack.push(root);
+        root = root.left;
+      }
+      root = stack.pop().right;
+    }
+    return ans;
+  }
 }
