@@ -18,6 +18,7 @@ public class TheatreSquare {
     int m = scanner.nextInt();
     int a = scanner.nextInt();
     ps.println(solve(n, m, a));
+    ps.close();
     scanner.close();
   }
 }
