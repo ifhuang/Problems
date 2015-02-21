@@ -8,53 +8,50 @@ public class Lorry {
   public static void main(String[] args) {
     Scanner in = new Scanner(System.in);
     PrintWriter out = new PrintWriter(System.out);
-    int n, v;
-    List<Boat> kayaks = new ArrayList<Boat>();
-    List<Boat> catamarans = new ArrayList<Boat>();
-    n = in.nextInt();
-    v = in.nextInt();
-    int numOfKayaks = 0, numOfCatamarans = 0;
-    int sum1 = 0;
+    int n = in.nextInt(), v = in.nextInt();
+    List<Boat> kList = new ArrayList<Boat>();
+    List<Boat> cList = new ArrayList<Boat>();
+    int kNum = 0, cNum = 0;
+    int kSum = 0, cSum = 0;
     for (int i = 1; i <= n; i++) {
       int type = in.nextInt(), capacity = in.nextInt();
       Boat boat = new Boat(i, capacity);
       if (type == 1) {
-        kayaks.add(boat);
-        sum1 += capacity;
-        numOfKayaks++;
+        kList.add(boat);
+        kSum += capacity;
+        kNum++;
       } else {
-        catamarans.add(boat);
-        numOfCatamarans++;
+        cList.add(boat);
+        cNum++;
       }
     }
 
-    Collections.sort(kayaks);
-    Collections.sort(catamarans);
+    Collections.sort(kList);
+    Collections.sort(cList);
 
-    int selectedCatamarans = 0;
-    int maxCapacity = 0, sum2 = 0, lastKayak = numOfKayaks;
-    for (int i = 0; i <= numOfCatamarans; i++) {
-      int j = Math.min(v - i * 2, numOfKayaks);
+    int cCount = 0, kCount = kNum, ans = 0;
+    for (int i = 0; i <= cNum; i++) {
+      int j = Math.min(v - i * 2, kNum);
       if (j < 0)
         break;
-      for (int k = lastKayak; k > j; k--)
-        sum1 -= kayaks.get(numOfKayaks - k).capacity;
+      for (int k = j; k < kCount; k++)
+        kSum -= kList.get(k).capacity;
       if (i > 0)
-        sum2 += catamarans.get(numOfCatamarans - i).capacity;
-      if (sum1 + sum2 > maxCapacity) {
-        maxCapacity = sum1 + sum2;
-        selectedCatamarans = i;
+        cSum += cList.get(i - 1).capacity;
+      if (kSum + cSum > ans) {
+        ans = kSum + cSum;
+        cCount = i;
       }
-      lastKayak = j;
+      kCount = j;
     }
 
-    out.println(maxCapacity);
-    for (int i = 0; i < selectedCatamarans; i++) {
-      out.print(catamarans.get(numOfCatamarans - i - 1).index);
+    out.println(ans);
+    for (int i = 0; i < cCount; i++) {
+      out.print(cList.get(i).index);
       out.print(' ');
     }
-    for (int i = 0; i < Math.min(v - selectedCatamarans * 2, numOfKayaks); i++) {
-      out.print(kayaks.get(numOfKayaks - i - 1).index);
+    for (int i = 0; i < Math.min(v - cCount * 2, kNum); i++) {
+      out.print(kList.get(i).index);
       out.print(' ');
     }
     out.println();
@@ -76,7 +73,12 @@ class Boat implements Comparable<Boat> {
 
   @Override
   public int compareTo(Boat o) {
-    return this.capacity - o.capacity;
+    return o.capacity - this.capacity;
+  }
+
+  @Override
+  public String toString() {
+    return "Boat [index=" + index + ", capacity=" + capacity + "]";
   }
 
 }
