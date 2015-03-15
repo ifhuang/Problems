@@ -1,4 +1,4 @@
-package codeforces.util;
+package codeforces;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,14 +9,31 @@ import java.math.BigInteger;
 import java.util.Random;
 import java.util.StringTokenizer;
 
-public class Template4 {
+public class Flowers {
 
   static BufferedReader in;
   static PrintWriter out;
   static StringTokenizer tok;
 
   static void solve() throws Exception {
-
+    int t = nextInt();
+    int k = nextInt();
+    long MOD = 1000000007;
+    int max = 100001;
+    long[] dp = new long[max];
+    dp[0] = 1;
+    for (int i = 1; i < max; i++) {
+      dp[i] = dp[i - 1];
+      if (i >= k)
+        dp[i] = (dp[i] + dp[i - k]) % MOD;
+    }
+    for (int i = 1; i < max; i++)
+      dp[i] = (dp[i] + dp[i - 1]) % MOD;
+    while (t-- > 0) {
+      int a = nextInt();
+      int b = nextInt();
+      out.println((dp[b] - dp[a - 1] + MOD) % MOD);
+    }
   }
 
   public static void main(String args[]) {
@@ -82,5 +99,5 @@ public class Template4 {
       array[i] = temp;
     }
   }
-  
+
 }

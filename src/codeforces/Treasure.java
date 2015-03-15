@@ -1,4 +1,4 @@
-package codeforces.util;
+package codeforces;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -6,17 +6,66 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.StringTokenizer;
 
-public class Template4 {
+public class Treasure {
 
   static BufferedReader in;
   static PrintWriter out;
   static StringTokenizer tok;
 
   static void solve() throws Exception {
-
+    String s = nextLine();
+    int left = 0;
+    List<Integer> list = new ArrayList<>();
+    int i = s.length() - 1;
+    int right = 0;
+    while (i >= 0) {
+      char c = s.charAt(i);
+      if (c == '#')
+        break;
+      else if (c == ')')
+        right++;
+      else {
+        if (right == 0) {
+          out.println(-1);
+          return;
+        }
+        right--;
+      }
+      i--;
+    }
+    i = 0;
+    while (i < s.length()) {
+      char c = s.charAt(i);
+      if (c == '(')
+        left++;
+      else if (c == ')') {
+        if (left == 0) {
+          out.println(-1);
+          return;
+        }
+        left--;
+      } else {
+        if (left == 0) {
+          out.println(-1);
+          return;
+        }
+        left--;
+        list.add(1);
+      }
+      i++;
+    }
+    if (left > 0 && list.isEmpty())
+      out.println(-1);
+    else {
+      for (int j = 0; j < list.size() - 1; j++)
+        out.println(list.get(j));
+      out.println(list.get(list.size() - 1) + left);
+    }
   }
 
   public static void main(String args[]) {
@@ -82,5 +131,5 @@ public class Template4 {
       array[i] = temp;
     }
   }
-  
+
 }

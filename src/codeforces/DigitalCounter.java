@@ -1,4 +1,4 @@
-package codeforces.util;
+package codeforces;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,14 +9,16 @@ import java.math.BigInteger;
 import java.util.Random;
 import java.util.StringTokenizer;
 
-public class Template4 {
+public class DigitalCounter {
 
   static BufferedReader in;
   static PrintWriter out;
   static StringTokenizer tok;
 
   static void solve() throws Exception {
-
+    int[] a = {2, 7, 2, 3, 3, 4, 2, 5, 1, 2};
+    int b = nextInt();
+    out.println(a[b / 10] * a[b % 10]);
   }
 
   public static void main(String args[]) {
@@ -82,5 +84,5 @@ public class Template4 {
       array[i] = temp;
     }
   }
-  
+
 }

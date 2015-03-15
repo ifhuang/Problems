@@ -1,4 +1,4 @@
-package codeforces.util;
+package codeforces;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,14 +9,37 @@ import java.math.BigInteger;
 import java.util.Random;
 import java.util.StringTokenizer;
 
-public class Template4 {
+public class ModularEquations {
 
   static BufferedReader in;
   static PrintWriter out;
   static StringTokenizer tok;
 
   static void solve() throws Exception {
-
+    long a = nextLong();
+    long b = nextLong();
+    if (a < b)
+      out.println(0);
+    else if (a == b)
+      out.println("infinity");
+    else {
+      long c = a - b;
+      if (c <= b)
+        out.println(0);
+      else {
+        long count = 1;
+        for (long i = 1; i <= Math.sqrt(c); i++)
+          if (c % i == 0) {
+            if (i > b && i != c) {
+              count++;
+            }
+            if (c / i > b && i != c / i && c / i != c) {
+              count++;
+            }
+          }
+        out.println(count);
+      }
+    }
   }
 
   public static void main(String args[]) {
@@ -82,5 +105,5 @@ public class Template4 {
       array[i] = temp;
     }
   }
-  
+
 }
