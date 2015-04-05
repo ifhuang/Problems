@@ -1,4 +1,4 @@
-package codeforces.util;
+package codeforces;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,14 +9,24 @@ import java.math.BigInteger;
 import java.util.Random;
 import java.util.StringTokenizer;
 
-public class Template6 {
+public class KingofThieves {
 
   static BufferedReader in;
   static PrintWriter out;
   static StringTokenizer tok;
 
   static void solve() throws Exception {
-
+    int n = nextInt();
+    char[] c = next().toCharArray();
+    for (int d = 1; d <= (n - 1) / 4; d++)
+      for (int i = 0; i + 4 * d < n; i++) {
+        if (c[i] == '*' && c[i + d] == '*' && c[i + 2 * d] == '*' && c[i + 3 * d] == '*'
+            && c[i + 4 * d] == '*') {
+          out.println("yes");
+          return;
+        }
+      }
+    out.println("no");
   }
 
   public static void main(String args[]) {

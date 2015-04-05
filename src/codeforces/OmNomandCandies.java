@@ -1,4 +1,4 @@
-package codeforces.util;
+package codeforces;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,14 +9,32 @@ import java.math.BigInteger;
 import java.util.Random;
 import java.util.StringTokenizer;
 
-public class Template6 {
+public class OmNomandCandies {
 
   static BufferedReader in;
   static PrintWriter out;
   static StringTokenizer tok;
 
   static void solve() throws Exception {
+    long c = nextLong();
+    long hr = nextLong();
+    long hb = nextLong();
+    long wr = nextLong();
+    long wb = nextLong();
+    out.println(f(c, hr, hb, wr, wb));
+  }
 
+  static long f(long c, long hr, long hb, long wr, long wb) {
+    if (hr * wb < wr * hb)
+      return f(c, hb, hr, wb, wr);
+    long ans = 0;
+    if (wr * wr >= c)
+      for (long i = 0; i * wr <= c; i++)
+        ans = Math.max(ans, i * hr + (c - i * wr) / wb * hb);
+    else
+      for (long i = 0; i < wr && i * wb <= c; i++)
+        ans = Math.max(ans, i * hb + (c - i * wb) / wr * hr);
+    return ans;
   }
 
   public static void main(String args[]) {

@@ -1,4 +1,4 @@
-package codeforces.util;
+package codeforces;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,14 +9,24 @@ import java.math.BigInteger;
 import java.util.Random;
 import java.util.StringTokenizer;
 
-public class Template6 {
+public class OmNomandDarkPark {
 
   static BufferedReader in;
   static PrintWriter out;
   static StringTokenizer tok;
 
   static void solve() throws Exception {
-
+    int n = nextInt();
+    long[] max = new long[(1 << (n + 1)) - 1];
+    long[] edge = nextLongArray((1 << (n + 1)) - 2, 0);
+    for (int i = (1 << n) - 2; i >= 0; i--)
+      max[i] = Math.max(max[i * 2 + 1] + edge[i * 2], max[i * 2 + 2] + edge[i * 2 + 1]);
+    long ans = 0;
+    for (int i = 0; i < (1 << n) - 1; i++) {
+      ans += max[i] - max[i * 2 + 1] - edge[i * 2];
+      ans += max[i] - max[i * 2 + 2] - edge[i * 2 + 1];
+    }
+    out.println(ans);
   }
 
   public static void main(String args[]) {
