@@ -21,4 +21,19 @@ public class Math {
     return a / b;
   }
 
+  /**
+   * prime (b[i] is false)
+   * 
+   * @param max
+   * @return
+   */
+  static boolean[] prime(int max) {
+    boolean[] b = new boolean[max + 1];
+    for (int i = 2; i * i <= max; i++)
+      if (!b[i])
+        for (int j = i * i; j <= max; j += i)
+          b[j] = true;
+    return b;
+  }
+
 }
