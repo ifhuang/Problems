@@ -5,9 +5,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
-public class SeaandIslands {
+public class PetyaandStaircases {
 
   static BufferedReader in;
   static PrintWriter out;
@@ -15,28 +16,28 @@ public class SeaandIslands {
 
   static void solve() throws Exception {
     int n = nextInt();
-    int k = nextInt();
-    if ((n * n + 1) / 2 < k)
-      out.println("NO");
-    else {
+    int m = nextInt();
+    int[] d = nextIntArray(m, 0);
+    Arrays.sort(d);
+    if (m == 0) {
       out.println("YES");
-      char[][] c = new char[n][n];
-      for (int i = 0; i < n; i++) {
-        if (k == 0)
-          break;
-        for (int j = i % 2; j < n; j += 2) {
-          c[i][j] = 'L';
-          k--;
-          if (k == 0)
-            break;
-        }
-      }
-      for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++)
-          out.print(c[i][j] == 'L' ? 'L' : 'S');
-        out.println();
-      }
+      return;
     }
+    if (d[0] == 1 || d[m - 1] == n) {
+      out.println("NO");
+      return;
+    }
+    int c = 0;
+    int t = 1;
+    for (int i = 1; i < m; i++)
+      if (d[i] - d[i - 1] == 1)
+        t++;
+      else {
+        c = Math.max(c, t);
+        t = 1;
+      }
+    c = Math.max(c, t);
+    out.println(c < 3 ? "YES" : "NO");
   }
 
   public static void main(String args[]) {

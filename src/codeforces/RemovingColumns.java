@@ -7,36 +7,41 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.StringTokenizer;
 
-public class SeaandIslands {
+public class RemovingColumns {
 
   static BufferedReader in;
   static PrintWriter out;
   static StringTokenizer tok;
 
   static void solve() throws Exception {
-    int n = nextInt();
-    int k = nextInt();
-    if ((n * n + 1) / 2 < k)
-      out.println("NO");
-    else {
-      out.println("YES");
-      char[][] c = new char[n][n];
-      for (int i = 0; i < n; i++) {
-        if (k == 0)
-          break;
-        for (int j = i % 2; j < n; j += 2) {
-          c[i][j] = 'L';
-          k--;
-          if (k == 0)
-            break;
-        }
-      }
-      for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++)
-          out.print(c[i][j] == 'L' ? 'L' : 'S');
-        out.println();
-      }
+    int n = nextInt(), m = nextInt();
+    char[][] c = new char[n][m];
+    StringBuilder[] s = new StringBuilder[n];
+    for (int i = 0; i < n; i++) {
+      c[i] = next().toCharArray();
+      s[i] = new StringBuilder();
     }
+    for (int j = 0; j < m; j++)
+      check(c, s, j);
+    out.println(m - s[0].length());
+  }
+
+  static boolean check(char[][] c, StringBuilder[] s, int index) {
+    StringBuilder[] ss = new StringBuilder[s.length];
+    for (int i = 0; i < s.length; i++) {
+      ss[i] = new StringBuilder(s[i]);
+      ss[i].append(c[i][index]);
+    }
+    int i = 1;
+    for (; i < s.length; i++)
+      if (ss[i].toString().compareTo(ss[i - 1].toString()) < 0)
+        break;
+    if (i == s.length) {
+      for (int j = 0; j < s.length; j++)
+        s[j] = ss[j];
+      return true;
+    } else
+      return false;
   }
 
   public static void main(String args[]) {

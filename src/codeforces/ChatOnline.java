@@ -7,36 +7,43 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.StringTokenizer;
 
-public class SeaandIslands {
+public class ChatOnline {
 
   static BufferedReader in;
   static PrintWriter out;
   static StringTokenizer tok;
 
   static void solve() throws Exception {
-    int n = nextInt();
-    int k = nextInt();
-    if ((n * n + 1) / 2 < k)
-      out.println("NO");
-    else {
-      out.println("YES");
-      char[][] c = new char[n][n];
-      for (int i = 0; i < n; i++) {
-        if (k == 0)
-          break;
-        for (int j = i % 2; j < n; j += 2) {
-          c[i][j] = 'L';
-          k--;
-          if (k == 0)
+    int p = nextInt(), q = nextInt(), l = nextInt(), r = nextInt();
+    int max = 1000;
+    int[] Z = new int[max + 1];
+    for (int i = 0; i < p; i++) {
+      int a = nextInt(), b = nextInt();
+      for (int j = a; j <= b; j++)
+        Z[j]++;
+    }
+    int[] preSum = new int[max + 2];
+    for (int i = 1; i <= max + 1; i++)
+      preSum[i] = preSum[i - 1] + Z[i - 1];
+    int[][] X = new int[q][2];
+    for (int i = 0; i < q; i++) {
+      X[i][0] = nextInt();
+      X[i][1] = nextInt();
+    }
+    int ans = 0;
+    for (int i = l; i <= r; i++)
+      for (int j = 0; j < q; j++) {
+        int a = X[j][0] + i;
+        int b = X[j][1] + i;
+        if (a <= max) {
+          b = Math.min(b, max);
+          if (preSum[b + 1] - preSum[a] > 0) {
+            ans++;
             break;
+          }
         }
       }
-      for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++)
-          out.print(c[i][j] == 'L' ? 'L' : 'S');
-        out.println();
-      }
-    }
+    out.println(ans);
   }
 
   public static void main(String args[]) {
