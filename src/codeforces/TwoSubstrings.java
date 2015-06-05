@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.StringTokenizer;
 
 public class TwoSubstrings {
@@ -16,20 +14,25 @@ public class TwoSubstrings {
   static StringTokenizer tok;
 
   static void solve() throws Exception {
-    List<Integer> a = new ArrayList<>();
-    List<Integer> b = new ArrayList<>();
-    char[] c = next().toCharArray();
-    for (int i = 0; i < c.length - 1; i++)
-      if (c[i] == 'A' && c[i + 1] == 'B')
-        a.add(i);
-      else if (c[i] == 'B' && c[i + 1] == 'A')
-        b.add(i);
-    for (int ai : a)
-      for (int bi : b)
-        if (Math.abs(ai - bi) >= 2) {
-          out.println("YES");
-          return;
-        }
+    String s = next();
+    int i = s.indexOf("AB");
+    if (i >= 0) {
+      String a = s.substring(0, i);
+      String b = s.substring(i + 2);
+      if (a.contains("BA") || b.contains("BA")) {
+        out.println("YES");
+        return;
+      }
+    }
+    int j = s.indexOf("BA");
+    if (j >= 0) {
+      String a = s.substring(0, j);
+      String b = s.substring(j + 2);
+      if (a.contains("AB") || b.contains("AB")) {
+        out.println("YES");
+        return;
+      }
+    }
     out.println("NO");
   }
 
