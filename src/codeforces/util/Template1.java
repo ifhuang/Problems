@@ -10,7 +10,7 @@ public class Template1 {
     PrintWriter out = new PrintWriter(System.out);
     String line = in.readLine();
     String[] part = line.split(" ");
-    
+
     out.close();
     in.close();
   }

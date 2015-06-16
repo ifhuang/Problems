@@ -82,5 +82,5 @@ public class Template4 {
       array[i] = temp;
     }
   }
-  
+
 }

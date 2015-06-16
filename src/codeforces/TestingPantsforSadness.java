@@ -5,11 +5,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.math.BigInteger;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
-public class GravityFlip {
+public class TestingPantsforSadness {
 
   static BufferedReader in;
   static PrintWriter out;
@@ -17,12 +15,11 @@ public class GravityFlip {
 
   static void solve() throws Exception {
     int n = nextInt();
-    int[] a = new int[n];
+    long[] a = nextLongArray(n, 0);
+    long ans = 0;
     for (int i = 0; i < n; i++)
-      a[i] = nextInt();
-    Arrays.sort(a);
-    for (int i = 0; i < n; i++)
-      out.print(a[i] + " ");
+      ans += (a[i] - 1) * (1 + i) + 1;
+    out.println(ans);
   }
 
   public static void main(String args[]) {
@@ -42,16 +39,22 @@ public class GravityFlip {
     return Integer.parseInt(next());
   }
 
+  static int[] nextIntArray(int len, int start) throws IOException {
+    int[] a = new int[len];
+    for (int i = start; i < len; i++)
+      a[i] = nextInt();
+    return a;
+  }
+
   static long nextLong() throws IOException {
     return Long.parseLong(next());
   }
 
-  static double nextDouble() throws IOException {
-    return Double.parseDouble(next());
-  }
-
-  static BigInteger nextBigInteger() throws IOException {
-    return new BigInteger(next());
+  static long[] nextLongArray(int len, int start) throws IOException {
+    long[] a = new long[len];
+    for (int i = start; i < len; i++)
+      a[i] = nextLong();
+    return a;
   }
 
   static String next() throws IOException {
@@ -59,11 +62,6 @@ public class GravityFlip {
       tok = new StringTokenizer(in.readLine());
     }
     return tok.nextToken();
-  }
-
-  static String nextLine() throws IOException {
-    tok = new StringTokenizer("");
-    return in.readLine();
   }
 
 }
