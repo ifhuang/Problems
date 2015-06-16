@@ -9,7 +9,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
-public class KitayutasColorfulGraph {
+public class MrKitayutasColorfulGraph {
 
   static BufferedReader in;
   static PrintWriter out;
@@ -51,10 +51,6 @@ public class KitayutasColorfulGraph {
           c++;
       out.println(c);
     }
-  }
-
-  static void dfs(int i, int c) {
-
   }
 
   public static void main(String args[]) {
