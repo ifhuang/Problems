@@ -1,0 +1,25 @@
+Problems
+Yifu Huang
+
+---------------------------------------------------------------------------------------------
+<<The Google Resume>>
+http://www.thegoogleresume.com
+---------------------------------------------------------------------------------------------
+<<Cracking the Coding Interview>>
+http://www.careercup.com/book
+---------------------------------------------------------------------------------------------
+<<Elements of Programming Interviews>>
+http://elementsofprogramminginterviews.com/
+---------------------------------------------------------------------------------------------
+<<Programming Interviews Exposed>>
+http://www.piexposed.com/
+---------------------------------------------------------------------------------------------
+<<Introduction to Algorithms>>
+https://mitpress.mit.edu/books/introduction-algorithms
+---------------------------------------------------------------------------------------------
+<<Algorithms>
+http://algs4.cs.princeton.edu/home/
+---------------------------------------------------------------------------------------------
+<<An Introduction to the Analysis of Algorithms>>
+http://aofa.cs.princeton.edu/home/
+---------------------------------------------------------------------------------------------
