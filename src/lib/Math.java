@@ -51,4 +51,20 @@ public class Math {
     return a;
   }
 
+  /**
+   * binomial coefficients
+   * 
+   * @param n
+   * @return
+   */
+  static long[][] bc(int n) {
+    long[][] bc = new long[n][n];
+    for (int i = 0; i < n; i++) {
+      bc[i][0] = bc[i][i] = 1;
+      for (int j = 1; j < i; j++)
+        bc[i][j] = bc[i - 1][j - 1] + bc[i - 1][j];
+    }
+    return bc;
+  }
+
 }
