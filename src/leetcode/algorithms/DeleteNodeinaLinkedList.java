@@ -1,5 +1,7 @@
 package leetcode.algorithms;
 
+import leetcode.util.ListNode;
+
 public class DeleteNodeinaLinkedList {
   public void deleteNode(ListNode node) {
     ListNode post = node.next;
