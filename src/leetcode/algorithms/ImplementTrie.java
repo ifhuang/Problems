@@ -1,16 +1,6 @@
 package leetcode.algorithms;
 
-class TrieNode {
-  boolean flag;
-  TrieNode[] children;
-
-  // Initialize your data structure here.
-  public TrieNode() {
-    flag = false;
-    children = new TrieNode[26];
-  }
-}
-
+import leetcode.util.TrieNode;
 
 public class ImplementTrie {
   private TrieNode root;
