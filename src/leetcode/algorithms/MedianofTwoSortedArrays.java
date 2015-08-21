@@ -2,31 +2,56 @@ package leetcode.algorithms;
 
 // https://oj.leetcode.com/problems/median-of-two-sorted-arrays/
 public class MedianofTwoSortedArrays {
-  public double findMedianSortedArrays(int[] A, int[] B) {
-    int al = A.length;
-    int bl = B.length;
-    int mid = (al + bl) / 2;
-    int r = (al + bl) % 2;
-    if (r == 0)
-      return (findKth(A, 0, B, 0, mid) + findKth(A, 0, B, 0, mid + 1)) / 2.0;
-    else
-      return findKth(A, 0, B, 0, mid + 1);
+  // time O(n + m), space O(n + m)
+  public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+    int n = nums1.length, m = nums2.length;
+    int len = n + m;
+    int[] nums = new int[len];
+    int i = len - 1, i1 = n - 1, i2 = m - 1;
+    while (i >= 0) {
+      if (i1 < 0)
+        nums[i] = nums2[i2--];
+      else if (i2 < 0)
+        nums[i] = nums1[i1--];
+      else if (nums1[i1] > nums2[i2])
+        nums[i] = nums1[i1--];
+      else
+        nums[i] = nums2[i2--];
+      i--;
+    }
+    return nums.length % 2 == 1 ? nums[len / 2] : (nums[len / 2 - 1] + nums[len / 2]) / 2.;
   }
 
-  private double findKth(int A[], int as, int B[], int bs, int k) {
-    int al = A.length - as;
-    int bl = B.length - bs;
-    if (al > bl)
-      return findKth(B, bs, A, as, k);
-    else if (al == 0)
-      return B[bs + k - 1];
-    else if (k == 1)
-      return Math.min(A[as], B[bs]);
-    int a = Math.min(al, k / 2);
-    int b = Math.min(bl, k / 2);
-    if (A[as + a - 1] < B[bs + b - 1])
-      return findKth(A, as + a, B, bs, k - a);
-    else
-      return findKth(A, as, B, bs + b, k - b);
+  // time O(log(m + n)), space O(1)
+  public double findMedianSortedArrays2(int[] nums1, int[] nums2) {
+    int n1 = nums1.length;
+    int n2 = nums2.length;
+    int n = n1 + n2;
+    if (n % 2 == 1) {
+      return findK(nums1, 0, nums2, 0, n / 2 + 1);
+    } else {
+      return (findK(nums1, 0, nums2, 0, n / 2) + findK(nums1, 0, nums2, 0, n / 2 + 1)) / 2.;
+    }
+  }
+
+  private int findK(int[] nums1, int i1, int[] nums2, int i2, int k) {
+    int n1 = nums1.length - i1;
+    int n2 = nums2.length - i2;
+    if (n1 > n2) {
+      return findK(nums2, i2, nums1, i1, k);
+    }
+    if (n1 == 0) {
+      return nums2[i2 + k - 1];
+    } else if (k == 1) {
+      return Math.min(nums1[i1], nums2[i2]);
+    } else {
+      int t1 = Math.min(k / 2, n1);
+      int t2 = Math.min(k / 2, n2);
+      if (nums1[i1 + t1 - 1] < nums2[i2 + t2 - 1]) {
+        return findK(nums1, i1 + t1, nums2, i2, k - t1);
+      } else {
+        return findK(nums1, i1, nums2, i2 + t2, k - t2);
+      }
+    }
   }
 }
