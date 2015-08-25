@@ -1,33 +1,33 @@
 package leetcode.algorithms;
 
+import java.util.ArrayList;
+import java.util.List;
+
 // https://oj.leetcode.com/problems/zigzag-conversion/
 public class ZigZagConversion {
-  public String convert(String s, int nRows) {
-    int n = s.length();
-    if (nRows == 1 || n <= nRows)
-      return s;
-    StringBuilder[] sb = new StringBuilder[nRows];
-    for (int i = 0; i < nRows; i++)
-      sb[i] = new StringBuilder();
-    for (int i = 0; i < n; i += 2 * nRows - 2)
-      sb[0].append(s.charAt(i));
-    for (int i = nRows - 1; i < n; i += 2 * nRows - 2)
-      sb[nRows - 1].append(s.charAt(i));
-    for (int i = 1; i < nRows - 1; i++) {
-      int flag = 0;
-      for (int j = i; j < n;) {
-        sb[i].append(s.charAt(j));
-        if (flag == 0) {
-          j += 2 * nRows - 2 - 2 * i;
-          flag = 1;
-        } else {
-          j += 2 * i;
-          flag = 0;
-        }
+  // time O(n), space O(n)
+  public String convert(String s, int numRows) {
+    List<StringBuilder> list = new ArrayList<>();
+    for (int i = 0; i < numRows; i++) {
+      list.add(new StringBuilder());
+    }
+    int i = -1;
+    int d = 1;
+    for (char c : s.toCharArray()) {
+      i += d;
+      list.get(i).append(c);
+      if (numRows == 1) {
+        d = 0;
+      } else if (i == numRows - 1) {
+        d = -1;
+      } else if (i == 0) {
+        d = 1;
       }
     }
-    for (int i = 1; i < nRows; i++)
-      sb[0].append(sb[i]);
-    return sb[0].toString();
+    StringBuilder ans = new StringBuilder();
+    for (StringBuilder sb : list) {
+      ans.append(sb);
+    }
+    return ans.toString();
   }
 }
