@@ -2,20 +2,16 @@ package leetcode.algorithms;
 
 // https://oj.leetcode.com/problems/integer-to-roman/
 public class IntegertoRoman {
-  private static int[] val = new int[] {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
-  private static String[] sym = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV",
-      "I"};
+  private String[] M = {"", "M", "MM", "MMM"};
+  private String[] C = {"", "C", "CC", "CCC", "CD", "D", "DC", "DCC", "DCCC", "CM"};
+  private String[] X = {"", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC"};
+  private String[] I = {"", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"};
 
+  // time O(1), space O(1)
   public String intToRoman(int num) {
-    StringBuilder sb = new StringBuilder();
-    while (num > 0) {
-      for (int i = 0; i < val.length; i++)
-        if (num >= val[i]) {
-          num -= val[i];
-          sb.append(sym[i]);
-          break;
-        }
-    }
-    return sb.toString();
+    StringBuilder ans = new StringBuilder();
+    ans.append(M[num / 1000]).append(C[num % 1000 / 100]).append(X[num % 100 / 10])
+        .append(I[num % 10]);
+    return ans.toString();
   }
 }

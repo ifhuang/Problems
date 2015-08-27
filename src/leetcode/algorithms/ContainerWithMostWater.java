@@ -2,18 +2,18 @@ package leetcode.algorithms;
 
 // https://oj.leetcode.com/problems/container-with-most-water/
 public class ContainerWithMostWater {
+  // time O(n), space O(1)
   public int maxArea(int[] height) {
-    if (height == null || height.length < 2)
-      return 0;
-    int low = 0;
-    int high = height.length - 1;
+    int left = 0;
+    int right = height.length - 1;
     int ans = 0;
-    while (low < high) {
-      ans = Math.max(ans, Math.min(height[low], height[high]) * (high - low));
-      if (height[low] < height[high])
-        low++;
+    while (left < right) {
+      int water = (right - left) * Math.min(height[left], height[right]);
+      ans = Math.max(ans, water);
+      if (height[left] < height[right])
+        left++;
       else
-        high--;
+        right--;
     }
     return ans;
   }
