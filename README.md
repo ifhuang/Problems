@@ -1,6 +1,8 @@
 # Problems
 Backup of online judges.
 
+- [**Note**](https://github.com/ifhuang/Problems/blob/master/P_note.txt)
+
 It is used by myself to back up my solutions of online judges, including 
 - [Codeforces](http://codeforces.com/)
 - [LeetCode](https://leetcode.com/)
@@ -11,5 +13,3 @@ It is used by myself to back up my solutions of online judges, including
 - [Baidu Astar](http://astar.baidu.com/)
 - [hihoCoder](http://hihocoder.com/)
 - [AtCoder](http://atcoder.jp/)
-
-[Note](https://github.com/ifhuang/Problems/blob/master/P_note.txt)
