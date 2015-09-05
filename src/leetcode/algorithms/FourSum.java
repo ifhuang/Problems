@@ -8,28 +8,32 @@ import java.util.Set;
 
 // https://oj.leetcode.com/problems/4sum/
 public class FourSum {
-  public List<List<Integer>> fourSum(int[] num, int target) {
-    Arrays.sort(num);
-    Set<List<Integer>> set = new HashSet<>();
-    for (int i = 0; i < num.length - 3; i++)
-      for (int j = i + 1; j < num.length - 2; j++)
-        for (int k = j + 1, m = num.length - 1; k < m;) {
-          int r = target - num[i] - num[j];
-          int s = num[k] + num[m];
-          if (r == s) {
+  // time O(n^3), space O(1)
+  public List<List<Integer>> fourSum(int[] nums, int target) {
+    Arrays.sort(nums);
+    Set<List<Integer>> ans = new HashSet<>();
+    int n = nums.length;
+    for (int i = 0; i < n; i++) {
+      for (int j = i + 1; j < n; j++) {
+        for (int x = j + 1, y = n - 1; x < y;) {
+          int sum = nums[i] + nums[j] + nums[x] + nums[y];
+          if (sum == target) {
             List<Integer> list = new ArrayList<>();
-            list.add(num[i]);
-            list.add(num[j]);
-            list.add(num[k]);
-            list.add(num[m]);
-            set.add(list);
-            k++;
-            m--;
-          } else if (r > s)
-            k++;
-          else
-            m--;
+            list.add(nums[i]);
+            list.add(nums[j]);
+            list.add(nums[x]);
+            list.add(nums[y]);
+            ans.add(list);
+            x++;
+            y--;
+          } else if (sum > target) {
+            y--;
+          } else {
+            x++;
+          }
         }
-    return new ArrayList<>(set);
+      }
+    }
+    return new ArrayList<>(ans);
   }
 }
