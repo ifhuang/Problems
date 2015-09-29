@@ -1,32 +1,33 @@
 package leetcode.algorithms;
 
 import java.util.Comparator;
-import java.util.List;
 import java.util.PriorityQueue;
 
 import leetcode.util.ListNode;
 
 // https://oj.leetcode.com/problems/merge-k-sorted-lists/
 public class MergekSortedLists {
-  public ListNode mergeKLists(List<ListNode> lists) {
-    if (lists == null || lists.size() == 0)
-      return null;
-    PriorityQueue<ListNode> pq = new PriorityQueue<>(lists.size(), new Comparator<ListNode>() {
+  // time O(n*log(k)), space O(1)
+  public ListNode mergeKLists(ListNode[] lists) {
+    ListNode dummy = new ListNode(0);
+    PriorityQueue<ListNode> pq = new PriorityQueue<ListNode>(new Comparator<ListNode>() {
       @Override
-      public int compare(ListNode arg0, ListNode arg1) {
-        return arg0.val - arg1.val;
+      public int compare(ListNode l1, ListNode l2) {
+        return l1.val - l2.val;
       }
     });
-    for (ListNode list : lists)
-      if (list != null)
-        pq.add(list);
-    ListNode dummy = new ListNode(0);
+    for (ListNode ln : lists) {
+      if (ln != null) {
+        pq.offer(ln);
+      }
+    }
     ListNode p = dummy;
     while (!pq.isEmpty()) {
       p.next = pq.poll();
       p = p.next;
-      if (p.next != null)
-        pq.add(p.next);
+      if (p.next != null) {
+        pq.offer(p.next);
+      }
     }
     return dummy.next;
   }
