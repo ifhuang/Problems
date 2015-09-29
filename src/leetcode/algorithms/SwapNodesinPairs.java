@@ -4,14 +4,36 @@ import leetcode.util.ListNode;
 
 // https://oj.leetcode.com/problems/swap-nodes-in-pairs/
 public class SwapNodesinPairs {
+  // recursive
   public ListNode swapPairs(ListNode head) {
-    if (head == null || head.next == null)
+    if (head == null || head.next == null) {
       return head;
-    ListNode p1 = head;
-    ListNode p2 = head.next;
-    ListNode p3 = head.next.next;
-    p2.next = p1;
-    p1.next = swapPairs(p3);
-    return p2;
+    }
+    ListNode first = head;
+    ListNode second = head.next;
+    ListNode post = swapPairs(second.next);
+    second.next = first;
+    first.next = post;
+    return second;
+  }
+
+  // iterative
+  public ListNode swapPairs2(ListNode head) {
+    if (head == null || head.next == null) {
+      return head;
+    }
+    ListNode dummy = new ListNode(0);
+    dummy.next = head;
+    ListNode pre = dummy;
+    while (pre.next != null && pre.next.next != null) {
+      ListNode first = pre.next;
+      ListNode second = first.next;
+      ListNode post = second.next;
+      pre.next = second;
+      second.next = first;
+      first.next = post;
+      pre = first;
+    }
+    return dummy.next;
   }
 }

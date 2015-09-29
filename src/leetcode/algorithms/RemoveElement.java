@@ -2,11 +2,18 @@ package leetcode.algorithms;
 
 // https://oj.leetcode.com/problems/remove-element/
 public class RemoveElement {
-  public int removeElement(int[] A, int elem) {
-    int count = 0;
-    for (int i = 0; i < A.length; i++)
-      if (A[i] != elem)
-        A[count++] = A[i];
-    return count;
+  // time O(n), space O(1)
+  public int removeElement(int[] nums, int val) {
+    int a = 0, b = 0;
+    while (a < nums.length) {
+      if (nums[a] != val) {
+        nums[b] = nums[a];
+        b++;
+        a++;
+      } else {
+        a++;
+      }
+    }
+    return b;
   }
 }
