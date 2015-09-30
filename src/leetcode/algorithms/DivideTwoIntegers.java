@@ -2,20 +2,29 @@ package leetcode.algorithms;
 
 // https://oj.leetcode.com/problems/divide-two-integers/
 public class DivideTwoIntegers {
+  // time O(logn), space O(1)
   public int divide(int dividend, int divisor) {
-    int signa = dividend >= 0 ? 1 : -1;
-    int signb = divisor >= 0 ? 1 : -1;
-    long end = Math.abs((long) dividend);
-    long sor = Math.abs((long) divisor);
-    int ans = 0;
-    while (end >= sor) {
-      long tmp = sor;
-      int i = 1;
-      for (; tmp <= end; i++)
-        tmp <<= 1;
-      ans += 1 << (i - 2);
-      end -= sor << (i - 2);
+    int signA = dividend < 0 ? -1 : 1;
+    int signB = divisor < 0 ? -1 : 1;
+    long a = Math.abs((long) dividend);
+    long b = Math.abs((long) divisor);
+    long ans = 0;
+    while (a >= b) {
+      long c = b;
+      long d = 1;
+      while (c <= a) {
+        c <<= 1;
+        d <<= 1;
+      }
+      c >>= 1;
+      d >>= 1;
+      a -= c;
+      ans += d;
     }
-    return signa * signb * ans;
+    ans *= signA * signB;
+    if (ans > Integer.MAX_VALUE || ans < Integer.MIN_VALUE) {
+      return Integer.MAX_VALUE;
+    }
+    return (int) ans;
   }
 }

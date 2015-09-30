@@ -7,30 +7,44 @@ import java.util.Map;
 
 // https://oj.leetcode.com/problems/substring-with-concatenation-of-all-words/
 public class SubstringwithConcatenationofAllWords {
-  public List<Integer> findSubstring(String S, String[] L) {
-    List<Integer> list = new ArrayList<>();
-    int a = L[0].length();
-    int n = a * L.length;
-    Map<String, Integer> map = new HashMap<>();
-    for (int i = 0; i < L.length; i++)
-      if (map.containsKey(L[i]))
-        map.put(L[i], map.get(L[i]) + 1);
-      else
-        map.put(L[i], 1);
-    for (int i = 0; i < S.length() - n + 1; i++) {
-      Map<String, Integer> tmpMap = new HashMap<>(map);
-      for (int j = i; j < i + n; j += a) {
-        String sub = S.substring(j, j + a);
-        if (tmpMap.containsKey(sub) && tmpMap.get(sub) > 1)
-          tmpMap.put(sub, tmpMap.get(sub) - 1);
-        else if (tmpMap.containsKey(sub) && tmpMap.get(sub) == 1)
-          tmpMap.remove(sub);
-        else
+  // time O(n*m), space O(m)
+  public List<Integer> findSubstring(String s, String[] words) {
+    Map<String, Integer> countMap = count(words);
+    int n = s.length();
+    int m = words.length;
+    int t = words[0].length();
+    List<Integer> ans = new ArrayList<>();
+    for (int i = 0; i + m * t <= n; i++) {
+      Map<String, Integer> copyMap = new HashMap<>(countMap);
+      for (int j = 0; j < m; j++) {
+        String word = s.substring(i + j * t, i + j * t + t);
+        if (copyMap.containsKey(word)) {
+          int c = copyMap.get(word);
+          if (c > 1) {
+            copyMap.put(word, c - 1);
+          } else {
+            copyMap.remove(word);
+          }
+        } else {
           break;
+        }
       }
-      if (tmpMap.isEmpty())
-        list.add(i);
+      if (copyMap.isEmpty()) {
+        ans.add(i);
+      }
     }
-    return list;
+    return ans;
+  }
+
+  private Map<String, Integer> count(String[] words) {
+    Map<String, Integer> map = new HashMap<>();
+    for (String word : words) {
+      if (map.containsKey(word)) {
+        map.put(word, map.get(word) + 1);
+      } else {
+        map.put(word, 1);
+      }
+    }
+    return map;
   }
 }

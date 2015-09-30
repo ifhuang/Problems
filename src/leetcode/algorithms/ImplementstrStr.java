@@ -2,22 +2,22 @@ package leetcode.algorithms;
 
 // https://oj.leetcode.com/problems/implement-strstr/
 public class ImplementstrStr {
+  // time O(n*m), space O(1)
   public int strStr(String haystack, String needle) {
-    int h = haystack.length();
-    int n = needle.length();
-    for (int i = 0, j = 0; i < h - n + 1;) {
-      for (; j < n;)
-        if (haystack.charAt(i) != needle.charAt(j))
-          break;
-        else {
-          i++;
-          j++;
-        }
-      if (j == n)
-        return i - j;
-      else {
-        i = i - j + 1;
-        j = 0;
+    char[] h = haystack.toCharArray();
+    char[] n = needle.toCharArray();
+    int a = 0, b = 0, c = 0;
+    while (c + n.length - 1 < h.length) {
+      while (b < n.length && h[a] == n[b]) {
+        a++;
+        b++;
+      }
+      if (b == n.length) {
+        return c;
+      } else {
+        c++;
+        a = c;
+        b = 0;
       }
     }
     return -1;
