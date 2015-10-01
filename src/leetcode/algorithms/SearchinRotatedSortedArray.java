@@ -2,24 +2,26 @@ package leetcode.algorithms;
 
 // https://oj.leetcode.com/problems/search-in-rotated-sorted-array/
 public class SearchinRotatedSortedArray {
-  public int search(int[] A, int target) {
-    int len = A.length;
+  // time O(logn), space O(1)
+  public int search(int[] nums, int target) {
     int low = 0;
-    int high = len - 1;
+    int high = nums.length - 1;
     while (low <= high) {
       int mid = (low + high) >>> 1;
-      if (A[mid] == target)
+      if (nums[mid] == target) {
         return mid;
-      else if (A[low] <= A[mid]) {
-        if (A[low] <= target && target < A[mid])
+      } else if (nums[low] <= nums[mid]) {
+        if (nums[low] <= target && target < nums[mid]) {
           high = mid - 1;
-        else
+        } else {
           low = mid + 1;
+        }
       } else {
-        if (A[mid] < target && target <= A[high])
+        if (nums[high] >= target && target > nums[mid]) {
           low = mid + 1;
-        else
+        } else {
           high = mid - 1;
+        }
       }
     }
     return -1;

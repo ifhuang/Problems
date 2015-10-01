@@ -2,42 +2,46 @@ package leetcode.algorithms;
 
 // https://oj.leetcode.com/problems/search-for-a-range/
 public class SearchforaRange {
-  public int[] searchRange(int[] A, int target) {
-    int len = A.length;
+  // time O(logn), space O(1)
+  public int[] searchRange(int[] nums, int target) {
+    return new int[] {findLeft(nums, target), findRight(nums, target)};
+  }
+
+  private int findLeft(int[] nums, int target) {
     int low = 0;
-    int high = len - 1;
-    int midLeft = low;
+    int high = nums.length - 1;
     while (low <= high) {
-      midLeft = (low + high) >>> 1;
-      if (A[midLeft] < target)
-        low = midLeft + 1;
-      else if (A[midLeft] > target)
-        high = midLeft - 1;
-      else if (A[midLeft] == target) {
-        if (midLeft == 0 || A[midLeft - 1] < A[midLeft])
-          break;
-        else
-          high = midLeft - 1;
+      int mid = (low + high) >>> 1;
+      if (nums[mid] == target) {
+        if (mid == low) {
+          return low;
+        }
+        high = mid;
+      } else if (nums[mid] > target) {
+        high = mid - 1;
+      } else {
+        low = mid + 1;
       }
     }
-    if (low > high)
-      return new int[] {-1, -1};
-    low = 0;
-    high = len - 1;
-    int midRight = high;
+    return -1;
+  }
+
+  private int findRight(int[] nums, int target) {
+    int low = 0;
+    int high = nums.length - 1;
     while (low <= high) {
-      midRight = (low + high) >>> 1;
-      if (A[midRight] < target)
-        low = midRight + 1;
-      else if (A[midRight] > target)
-        high = midRight - 1;
-      else if (A[midRight] == target) {
-        if (midRight == len - 1 || A[midRight] < A[midRight + 1])
-          break;
-        else
-          low = midRight + 1;
+      int mid = (low + high) >>> 1;
+      if (nums[mid] == target) {
+        if (mid == low) {
+          return nums[high] == target ? high : low;
+        }
+        low = mid;
+      } else if (nums[mid] > target) {
+        high = mid - 1;
+      } else {
+        low = mid + 1;
       }
     }
-    return new int[] {midLeft, midRight};
+    return -1;
   }
 }
