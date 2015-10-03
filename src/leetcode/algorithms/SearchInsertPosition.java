@@ -2,23 +2,20 @@ package leetcode.algorithms;
 
 // https://oj.leetcode.com/problems/search-insert-position/
 public class SearchInsertPosition {
-  public int searchInsert(int[] A, int target) {
-    int len = A.length;
+  // time O(logn), space O(1)
+  public int searchInsert(int[] nums, int target) {
     int low = 0;
-    int high = len - 1;
-    int mid = low;
-    while (low < high) {
-      mid = (low + high) >>> 1;
-      if (A[mid] > target)
-        high = mid - 1;
-      else if (A[mid] < target)
-        low = mid + 1;
-      else
+    int high = nums.length - 1;
+    while (low <= high) {
+      int mid = (low + high) >>> 1;
+      if (nums[mid] == target) {
         return mid;
+      } else if (nums[mid] < target) {
+        low = mid + 1;
+      } else {
+        high = mid - 1;
+      }
     }
-    if (A[low] >= target)
-      return low;
-    else
-      return low + 1;
+    return low;
   }
 }

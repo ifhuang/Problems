@@ -5,30 +5,42 @@ import java.util.Set;
 
 // https://oj.leetcode.com/problems/valid-sudoku/
 public class ValidSudoku {
+  // time o(n*m), space O(1)
   public boolean isValidSudoku(char[][] board) {
-    int n = 9;
+    int n = board.length;
+    int m = board[0].length;
     for (int i = 0; i < n; i++) {
       Set<Character> set = new HashSet<>();
-      for (int j = 0; j < n; j++)
-        if (board[i][j] != '.')
-          if (!set.add(board[i][j]))
+      for (int j = 0; j < m; j++) {
+        if (board[i][j] != '.') {
+          if (!set.add(board[i][j])) {
             return false;
+          }
+        }
+      }
     }
-    for (int i = 0; i < n; i++) {
+    for (int j = 0; j < m; j++) {
       Set<Character> set = new HashSet<>();
-      for (int j = 0; j < n; j++)
-        if (board[j][i] != '.')
-          if (!set.add(board[j][i]))
+      for (int i = 0; i < n; i++) {
+        if (board[i][j] != '.') {
+          if (!set.add(board[i][j])) {
             return false;
+          }
+        }
+      }
     }
-    for (int i = 0; i < n; i++) {
-      Set<Character> set = new HashSet<>();
-      for (int j = 0; j < n; j++) {
-        int x = i / 3 * 3 + j / 3;
-        int y = i % 3 * 3 + j % 3;
-        if (board[x][y] != '.')
-          if (!set.add(board[x][y]))
-            return false;
+    for (int x = 0; x < n / 3; x++) {
+      for (int y = 0; y < m / 3; y++) {
+        Set<Character> set = new HashSet<>();
+        for (int i = x * 3; i < x * 3 + 3; i++) {
+          for (int j = y * 3; j < y * 3 + 3; j++) {
+            if (board[i][j] != '.') {
+              if (!set.add(board[i][j])) {
+                return false;
+              }
+            }
+          }
+        }
       }
     }
     return true;
