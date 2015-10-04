@@ -2,20 +2,28 @@ package leetcode.algorithms;
 
 // https://oj.leetcode.com/problems/first-missing-positive/
 public class FirstMissingPositive {
-  public int firstMissingPositive(int[] A) {
-    int len = A.length;
-    for (int i = 0; i < len;) {
-      int index = A[i] - 1;
-      if (index != i && index >= 0 && index < len && A[index] - 1 != index) {
-        int t = A[index];
-        A[index] = A[i];
-        A[i] = t;
-      } else
+  // time O(n), space O(1)
+  public int firstMissingPositive(int[] nums) {
+    int n = nums.length;
+    for (int i = 0; i < n;) {
+      int index = nums[i] - 1;
+      if (nums[i] > 0 && nums[i] < n && nums[index] != nums[i]) {
+        swap(nums, index, i);
+      } else {
         i++;
+      }
     }
-    for (int i = 0; i < len; i++)
-      if (A[i] - 1 != i)
+    for (int i = 0; i < n; i++) {
+      if (nums[i] != i + 1) {
         return i + 1;
-    return len + 1;
+      }
+    }
+    return n + 1;
+  }
+
+  private void swap(int[] nums, int i, int j) {
+    int t = nums[i];
+    nums[i] = nums[j];
+    nums[j] = t;
   }
 }

@@ -2,22 +2,17 @@ package leetcode.algorithms;
 
 // https://oj.leetcode.com/problems/powx-n/
 public class Powxn {
-  public double pow(double x, int n) {
-    if (n == Integer.MIN_VALUE) {
-      if (Double.compare(x, 1) == 0 || Double.compare(x, -1) == 0)
-        return 1;
-      else
-        return 0;
-    } else if (n < 0)
-      return 1 / pow(x, -n);
-    else if (n == 0)
-      return 1;
-    else {
-      double temp = pow(x, n / 2);
-      if (n % 2 == 1)
-        return temp * temp * x;
-      else
-        return temp * temp;
+  // time O(logn), space O(1)
+  public double myPow(double x, int n) {
+    if (n == 0) {
+      return 1.0;
+    } else if (n == Integer.MIN_VALUE) {
+      return Double.compare(x, 1) == 0 || Double.compare(x, -1) == 0 ? 1 : 0;
+    } else if (n < 0) {
+      return 1.0 / myPow(x, -n);
     }
+    double half = myPow(x, n / 2);
+    double ans = half * half;
+    return n % 2 == 0 ? ans : ans * x;
   }
 }
