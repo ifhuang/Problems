@@ -2,12 +2,13 @@ package leetcode.algorithms;
 
 // https://oj.leetcode.com/problems/jump-game/
 public class JumpGame {
-  public boolean canJump(int[] A) {
-    int len = A.length;
-    int last = len - 1;
-    for (int i = len - 2; i >= 0; i--)
-      if (A[i] + i >= last)
-        last = i;
-    return last == 0;
+  // time O(n), space O(1)
+  public boolean canJump(int[] nums) {
+    int n = nums.length;
+    int j = 0;
+    for (int i = 0; i <= j && j < n - 1; i++) {
+      j = Math.max(j, i + nums[i]);
+    }
+    return j >= n - 1;
   }
 }

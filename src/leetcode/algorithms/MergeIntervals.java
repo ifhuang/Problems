@@ -9,27 +9,30 @@ import leetcode.util.Interval;
 
 // https://oj.leetcode.com/problems/merge-intervals/
 public class MergeIntervals {
+  // time O(nlogn), space O(n)
   public List<Interval> merge(List<Interval> intervals) {
-    List<Interval> ans = new ArrayList<>();
-    if (intervals.isEmpty())
-      return ans;
-    Collections.sort(intervals, new Comparator<Interval>() {
+    List<Interval> copy = new ArrayList<>(intervals);
+    Collections.sort(copy, new Comparator<Interval>() {
       @Override
       public int compare(Interval i1, Interval i2) {
         return i1.start - i2.start;
       }
     });
-    Interval preOld = intervals.get(0);
-    Interval preNew = new Interval(preOld.start, preOld.end);
-    ans.add(preNew);
-    for (int i = 1; i < intervals.size(); i++) {
-      Interval nowOld = intervals.get(i);
-      if (preNew.end >= nowOld.start)
-        preNew.end = Math.max(preNew.end, nowOld.end);
-      else {
-        preNew = new Interval(nowOld.start, nowOld.end);
-        ans.add(preNew);
+    List<Interval> ans = new ArrayList<>();
+    int i = 0;
+    while (i < copy.size()) {
+      Interval cur = copy.get(i);
+      if (ans.isEmpty()) {
+        ans.add(cur);
+      } else {
+        Interval pre = ans.get(ans.size() - 1);
+        if (pre.end < cur.start) {
+          ans.add(cur);
+        } else {
+          pre.end = Math.max(pre.end, cur.end);
+        }
       }
+      i++;
     }
     return ans;
   }

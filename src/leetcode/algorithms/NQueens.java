@@ -7,70 +7,94 @@ import java.util.Stack;
 // https://oj.leetcode.com/problems/n-queens/
 public class NQueens {
   class Queen {
-    int x;
-    int y;
-
-    Queen(int x, int y) {
-      this.x = x;
-      this.y = y;
-    }
+    int x, y;
   }
 
-  public List<String[]> solveNQueens(int n) {
-    List<String[]> ans = new ArrayList<>();
-    if (n == 1) {
-      String[] s = new String[1];
-      s[0] = "Q";
-      ans.add(s);
-      return ans;
-    }
-    Stack<Queen> stack = new Stack<>();
-    int x = 0;
-    int y = 0;
-    stack.push(new Queen(x, y));
-    x++;
-    while (x != 0 || y < n) {
-      while (y < n && !check(stack, x, y))
-        y++;
-      if (y < n) {
-        stack.push(new Queen(x, y));
-        if (finished(stack, n, ans)) {
-          stack.pop();
-          y++;
-        } else {
-          x++;
-          y = 0;
-        }
-      } else {
-        Queen pre = stack.pop();
-        x = pre.x;
-        y = pre.y + 1;
-      }
-    }
+  // backtracking recursive
+  public List<List<String>> solveNQueens(int n) {
+    List<List<String>> ans = new ArrayList<>();
+    boolean[][] b = new boolean[n][n];
+    backtracking(n, b, 0, ans);
     return ans;
   }
 
-  private boolean check(Stack<Queen> stack, int x, int y) {
-    for (Queen q : stack)
-      if (q.x == x || q.y == y || Math.abs(q.x - x) == Math.abs(q.y - y))
+  private void backtracking(int n, boolean[][] b, int row, List<List<String>> ans) {
+    if (n == row) {
+      ans.add(makeBoard(n, b));
+    } else {
+      for (int i = 0; i < n; i++) {
+        b[row][i] = true;
+        if (check(n, b, row, i)) {
+          backtracking(n, b, row + 1, ans);
+        }
+        b[row][i] = false;
+      }
+    }
+  }
+
+  private List<String> makeBoard(int n, boolean[][] b) {
+    List<String> list = new ArrayList<>();
+    for (int i = 0; i < n; i++) {
+      StringBuilder sb = new StringBuilder();
+      for (int j = 0; j < n; j++) {
+        sb.append(b[i][j] ? "Q" : ".");
+      }
+      list.add(sb.toString());
+    }
+    return list;
+  }
+
+  private boolean check(int n, boolean[][] b, int x, int y) {
+    for (int i = 0; i < x; i++) {
+      if (b[i][y]) {
         return false;
+      }
+    }
+    for (int i = x - 1, j = y - 1; i >= 0 && j >= 0; i--, j--) {
+      if (b[i][j]) {
+        return false;
+      }
+    }
+    for (int i = x - 1, j = y + 1; i >= 0 && j < n; i--, j++) {
+      if (b[i][j]) {
+        return false;
+      }
+    }
     return true;
   }
 
-  private boolean finished(Stack<Queen> stack, int n, List<String[]> ans) {
-    if (stack.size() < n)
-      return false;
-    String[] strs = new String[n];
-    for (int i = 0; i < n; i++) {
-      StringBuilder sb = new StringBuilder();
-      for (int j = 0; j < n; j++)
-        if (j == stack.get(i).y)
-          sb.append('Q');
-        else
-          sb.append('.');
-      strs[i] = sb.toString();
+  // backtracking iterative
+  public List<List<String>> solveNQueens2(int n) {
+    Stack<Queen> stack = new Stack<>();
+    boolean[][] b = new boolean[n][n];
+    List<List<String>> ans = new ArrayList<>();
+    int x = 0, y = 0;
+    while (true) {
+      if (x == n || y == n) {
+        if (x == n) {
+          ans.add(makeBoard(n, b));
+        }
+        if (stack.isEmpty()) {
+          break;
+        }
+        Queen q = stack.pop();
+        b[q.x][q.y] = false;
+        x = q.x;
+        y = q.y + 1;
+      } else {
+        if (check(n, b, x, y)) {
+          b[x][y] = true;
+          Queen q = new Queen();
+          q.x = x;
+          q.y = y;
+          stack.push(q);
+          x++;
+          y = 0;
+        } else {
+          y++;
+        }
+      }
     }
-    ans.add(strs);
-    return true;
+    return ans;
   }
 }
