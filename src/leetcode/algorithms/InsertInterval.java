@@ -1,36 +1,31 @@
 package leetcode.algorithms;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import leetcode.util.Interval;
 
 // https://oj.leetcode.com/problems/insert-interval/
 public class InsertInterval {
+  // time O(n), space O(n)
   public List<Interval> insert(List<Interval> intervals, Interval newInterval) {
-    int i = 0;
-    int n = intervals.size();
-    Interval low = null;
-    for (; i < n; i++) {
-      low = intervals.get(i);
-      if (newInterval.start <= low.end)
-        break;
-    }
-    if (i == n || newInterval.end < low.start)
-      intervals.add(i, newInterval);
-    else {
-      low.start = Math.min(low.start, newInterval.start);
-      low.end = Math.max(low.end, newInterval.end);
-      for (i++; i < intervals.size();) {
-        Interval next = intervals.get(i);
-        if (next.start > low.end)
-          break;
-        else {
-          low.start = Math.min(low.start, next.start);
-          low.end = Math.max(low.end, next.end);
-          intervals.remove(i);
-        }
+    List<Interval> ans = new ArrayList<>();
+    ans.add(newInterval);
+    for (Interval cur : intervals) {
+      Interval pre = ans.get(ans.size() - 1);
+      if (pre.end < cur.start) {
+        Interval p = new Interval(cur.start, cur.end);
+        ans.add(p);
+      } else if (pre.start > cur.end) {
+        Interval p = new Interval(pre.start, pre.end);
+        pre.start = cur.start;
+        pre.end = cur.end;
+        ans.add(p);
+      } else {
+        pre.start = Math.min(pre.start, cur.start);
+        pre.end = Math.max(pre.end, cur.end);
       }
     }
-    return intervals;
+    return ans;
   }
 }

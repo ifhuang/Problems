@@ -4,27 +4,30 @@ import leetcode.util.ListNode;
 
 // https://oj.leetcode.com/problems/rotate-list/
 public class RotateList {
-  public ListNode rotateRight(ListNode head, int n) {
-    if (head == null)
-      return head;
-    int len = 1;
-    ListNode lastOld = head;
-    while (lastOld.next != null) {
-      len++;
-      lastOld = lastOld.next;
+  // time O(n), space O(1)
+  public ListNode rotateRight(ListNode head, int k) {
+    int c = 0;
+    ListNode p = head;
+    while (p != null) {
+      c++;
+      p = p.next;
     }
-    n = n % len;
-    if (n == 0)
+    if (c == 0) {
       return head;
-    int move = len - n;
-    ListNode lastNew = head;
-    while (move > 1) {
-      move--;
-      lastNew = lastNew.next;
     }
-    ListNode newHead = lastNew.next;
-    lastNew.next = null;
-    lastOld.next = head;
-    return newHead;
+    k %= c;
+    p = head;
+    while (k-- > 0) {
+      p = p.next;
+    }
+    ListNode q = head;
+    while (p.next != null) {
+      p = p.next;
+      q = q.next;
+    }
+    p.next = head;
+    p = q.next;
+    q.next = null;
+    return p;
   }
 }
