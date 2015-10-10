@@ -7,26 +7,26 @@ import java.util.List;
 public class TextJustification {
   public List<String> fullJustify(String[] words, int L) {
     List<String> ans = new ArrayList<>();
-    int len = words.length;
+    int n = words.length;
     int start = 0;
     int sumWord = words[start].length();
     int sumWordSpace = sumWord;
-    StringBuilder sb;
-    for (int i = start + 1; i < len; i++) {
+    for (int i = start + 1; i < n; i++) {
       sumWord += words[i].length();
       sumWordSpace += 1 + words[i].length();
       if (sumWordSpace > L) {
         sumWord -= words[i].length();
         int sumSpace = L - sumWord;
-        sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder();
         sb.append(words[start]);
-        if (start + 1 == i)
+        if (start + 1 == i) {
           sb.append(nSpace(sumSpace));
-        else {
+        } else {
           for (int j = start + 1; j < i - 1; j++) {
             int k = sumSpace / (i - j);
-            if (k * (i - j) != sumSpace)
+            if (k * (i - j) != sumSpace) {
               k++;
+            }
             sumSpace -= k;
             sb.append(nSpace(k));
             sb.append(words[j]);
@@ -41,9 +41,9 @@ public class TextJustification {
       }
     }
     int sumSpace = L - sumWord;
-    sb = new StringBuilder();
+    StringBuilder sb = new StringBuilder();
     sb.append(words[start]);
-    for (int i = start + 1; i < len; i++) {
+    for (int i = start + 1; i < n; i++) {
       sb.append(nSpace(1));
       sb.append(words[i]);
       sumSpace--;

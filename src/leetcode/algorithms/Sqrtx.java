@@ -2,18 +2,28 @@ package leetcode.algorithms;
 
 // https://oj.leetcode.com/problems/sqrtx/
 public class Sqrtx {
-  public int sqrt(int x) {
+  public int mySqrt(int x) {
     int low = 1;
     int high = x;
-    int ans = 0;
     while (low <= high) {
       int mid = (low + high) >>> 1;
-      if (mid <= x / mid) {
-        ans = mid;
+      int r = x / mid;
+      if (r == mid) {
+        return mid;
+      } else if (r > mid) {
         low = mid + 1;
-      } else
+      } else {
         high = mid - 1;
+      }
     }
-    return ans;
+    return high;
+  }
+
+  public int mySqrt2(int x) {
+    long r = x;
+    while (r * r > x) {
+      r = (r + (x / r)) / 2;
+    }
+    return (int) r;
   }
 }

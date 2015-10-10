@@ -3,25 +3,24 @@ package leetcode.algorithms;
 // https://oj.leetcode.com/problems/add-binary/
 public class AddBinary {
   public String addBinary(String a, String b) {
-    int la = a.length();
-    int lb = b.length();
-    if (la < lb)
-      return addBinary(b, a);
     StringBuilder sb = new StringBuilder();
-    for (; lb < la; lb++)
-      sb.append('0');
-    sb.append(b);
-    b = sb.toString();
-    int flag = 0;
-    sb = new StringBuilder();
-    for (int i = la - 1; i >= 0; i--) {
-      int num =
-          Character.getNumericValue(a.charAt(i)) + Character.getNumericValue(b.charAt(i)) + flag;
-      sb.insert(0, num % 2);
-      flag = num / 2;
+    int i = 1;
+    int carry = 0;
+    while (a.length() - i >= 0 || b.length() - i >= 0) {
+      int sum = carry;
+      if (a.length() - i >= 0) {
+        sum += a.charAt(a.length() - i) - '0';
+      }
+      if (b.length() - i >= 0) {
+        sum += b.charAt(b.length() - i) - '0';
+      }
+      sb.append(sum % 2);
+      carry = sum / 2;
+      i++;
     }
-    if (flag == 1)
-      sb.insert(0, 1);
-    return sb.toString();
+    if (carry == 1) {
+      sb.append(1);
+    }
+    return sb.reverse().toString();
   }
 }
