@@ -2,24 +2,35 @@ package leetcode.algorithms;
 
 // https://oj.leetcode.com/problems/remove-duplicates-from-sorted-array-ii/
 public class RemoveDuplicatesfromSortedArrayII {
-  public int removeDuplicates(int[] A) {
-    int len = A.length;
-    if (len == 0)
+  public int removeDuplicates(int[] nums) {
+    if (nums.length == 0) {
       return 0;
-    int now = A[0];
-    int nowCount = 1;
-    int allCount = 1;
-    for (int i = 1; i < len; i++)
-      if (A[i] != now) {
-        A[allCount] = A[i];
-        now = A[i];
-        nowCount = 1;
-        allCount++;
-      } else if (nowCount == 1) {
-        A[allCount] = A[i];
-        nowCount++;
-        allCount++;
+    }
+    int num = nums[0];
+    int c = 1;
+    int t = 1;
+    for (int i = 1; i < nums.length; i++) {
+      if (nums[i] == num) {
+        if (c == 1) {
+          nums[t++] = nums[i];
+          c++;
+        }
+      } else {
+        nums[t++] = nums[i];
+        num = nums[i];
+        c = 1;
       }
-    return allCount;
+    }
+    return t;
+  }
+
+  public int removeDuplicates2(int[] nums) {
+    int i = 0;
+    for (int num : nums) {
+      if (i < 2 || num > nums[i - 2]) {
+        nums[i++] = num;
+      }
+    }
+    return i;
   }
 }
