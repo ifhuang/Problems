@@ -1,22 +1,21 @@
 package leetcode.algorithms;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 // https://oj.leetcode.com/problems/gray-code/
 public class GrayCode {
   public List<Integer> grayCode(int n) {
-    List<Integer> ans = new LinkedList<>();
-    if (n == 0)
+    if (n == 0) {
+      List<Integer> ans = new ArrayList<>();
       ans.add(0);
-    else {
-      List<Integer> pre = grayCode(n - 1);
-      int len = pre.size();
-      for (int i = 0; i < len; i++)
-        ans.add(pre.get(i));
-      int base = (int) Math.pow(2, n - 1);
-      for (int i = 0; i < len; i++)
-        ans.add(base + pre.get(len - i - 1));
+      return ans;
+    }
+    List<Integer> pre = grayCode(n - 1);
+    int base = 1 << (n - 1);
+    List<Integer> ans = new ArrayList<>(pre);
+    for (int i = pre.size() - 1; i >= 0; i--) {
+      ans.add(base + pre.get(i));
     }
     return ans;
   }

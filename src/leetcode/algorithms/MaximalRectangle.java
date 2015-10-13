@@ -5,37 +5,41 @@ import java.util.Stack;
 
 // https://oj.leetcode.com/problems/maximal-rectangle/
 public class MaximalRectangle {
+  // time O(n^2), space O(n)
   public int maximalRectangle(char[][] matrix) {
     int m = matrix.length;
-    if (m == 0)
+    if (m == 0) {
       return 0;
+    }
     int n = matrix[0].length;
-    int[] trans = new int[n];
-    for (int j = 0; j < n; j++)
-      trans[j] = matrix[0][j] - '0';
-    int ans = largestRectangleArea(trans);
+    int[] c = new int[n];
+    for (int i = 0; i < n; i++) {
+      if (matrix[0][i] == '1') {
+        c[i] = 1;
+      }
+    }
+    int ans = largestRectangleArea(c);
     for (int i = 1; i < m; i++) {
-      for (int j = 0; j < n; j++)
-        trans[j] = matrix[i][j] == '0' ? 0 : 1 + trans[j];
-      ans = Math.max(ans, largestRectangleArea(trans));
+      for (int j = 0; j < n; j++) {
+        c[j] = matrix[i][j] == '1' ? c[j] + 1 : 0;
+      }
+      ans = Math.max(ans, largestRectangleArea(c));
     }
     return ans;
   }
 
   private int largestRectangleArea(int[] height) {
+    int n = height.length;
+    int[] h = Arrays.copyOf(height, n + 1);
     Stack<Integer> stack = new Stack<>();
-    int i = 0;
-    int len = height.length + 1;
-    int[] copy = new int[len];
-    copy = Arrays.copyOf(height, len);
     int ans = 0;
-    while (i < len) {
-      if (stack.isEmpty() || copy[stack.peek()] <= copy[i])
+    for (int i = 0; i < h.length;) {
+      if (stack.isEmpty() || h[stack.peek()] <= h[i]) {
         stack.push(i++);
-      else {
-        int t = stack.pop();
+      } else {
+        int j = stack.pop();
         int w = stack.isEmpty() ? i : i - stack.peek() - 1;
-        ans = Math.max(ans, copy[t] * w);
+        ans = Math.max(ans, w * h[j]);
       }
     }
     return ans;

@@ -2,16 +2,20 @@ package leetcode.algorithms;
 
 // https://oj.leetcode.com/problems/merge-sorted-array/
 public class MergeSortedArray {
-  public void merge(int[] A, int m, int[] B, int n) {
-    int i = m - 1;
-    int j = n - 1;
-    int k = m + n - 1;
-    while (i >= 0 && j >= 0)
-      if (A[i] >= B[j])
-        A[k--] = A[i--];
-      else
-        A[k--] = B[j--];
-    while (j >= 0)
-      A[k--] = B[j--];
+  // time O(m+n), space O(1)
+  public void merge(int[] nums1, int m, int[] nums2, int n) {
+    for (int i1 = m - 1, i2 = n - 1, i3 = m + n - 1; i3 >= 0; i3--) {
+      if (i1 < 0) {
+        nums1[i3] = nums2[i2--];
+      } else if (i2 < 0) {
+        nums1[i3] = nums1[i1--];
+      } else {
+        if (nums1[i1] > nums2[i2]) {
+          nums1[i3] = nums1[i1--];
+        } else {
+          nums1[i3] = nums2[i2--];
+        }
+      }
+    }
   }
 }

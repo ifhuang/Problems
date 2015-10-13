@@ -8,6 +8,7 @@ import java.util.Set;
 
 // https://oj.leetcode.com/problems/subsets-ii/
 public class SubsetsII {
+  // recursive
   public List<List<Integer>> subsetsWithDup(int[] num) {
     Arrays.sort(num);
     return subsetHelper(num, num.length - 1);
@@ -31,5 +32,43 @@ public class SubsetsII {
       }
     }
     return new ArrayList<>(ans);
+  }
+
+  // dfs
+  public List<List<Integer>> subsetsWithDup2(int[] nums) {
+    Arrays.sort(nums);
+    List<List<Integer>> ans = new ArrayList<>();
+    dfs(ans, new ArrayList<>(), nums, -1);
+    return ans;
+  }
+
+  private void dfs(List<List<Integer>> ans, List<Integer> pre, int[] nums, int i) {
+    ans.add(pre);
+    for (int j = i + 1; j < nums.length; j++) {
+      if (j == i + 1 || nums[j] != nums[j - 1]) {
+        List<Integer> cur = new ArrayList<>(pre);
+        cur.add(nums[j]);
+        dfs(ans, cur, nums, j);
+      }
+    }
+  }
+
+  // backtracking
+  public List<List<Integer>> subsetsWithDup3(int[] nums) {
+    Arrays.sort(nums);
+    List<List<Integer>> ans = new ArrayList<>();
+    backtracking(ans, new ArrayList<>(), nums, -1);
+    return ans;
+  }
+
+  private void backtracking(List<List<Integer>> ans, List<Integer> list, int[] nums, int i) {
+    ans.add(new ArrayList<>(list));
+    for (int j = i + 1; j < nums.length; j++) {
+      if (j == i + 1 || nums[j] != nums[j - 1]) {
+        list.add(nums[j]);
+        backtracking(ans, list, nums, j);
+        list.remove(list.size() - 1);
+      }
+    }
   }
 }
