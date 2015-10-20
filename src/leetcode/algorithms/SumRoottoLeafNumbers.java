@@ -8,22 +8,20 @@ public class SumRoottoLeafNumbers {
 
   public int sumNumbers(TreeNode root) {
     ans = 0;
-    helper(root);
+    helper(root, 0);
     return ans;
   }
 
-  private void helper(TreeNode root) {
-    if (root == null)
+  private void helper(TreeNode root, int pre) {
+    if (root == null) {
       return;
-    if (root.left == null && root.right == null)
-      ans += root.val;
-    if (root.left != null) {
-      root.left.val += root.val * 10;
-      helper(root.left);
     }
-    if (root.right != null) {
-      root.right.val += root.val * 10;
-      helper(root.right);
+    pre = pre * 10 + root.val;
+    if (root.left == null && root.right == null) {
+      ans += pre;
+      return;
     }
+    helper(root.left, pre);
+    helper(root.right, pre);
   }
 }

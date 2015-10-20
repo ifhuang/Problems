@@ -4,16 +4,19 @@ import java.util.Set;
 
 // https://oj.leetcode.com/problems/word-break/
 public class WordBreak {
-  public boolean wordBreak(String s, Set<String> dict) {
-    int n = s.length() + 1;
-    boolean[] dp = new boolean[n];
+  // time O(n^2), space O(n)
+  public boolean wordBreak(String s, Set<String> wordDict) {
+    int n = s.length();
+    boolean[] dp = new boolean[n + 1];
     dp[0] = true;
-    for (int i = 1; i < n; i++)
-      for (int j = 0; j < i; j++)
-        if (dp[j] && dict.contains(s.substring(j, i))) {
-          dp[i] = true;
+    for (int i = 1; i <= n; i++) {
+      for (int j = 0; j < i; j++) {
+        dp[i] = dp[j] && wordDict.contains(s.substring(j, i));
+        if (dp[i]) {
           break;
         }
-    return dp[n - 1];
+      }
+    }
+    return dp[n];
   }
 }

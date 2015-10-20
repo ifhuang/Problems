@@ -5,19 +5,17 @@ import leetcode.util.TreeNode;
 // https://oj.leetcode.com/problems/flatten-binary-tree-to-linked-list/
 public class FlattenBinaryTreetoLinkedList {
   public void flatten(TreeNode root) {
-    if (root == null)
+    if (root == null) {
       return;
-    if (root.left != null) {
-      if (root.right != null) {
-        TreeNode p = root.left;
-        while (p.right != null)
-          p = p.right;
-        p.right = root.right;
-      }
-      root.right = root.left;
-      root.left = null;
     }
-    if (root.right != null)
-      flatten(root.right);
+    TreeNode q = root.right;
+    root.right = root.left;
+    root.left = null;
+    TreeNode p = root;
+    while (p.right != null) {
+      p = p.right;
+    }
+    p.right = q;
+    flatten(root.right);
   }
 }

@@ -4,24 +4,37 @@ package leetcode.algorithms;
 public class ValidPalindrome {
   public boolean isPalindrome(String s) {
     int n = s.length();
-    StringBuilder sb = new StringBuilder();
-    for (int i = 0; i < n; i++) {
-      char c = s.charAt(i);
-      if (c >= 'a' && c <= 'z')
-        sb.append(c);
-      else if (c >= 'A' && c <= 'Z')
-        sb.append((char) (c + ('a' - 'A')));
-      else if (c >= '0' && c <= '9')
-        sb.append(c);
+    int i = 0, j = n - 1;
+    while (true) {
+      while (i < n && !check(s.charAt(i))) {
+        i++;
+      }
+      while (j >= 0 && !check(s.charAt(j))) {
+        j--;
+      }
+      if (i == n || j == 0 || i >= j) {
+        break;
+      }
+      if (!compare(s.charAt(i), s.charAt(j))) {
+        return false;
+      }
+      i++;
+      j--;
     }
-    return helper(sb.toString());
+    return true;
   }
 
-  private boolean helper(String s) {
-    int n = s.length();
-    for (int i = 0, j = n - 1; i < j; i++, j--)
-      if (s.charAt(i) != s.charAt(j))
-        return false;
-    return true;
+  private boolean check(char c) {
+    return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9');
+  }
+
+  private boolean compare(char a, char b) {
+    if (a >= 'a' && a <= 'z') {
+      a -= 'a' - 'A';
+    }
+    if (b >= 'a' && b <= 'z') {
+      b -= 'a' - 'A';
+    }
+    return a == b;
   }
 }

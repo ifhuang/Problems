@@ -5,47 +5,51 @@ import leetcode.util.ListNode;
 // https://oj.leetcode.com/problems/reorder-list/
 public class ReorderList {
   public void reorderList(ListNode head) {
-    if (head == null || head.next == null || head.next.next == null)
-      return;
-    ListNode f = head;
-    ListNode s = head;
-    while (s.next != null && s.next.next != null) {
+    ListNode l2 = reverse(split(head));
+    ListNode l1 = head;
+    merge(l1, l2);
+  }
+
+  private ListNode split(ListNode head) {
+    ListNode dummy = new ListNode(0);
+    dummy.next = head;
+    ListNode f = dummy;
+    ListNode s = dummy;
+    while (s != null && s.next != null) {
       f = f.next;
       s = s.next.next;
     }
-    ListNode l1 = head;
-    ListNode l2 = f.next;
+    s = f.next;
     f.next = null;
-    merge(l1, reverse(l2));
+    return s;
   }
 
   private ListNode reverse(ListNode head) {
     ListNode pre = null;
-    ListNode now = head;
-    ListNode post = head.next;
-    while (true) {
-      now.next = pre;
-      pre = now;
-      now = post;
-      if (now == null)
-        break;
-      post = post.next;
+    ListNode cur = head;
+    while (cur != null) {
+      ListNode post = cur.next;
+      cur.next = pre;
+      pre = cur;
+      cur = post;
     }
     return pre;
   }
 
   private void merge(ListNode l1, ListNode l2) {
-    ListNode p = l1.next;
-    ListNode q = l2.next;
-    while (true) {
-      l1.next = l2;
-      l2.next = p;
-      l1 = p;
-      l2 = q;
-      if (l2 == null)
-        break;
-      p = p.next;
-      q = q.next;
+    ListNode dummy = new ListNode(0);
+    ListNode pre = dummy;
+    boolean flag = true;
+    while (l1 != null || l2 != null) {
+      if (flag) {
+        pre.next = l1;
+        l1 = l1.next;
+      } else {
+        pre.next = l2;
+        l2 = l2.next;
+      }
+      pre = pre.next;
+      flag = !flag;
     }
   }
 }

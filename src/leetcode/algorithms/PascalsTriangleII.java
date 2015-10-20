@@ -12,8 +12,9 @@ public class PascalsTriangleII {
     } else {
       List<Integer> pre = getRow(rowIndex - 1);
       ans.add(1);
-      for (int i = 0; i < rowIndex - 1; i++)
+      for (int i = 0; i < rowIndex - 1; i++) {
         ans.add(pre.get(i) + pre.get(i + 1));
+      }
       ans.add(1);
     }
     return ans;

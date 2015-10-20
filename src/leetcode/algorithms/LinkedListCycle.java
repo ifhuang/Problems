@@ -10,8 +10,9 @@ public class LinkedListCycle {
     while (s != null && s.next != null) {
       f = f.next;
       s = s.next.next;
-      if (f == s)
+      if (f == s) {
         return true;
+      }
     }
     return false;
   }

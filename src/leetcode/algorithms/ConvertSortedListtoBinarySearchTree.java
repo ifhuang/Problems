@@ -10,15 +10,17 @@ public class ConvertSortedListtoBinarySearchTree {
   }
 
   private TreeNode helper(ListNode head, ListNode end) {
-    if (head == end)
+    if (head == end) {
       return null;
+    }
     ListNode p = head;
     ListNode q = head;
-    while (p.next != end && q.next != end) {
+    while (q.next != end) {
       p = p.next;
       q = q.next;
-      if (q.next == end)
+      if (q.next == end) {
         break;
+      }
       q = q.next;
     }
     TreeNode root = new TreeNode(p.val);

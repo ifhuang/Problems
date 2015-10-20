@@ -1,7 +1,6 @@
 package leetcode.algorithms;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -11,30 +10,27 @@ import leetcode.util.TreeNode;
 // https://oj.leetcode.com/problems/binary-tree-level-order-traversal-ii/
 public class BinaryTreeLevelOrderTraversalII {
   public List<List<Integer>> levelOrderBottom(TreeNode root) {
-    List<List<Integer>> ans = new ArrayList<>();
-    if (root != null) {
-      Queue<TreeNode> queue = new LinkedList<>();
-      queue.offer(root);
-      TreeNode flag = null;
-      queue.offer(flag);
-      while (true) {
-        List<Integer> list = new ArrayList<>();
-        if (queue.peek() == flag)
-          break;
-        while (queue.peek() != flag) {
-          TreeNode p = queue.poll();
-          if (p.left != null)
-            queue.add(p.left);
-          if (p.right != null)
-            queue.add(p.right);
-          list.add(p.val);
-        }
-        ans.add(list);
-        queue.poll();
-        queue.offer(flag);
-      }
+    List<List<Integer>> ans = new LinkedList<>();
+    if (root == null) {
+      return ans;
     }
-    Collections.reverse(ans);
+    Queue<TreeNode> queue = new LinkedList<>();
+    queue.offer(root);
+    while (!queue.isEmpty()) {
+      List<Integer> list = new ArrayList<>();
+      int n = queue.size();
+      for (int i = 0; i < n; i++) {
+        TreeNode t = queue.poll();
+        list.add(t.val);
+        if (t.left != null) {
+          queue.offer(t.left);
+        }
+        if (t.right != null) {
+          queue.offer(t.right);
+        }
+      }
+      ans.add(0, list);
+    }
     return ans;
   }
 }

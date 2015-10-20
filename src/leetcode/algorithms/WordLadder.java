@@ -8,30 +8,25 @@ import java.util.Set;
 
 // https://oj.leetcode.com/problems/word-ladder/
 public class WordLadder {
-  public int ladderLength(String start, String end, Set<String> dict) {
-    if (start.equals(end))
-      return 1;
-    int n = start.length();
+  public int ladderLength(String beginWord, String endWord, Set<String> wordList) {
     Map<String, Integer> map = new HashMap<>();
     Queue<String> queue = new LinkedList<>();
-    map.put(start, 1);
-    queue.offer(start);
+    map.put(beginWord, 1);
+    queue.offer(beginWord);
     while (!queue.isEmpty()) {
-      start = queue.poll();
-      for (int i = 0; i < n; i++) {
-        StringBuilder sb = new StringBuilder(start);
+      String word = queue.poll();
+      for (int i = 0; i < word.length(); i++) {
+        StringBuilder sb = new StringBuilder(word);
         for (char c = 'a'; c <= 'z'; c++) {
           sb.setCharAt(i, c);
-          String t = sb.toString();
-          if (t.equals(end))
-            return map.get(start) + 1;
-          if (dict.contains(t) && !map.containsKey(t)) {
-            map.put(t, map.get(start) + 1);
-            queue.offer(t);
+          String newWord = sb.toString();
+          if (wordList.contains(newWord) && !map.containsKey(newWord)) {
+            map.put(newWord, map.get(word) + 1);
+            queue.offer(newWord);
           }
         }
       }
     }
-    return 0;
+    return map.containsKey(endWord) ? map.get(endWord) : 0;
   }
 }

@@ -1,5 +1,7 @@
 package leetcode.algorithms;
 
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Stack;
 
 // https://oj.leetcode.com/problems/surrounded-regions/
@@ -56,6 +58,44 @@ public class SurroundedRegions {
         for (int i = 0; i < 4; i++)
           if (!check(m, n, d, i, p.x, p.y) && board[p.x + d[i][0]][p.y + d[i][1]] == 'O')
             stack.push(new Pair(p.x + d[i][0], p.y + d[i][1]));
+      }
+    }
+  }
+
+  public void solve2(char[][] board) {
+    int m = board.length;
+    if (m == 0) {
+      return;
+    }
+    int n = board[0].length;
+    for (int i = 0; i < m; i++) {
+      for (int j = 0; j < n; j++) {
+        if ((i == 0 || i == m - 1 || j == 0 || j == n - 1) && board[i][j] == 'O') {
+          bfs(board, m, n, i, j);
+        }
+      }
+    }
+    for (int i = 0; i < m; i++) {
+      for (int j = 0; j < n; j++) {
+        board[i][j] = board[i][j] == '.' ? 'O' : 'X';
+      }
+    }
+  }
+
+  private void bfs(char[][] board, int m, int n, int x, int y) {
+    Queue<Pair> queue = new LinkedList<>();
+    board[x][y] = '.';
+    queue.offer(new Pair(x, y));
+    int[][] d = { {0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+    while (!queue.isEmpty()) {
+      Pair p = queue.poll();
+      for (int i = 0; i < d.length; i++) {
+        int nx = p.x + d[i][0];
+        int ny = p.y + d[i][1];
+        if (nx >= 0 && nx < m && ny >= 0 && ny < n && board[nx][ny] == 'O') {
+          board[nx][ny] = '.';
+          queue.offer(new Pair(nx, ny));
+        }
       }
     }
   }

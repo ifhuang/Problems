@@ -11,27 +11,25 @@ import leetcode.util.TreeNode;
 public class BinaryTreeLevelOrderTraversal {
   public List<List<Integer>> levelOrder(TreeNode root) {
     List<List<Integer>> ans = new ArrayList<>();
-    if (root != null) {
-      Queue<TreeNode> queue = new LinkedList<>();
-      queue.offer(root);
-      TreeNode flag = null;
-      queue.offer(flag);
-      while (true) {
-        List<Integer> list = new ArrayList<>();
-        if (queue.peek() == flag)
-          break;
-        while (queue.peek() != flag) {
-          TreeNode p = queue.poll();
-          if (p.left != null)
-            queue.add(p.left);
-          if (p.right != null)
-            queue.add(p.right);
-          list.add(p.val);
+    if (root == null) {
+      return ans;
+    }
+    Queue<TreeNode> queue = new LinkedList<>();
+    queue.offer(root);
+    while (!queue.isEmpty()) {
+      List<Integer> list = new ArrayList<>();
+      int n = queue.size();
+      for (int i = 0; i < n; i++) {
+        TreeNode t = queue.poll();
+        list.add(t.val);
+        if (t.left != null) {
+          queue.offer(t.left);
         }
-        ans.add(list);
-        queue.poll();
-        queue.offer(flag);
+        if (t.right != null) {
+          queue.offer(t.right);
+        }
       }
+      ans.add(list);
     }
     return ans;
   }

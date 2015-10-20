@@ -5,11 +5,12 @@ import leetcode.util.TreeNode;
 // https://oj.leetcode.com/problems/symmetric-tree/
 public class SameTree {
   public boolean isSameTree(TreeNode p, TreeNode q) {
-    if (p == null && q == null)
+    if (p == null && q == null) {
       return true;
-    else if (p == null || q == null)
+    } else if (p == null || q == null) {
       return false;
-    else
+    } else {
       return p.val == q.val && isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
+    }
   }
 }

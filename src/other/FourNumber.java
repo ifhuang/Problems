@@ -20,8 +20,6 @@ public class FourNumber {
 
   public static void main(String[] args) {
     FourNumber f = new FourNumber();
-    for (long i = 1; i < 100; i++) {
-      System.out.println(i + " " + f.convert(i));
-    }
+    System.out.println(344 + " " + f.convert(344));
   }
 }

@@ -5,29 +5,28 @@ import java.util.Set;
 
 // https://oj.leetcode.com/problems/longest-consecutive-sequence/
 public class LongestConsecutiveSequence {
-  public int longestConsecutive(int[] num) {
-    int ans = 0;
+  public int longestConsecutive(int[] nums) {
     Set<Integer> set = new HashSet<>();
-    for (int i : num)
-      set.add(i);
-    for (int i : num)
-      if (set.contains(i)) {
-        set.remove(i);
-        int len = 1;
-        int pre = i - 1;
-        while (set.contains(pre)) {
-          set.remove(pre);
-          pre--;
-          len++;
+    for (int num : nums) {
+      set.add(num);
+    }
+    int ans = 0;
+    for (int num : nums) {
+      if (set.contains(num)) {
+        set.remove(num);
+        int i = num + 1;
+        while (set.contains(i)) {
+          set.remove(i);
+          i++;
         }
-        int post = i + 1;
-        while (set.contains(post)) {
-          set.remove(post);
-          post++;
-          len++;
+        int j = num - 1;
+        while (set.contains(j)) {
+          set.remove(j);
+          j--;
         }
-        ans = Math.max(ans, len);
+        ans = Math.max(ans, i - j - 1);
       }
+    }
     return ans;
   }
 }

@@ -20,52 +20,46 @@ public class WordLadderII {
     }
   }
 
-  private Map<String, Node> map;
-
   public List<List<String>> findLadders(String start, String end, Set<String> dict) {
-    int n = start.length();
-    dict.add(end);
-    map = new HashMap<>();
+    Map<String, Node> map = new HashMap<>();
     Queue<String> queue = new LinkedList<>();
     map.put(start, new Node(1));
     map.get(start).pre.add("");
     queue.offer(start);
-    while (!queue.isEmpty() && !queue.peek().equals(end)) {
-      start = queue.poll();
-      Node node = map.get(start);
-      for (int i = 0; i < n; i++) {
-        StringBuilder sb = new StringBuilder(start);
+    while (!queue.isEmpty()) {
+      String word = queue.poll();
+      Node node = map.get(word);
+      for (int i = 0; i < word.length(); i++) {
+        StringBuilder sb = new StringBuilder(word);
         for (char c = 'a'; c <= 'z'; c++) {
           sb.setCharAt(i, c);
-          String t = sb.toString();
-          if (!dict.contains(t))
-            continue;
-          if (!map.containsKey(t)) {
-            map.put(t, new Node(node.count + 1));
-            queue.offer(t);
+          String newWord = sb.toString();
+          if (dict.contains(newWord)) {
+            if (!map.containsKey(newWord)) {
+              map.put(newWord, new Node(node.count + 1));
+              queue.offer(newWord);
+            }
+            Node newNode = map.get(newWord);
+            if (newNode.count == node.count + 1) {
+              newNode.pre.add(word);
+            }
           }
-          Node no = map.get(t);
-          if (no.count == node.count + 1)
-            no.pre.add(start);
         }
       }
     }
-    if (map.containsKey(end))
-      return dfs(end);
-    else
-      return new ArrayList<>();
+    return map.containsKey(end) ? dfs(end, map) : new ArrayList<>();
   }
 
-  private List<List<String>> dfs(String end) {
+  private List<List<String>> dfs(String end, Map<String, Node> map) {
     List<List<String>> ans = new ArrayList<>();
-    if (end.isEmpty())
+    if (end.isEmpty()) {
       ans.add(new ArrayList<>());
-    else {
+    } else {
       Node node = map.get(end);
       for (String s : node.pre) {
-        List<List<String>> pres = dfs(s);
-        for (List<String> ss : pres) {
-          List<String> copy = new ArrayList<>(ss);
+        List<List<String>> pres = dfs(s, map);
+        for (List<String> pre : pres) {
+          List<String> copy = new ArrayList<>(pre);
           copy.add(end);
           ans.add(copy);
         }

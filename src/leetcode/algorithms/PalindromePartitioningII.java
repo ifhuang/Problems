@@ -5,16 +5,27 @@ public class PalindromePartitioningII {
   public int minCut(String s) {
     int n = s.length();
     boolean[][] dp = new boolean[n][n];
-    int[] ans = new int[n];
-    for (int end = 0; end < n; end++) {
-      ans[end] = end;
-      for (int start = 0; start <= end; start++) {
-        if (s.charAt(start) == s.charAt(end))
-          dp[start][end] = (start == end || start + 1 == end ? true : dp[start + 1][end - 1]);
-        if (dp[start][end])
-          ans[end] = (start == 0 ? 0 : Math.min(ans[end], ans[start - 1] + 1));
+    for (int i = 0; i < n; i++) {
+      dp[i][i] = true;
+    }
+    for (int i = 0; i < n - 1; i++) {
+      dp[i][i + 1] = s.charAt(i) == s.charAt(i + 1);
+    }
+    for (int i = 2; i < n; i++) {
+      for (int j = 0; j + i < n; j++) {
+        dp[j][j + i] = dp[j + 1][j + i - 1] && s.charAt(j) == s.charAt(j + i);
       }
     }
-    return ans[n - 1];
+    int[] min = new int[n];
+    for (int i = 1; i < n; i++) {
+      if (!dp[0][i]) {
+        for (int j = 0; j < i; j++) {
+          if (dp[j + 1][i]) {
+            min[i] = Math.min(min[i], min[j] + 1);
+          }
+        }
+      }
+    }
+    return min[n - 1];
   }
 }

@@ -6,46 +6,68 @@ import java.util.List;
 // https://oj.leetcode.com/problems/restore-ip-addresses/
 public class RestoreIPAddresses {
   public List<String> restoreIpAddresses(String s) {
-    int n = s.length();
     List<String> ans = new ArrayList<>();
-    for (int a = 1; a <= 3; a++)
-      for (int b = 1; b <= 3; b++)
-        for (int c = 1; c <= 3; c++)
-          for (int d = 1; d <= 3; d++) {
-            if (a > n)
-              break;
-            String sa = s.substring(0, a);
-            if (!check(sa))
-              continue;
-            if (a + b > n)
-              break;
-            String sb = s.substring(a, a + b);
-            if (!check(sb))
-              continue;
-            if (a + b + c > n)
-              break;
-            String sc = s.substring(a + b, a + b + c);
-            if (!check(sc))
-              continue;
-            if (a + b + c + d > n)
-              break;
-            String sd = s.substring(a + b + c, a + b + c + d);
-            if (!check(sd) || a + b + c + d != n)
-              continue;
-            StringBuilder builder = new StringBuilder();
-            builder.append(sa).append(".").append(sb).append(".").append(sc).append(".").append(sd);
-            ans.add(builder.toString());
-          }
+    dfs(ans, new ArrayList<>(), s, 0);
     return ans;
   }
 
-  private boolean check(String s) {
-    int n = s.length();
-    if (n == 1)
-      return true;
-    else if (s.charAt(0) == '0')
-      return false;
-    int num = Integer.parseInt(s);
-    return num < 256;
+  private void dfs(List<String> ans, List<Integer> pre, String s, int i) {
+    if (pre.size() == 4 && i == s.length()) {
+      StringBuilder sb = new StringBuilder();
+      sb.append(pre.get(0));
+      for (int j = 1; j < 4; j++) {
+        sb.append(".").append(pre.get(j));
+      }
+      ans.add(sb.toString());
+    } else if (pre.size() == 4 || i == s.length()) {
+    } else {
+      for (int len = 1; len <= 3 && i + len <= s.length(); len++) {
+        String sub = s.substring(i, i + len);
+        char c = sub.charAt(0);
+        if (len >= 2 && c == '0') {
+          break;
+        }
+        int x = Integer.parseInt(sub);
+        if (x > 255) {
+          break;
+        }
+        List<Integer> cur = new ArrayList<>(pre);
+        cur.add(x);
+        dfs(ans, cur, s, i + len);
+      }
+    }
+  }
+
+  public List<String> restoreIpAddresses2(String s) {
+    List<String> ans = new ArrayList<>();
+    backtracking(ans, new ArrayList<>(), s, 0);
+    return ans;
+  }
+
+  private void backtracking(List<String> ans, List<Integer> list, String s, int i) {
+    if (list.size() == 4 && i == s.length()) {
+      StringBuilder sb = new StringBuilder();
+      sb.append(list.get(0));
+      for (int j = 1; j < 4; j++) {
+        sb.append(".").append(list.get(j));
+      }
+      ans.add(sb.toString());
+    } else if (list.size() == 4 || i == s.length()) {
+    } else {
+      for (int len = 1; len <= 3 && i + len <= s.length(); len++) {
+        String sub = s.substring(i, i + len);
+        char c = sub.charAt(0);
+        if (len >= 2 && c == '0') {
+          break;
+        }
+        int x = Integer.parseInt(sub);
+        if (x > 255) {
+          break;
+        }
+        list.add(x);
+        backtracking(ans, list, s, i + len);
+        list.remove(list.size() - 1);
+      }
+    }
   }
 }

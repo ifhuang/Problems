@@ -9,16 +9,33 @@ import leetcode.util.TreeNode;
 // https://oj.leetcode.com/problems/binary-tree-preorder-traversal/
 public class BinaryTreePreorderTraversal {
   public List<Integer> preorderTraversal(TreeNode root) {
-    List<Integer> ans = new ArrayList<>();
     Stack<TreeNode> stack = new Stack<>();
-    while (root != null || !stack.isEmpty()) {
-      while (root != null) {
-        ans.add(root.val);
-        stack.push(root);
-        root = root.left;
+    TreeNode p = root;
+    List<Integer> ans = new ArrayList<>();
+    while (!stack.isEmpty() || p != null) {
+      while (p != null) {
+        ans.add(p.val);
+        stack.push(p);
+        p = p.left;
       }
-      root = stack.pop().right;
+      p = stack.pop();
+      p = p.right;
     }
     return ans;
+  }
+
+  public List<Integer> preorderTraversal2(TreeNode root) {
+    List<Integer> ans = new ArrayList<>();
+    helper(ans, root);
+    return ans;
+  }
+
+  private void helper(List<Integer> ans, TreeNode root) {
+    if (root == null) {
+      return;
+    }
+    ans.add(root.val);
+    helper(ans, root.left);
+    helper(ans, root.right);
   }
 }

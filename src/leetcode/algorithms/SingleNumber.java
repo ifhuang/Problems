@@ -4,8 +4,9 @@ package leetcode.algorithms;
 public class SingleNumber {
   public int singleNumber(int[] A) {
     int ans = 0;
-    for (int a : A)
+    for (int a : A) {
       ans ^= a;
+    }
     return ans;
   }
 }
