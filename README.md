@@ -14,3 +14,4 @@ It is used by myself to back up my solutions of online judges, including
 - [hihoCoder](http://hihocoder.com/)
 - [AtCoder](http://atcoder.jp/)
 - [ACMcoder](http://acmcoder.com/)
+- [LintCode](http://lintcode.com/)
