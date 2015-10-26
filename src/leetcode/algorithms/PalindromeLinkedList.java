@@ -2,10 +2,12 @@ package leetcode.algorithms;
 
 import leetcode.util.ListNode;
 
+// https://leetcode.com/problems/palindrome-linked-list/
 public class PalindromeLinkedList {
   public boolean isPalindrome(ListNode head) {
-    if (head == null)
+    if (head == null) {
       return true;
+    }
     ListNode p = head;
     ListNode q = head;
     while (q.next != null && q.next.next != null) {
@@ -15,13 +17,14 @@ public class PalindromeLinkedList {
     ListNode post = p.next;
     p.next = null;
     ListNode reversePost = reverse(post);
-    while (reversePost != null)
-      if (head.val != reversePost.val)
+    while (reversePost != null) {
+      if (head.val != reversePost.val) {
         return false;
-      else {
+      } else {
         head = head.next;
         reversePost = reversePost.next;
       }
+    }
     return true;
   }
 

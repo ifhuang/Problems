@@ -2,9 +2,15 @@ package leetcode.algorithms;
 
 import java.util.Stack;
 
+// https://leetcode.com/problems/implement-queue-using-stacks/
 public class ImplementQueueusingStacks {
-  private Stack<Integer> in = new Stack<>();
-  private Stack<Integer> out = new Stack<>();
+  private Stack<Integer> in;
+  private Stack<Integer> out;
+
+  public ImplementQueueusingStacks() {
+    in = new Stack<>();
+    out = new Stack<>();
+  }
 
   // Push element x to the back of queue.
   public void push(int x) {
@@ -13,13 +19,13 @@ public class ImplementQueueusingStacks {
 
   // Removes the element from in front of queue.
   public void pop() {
-    helper();
+    balance();
     out.pop();
   }
 
   // Get the front element.
   public int peek() {
-    helper();
+    balance();
     return out.peek();
   }
 
@@ -28,9 +34,11 @@ public class ImplementQueueusingStacks {
     return in.isEmpty() && out.isEmpty();
   }
 
-  private void helper() {
-    if (out.isEmpty())
-      while (!in.isEmpty())
+  private void balance() {
+    if (out.isEmpty()) {
+      while (!in.isEmpty()) {
         out.push(in.pop());
+      }
+    }
   }
 }

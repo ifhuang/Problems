@@ -3,32 +3,27 @@ package leetcode.algorithms;
 import java.util.ArrayList;
 import java.util.List;
 
+// https://leetcode.com/problems/combination-sum-iii/
 public class CombinationSumIII {
   public List<List<Integer>> combinationSum3(int k, int n) {
     List<List<Integer>> ans = new ArrayList<>();
-    search(ans, new ArrayList<>(), 0, k, n);
+    backtracking(ans, new ArrayList<>(), 0, k, n, 0);
     return ans;
   }
 
-  private void search(List<List<Integer>> ans, List<Integer> pre, int start, int k, int n) {
-    if (pre.size() > k)
-      return;
-    else if (pre.size() == k) {
-      if (sum(pre) == n)
-        ans.add(pre);
+  private void backtracking(List<List<Integer>> ans, List<Integer> list, int start, int k, int n,
+      int sum) {
+    if (list.size() == k) {
+      if (sum == n)
+        ans.add(new ArrayList<>(list));
     } else {
       for (int i = start + 1; i <= 9; i++) {
-        List<Integer> now = new ArrayList<>(pre);
-        now.add(i);
-        search(ans, now, i, k, n);
+        list.add(i);
+        sum += i;
+        backtracking(ans, list, i, k, n, sum);
+        list.remove(list.size() - 1);
+        sum -= i;
       }
     }
-  }
-
-  private int sum(List<Integer> list) {
-    int t = 0;
-    for (int i : list)
-      t += i;
-    return t;
   }
 }

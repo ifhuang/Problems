@@ -2,17 +2,10 @@ package leetcode.algorithms;
 
 import leetcode.util.ListNode;
 
+// https://leetcode.com/problems/delete-node-in-a-linked-list/
 public class DeleteNodeinaLinkedList {
   public void deleteNode(ListNode node) {
-    ListNode post = node.next;
-    while (true) {
-      node.val = post.val;
-      if (post.next == null) {
-        node.next = null;
-        break;
-      }
-      node = post;
-      post = post.next;
-    }
+    node.val = node.next.val;
+    node.next = node.next.next;
   }
 }

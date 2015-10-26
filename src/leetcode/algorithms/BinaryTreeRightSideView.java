@@ -7,30 +7,47 @@ import java.util.Queue;
 
 import leetcode.util.TreeNode;
 
+// https://leetcode.com/problems/binary-tree-right-side-view/
 public class BinaryTreeRightSideView {
 
   public List<Integer> rightSideView(TreeNode root) {
     List<Integer> ans = new ArrayList<>();
-    if (root == null)
-      return ans;
     Queue<TreeNode> queue = new LinkedList<>();
-    queue.offer(root);
-    queue.offer(null);
-    while (true) {
-      TreeNode p = queue.poll();
-      if (p.left != null)
-        queue.offer(p.left);
-      if (p.right != null)
-        queue.offer(p.right);
-      if (queue.peek() == null) {
-        ans.add(p.val);
-        queue.poll();
-        if (queue.isEmpty())
-          break;
-        queue.offer(null);
+    if (root != null) {
+      queue.offer(root);
+    }
+    while (!queue.isEmpty()) {
+      int n = queue.size();
+      for (int i = 0; i < n; i++) {
+        TreeNode p = queue.poll();
+        if (p.left != null) {
+          queue.offer(p.left);
+        }
+        if (p.right != null) {
+          queue.offer(p.right);
+        }
+        if (i == n - 1) {
+          ans.add(p.val);
+        }
       }
     }
     return ans;
   }
 
+  public List<Integer> rightSideView2(TreeNode root) {
+    List<Integer> ans = new ArrayList<>();
+    dfs(ans, root, 0);
+    return ans;
+  }
+
+  private void dfs(List<Integer> ans, TreeNode root, int level) {
+    if (root == null) {
+      return;
+    }
+    if (level == ans.size()) {
+      ans.add(root.val);
+    }
+    dfs(ans, root.right, level + 1);
+    dfs(ans, root.left, level + 1);
+  }
 }

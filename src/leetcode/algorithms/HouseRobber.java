@@ -1,24 +1,10 @@
 package leetcode.algorithms;
 
+// https://leetcode.com/problems/house-robber/
 public class HouseRobber {
 
-  public int rob(int[] num) {
-    if (num.length == 0)
-      return 0;
-    int grandpa = 0;
-    int father = num[0];
-    if (num.length == 1)
-      return father;
-    int child = 0;
-    for (int i = 2; i <= num.length; i++) {
-      child = Math.max(father, num[i - 1] + grandpa);
-      grandpa = father;
-      father = child;
-    }
-    return child;
-  }
-
-  public int rob2(int[] nums) {
+  // time O(n), space O(n)
+  public int rob(int[] nums) {
     int n = nums.length;
     int[][] dp = new int[n + 1][2];
     for (int i = 1; i <= n; i++) {
@@ -28,13 +14,14 @@ public class HouseRobber {
     return Math.max(dp[n][0], dp[n][1]);
   }
 
+  // time O(n), space O(1)
   public int rob3(int[] nums) {
     int n = nums.length;
     int preNo = 0;
     int preYes = 0;
-    for (int i = 1; i <= n; i++) {
+    for (int i = 0; i < n; i++) {
       int nowNo = Math.max(preNo, preYes);
-      int nowYes = nums[i - 1] + preNo;
+      int nowYes = nums[i] + preNo;
       preNo = nowNo;
       preYes = nowYes;
     }

@@ -3,18 +3,19 @@ package leetcode.algorithms;
 import java.util.HashMap;
 import java.util.Map;
 
+// https://leetcode.com/problems/fraction-to-recurring-decimal/
 public class FractiontoRecurringDecimal {
   public String fractionToDecimal(int numerator, int denominator) {
     long num = (long) numerator;
     long den = (long) denominator;
-    String sign = num * den < 0 ? "-" : "";
-    StringBuilder sb = new StringBuilder();
+    StringBuilder sb = new StringBuilder(num * den < 0 ? "-" : "");
     num = Math.abs(num);
     den = Math.abs(den);
-    sb.append(sign).append(num / den);
+    sb.append(num / den);
     num %= den;
-    if (num == 0)
+    if (num == 0) {
       return sb.toString();
+    }
     sb.append(".");
     Map<Long, Integer> map = new HashMap<>();
     map.put(num, sb.length());

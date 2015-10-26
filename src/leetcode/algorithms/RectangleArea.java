@@ -1,5 +1,6 @@
 package leetcode.algorithms;
 
+// https://leetcode.com/problems/rectangle-area/
 public class RectangleArea {
   public int computeArea(int A, int B, int C, int D, int E, int F, int G, int H) {
     int s1 = (C - A) * (D - B);
@@ -9,8 +10,9 @@ public class RectangleArea {
     int x2 = Math.min(C, G);
     int y2 = Math.min(D, H);
     int t = 0;
-    if (x2 > x1 && y2 > y1)
+    if (x2 > x1 && y2 > y1) {
       t = (x2 - x1) * (y2 - y1);
+    }
     return s1 + s2 - t;
   }
 }

@@ -2,6 +2,7 @@ package leetcode.algorithms;
 
 import leetcode.util.TrieNode;
 
+// https://leetcode.com/problems/implement-trie-prefix-tree/
 public class ImplementTrie {
   private TrieNode root;
 
@@ -14,8 +15,9 @@ public class ImplementTrie {
     TrieNode p = root;
     for (int i = 0; i < word.length(); i++) {
       int j = word.charAt(i) - 'a';
-      if (p.children[j] == null)
+      if (p.children[j] == null) {
         p.children[j] = new TrieNode();
+      }
       p = p.children[j];
     }
     p.flag = true;
@@ -37,8 +39,9 @@ public class ImplementTrie {
     TrieNode p = root;
     for (int i = 0; i < s.length(); i++) {
       int j = s.charAt(i) - 'a';
-      if (p.children[j] == null)
+      if (p.children[j] == null) {
         return null;
+      }
       p = p.children[j];
     }
     return p;

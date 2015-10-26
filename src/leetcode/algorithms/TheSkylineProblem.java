@@ -1,56 +1,47 @@
 package leetcode.algorithms;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Queue;
 
+// https://leetcode.com/problems/the-skyline-problem/
 public class TheSkylineProblem {
-  public List<int[]> getSkyline(int[][] buildings) {
-    if (buildings.length == 0)
-      return new LinkedList<int[]>();
-    return recurSkyline(buildings, 0, buildings.length - 1);
-  }
-
-  private LinkedList<int[]> recurSkyline(int[][] buildings, int p, int q) {
-    if (p < q) {
-      int mid = p + (q - p) / 2;
-      return merge(recurSkyline(buildings, p, mid), recurSkyline(buildings, mid + 1, q));
-    } else {
-      LinkedList<int[]> rs = new LinkedList<int[]>();
-      rs.add(new int[] {buildings[p][0], buildings[p][2]});
-      rs.add(new int[] {buildings[p][1], 0});
-      return rs;
+  public List<int[]> getSkyline2(int[][] buildings) {
+    List<int[]> result = new ArrayList<>();
+    List<int[]> height = new ArrayList<>();
+    for (int[] b : buildings) {
+      height.add(new int[] {b[0], -b[2]});
+      height.add(new int[] {b[1], b[2]});
     }
-  }
-
-  private LinkedList<int[]> merge(LinkedList<int[]> l1, LinkedList<int[]> l2) {
-    LinkedList<int[]> rs = new LinkedList<int[]>();
-    int h1 = 0, h2 = 0;
-    while (l1.size() > 0 && l2.size() > 0) {
-      int x = 0, h = 0;
-      if (l1.getFirst()[0] < l2.getFirst()[0]) {
-        x = l1.getFirst()[0];
-        h1 = l1.getFirst()[1];
-        h = Math.max(h1, h2);
-        l1.removeFirst();
-      } else if (l1.getFirst()[0] > l2.getFirst()[0]) {
-        x = l2.getFirst()[0];
-        h2 = l2.getFirst()[1];
-        h = Math.max(h1, h2);
-        l2.removeFirst();
+    Collections.sort(height, new Comparator<int[]>() {
+      @Override
+      public int compare(int[] o1, int[] o2) {
+        return o1[0] == o2[0] ? o1[1] - o2[1] : o1[0] - o2[0];
+      }
+    });
+    Queue<Integer> pq = new PriorityQueue<>(new Comparator<Integer>() {
+      @Override
+      public int compare(Integer o1, Integer o2) {
+        return o2 - o1;
+      }
+    });
+    pq.offer(0);
+    int pre = 0;
+    for (int[] h : height) {
+      if (h[1] < 0) {
+        pq.offer(-h[1]);
       } else {
-        x = l1.getFirst()[0];
-        h1 = l1.getFirst()[1];
-        h2 = l2.getFirst()[1];
-        h = Math.max(h1, h2);
-        l1.removeFirst();
-        l2.removeFirst();
+        pq.remove(h[1]);
       }
-      if (rs.size() == 0 || h != rs.getLast()[1]) {
-        rs.add(new int[] {x, h});
+      int cur = pq.peek();
+      if (pre != cur) {
+        result.add(new int[] {h[0], cur});
+        pre = cur;
       }
     }
-    rs.addAll(l1);
-    rs.addAll(l2);
-    return rs;
+    return result;
   }
 }

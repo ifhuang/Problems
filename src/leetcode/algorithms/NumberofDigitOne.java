@@ -1,5 +1,6 @@
 package leetcode.algorithms;
 
+// https://leetcode.com/problems/number-of-digit-one/
 public class NumberofDigitOne {
   public int countDigitOne(int n) {
     int ans = 0;

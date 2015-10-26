@@ -27,10 +27,11 @@ public class MaxPointsonaLine {
         List<Integer> pair = new ArrayList<>();
         pair.add(x / g);
         pair.add(y / g);
-        if (map.containsKey(pair))
+        if (map.containsKey(pair)) {
           map.put(pair, map.get(pair) + 1);
-        else
+        } else {
           map.put(pair, 1);
+        }
         max = Math.max(max, map.get(pair));
       }
       ans = Math.max(ans, max + t + 1);

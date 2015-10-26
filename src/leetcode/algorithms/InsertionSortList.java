@@ -5,8 +5,9 @@ import leetcode.util.ListNode;
 // https://oj.leetcode.com/problems/insertion-sort-list/
 public class InsertionSortList {
   public ListNode insertionSortList(ListNode head) {
-    if (head == null || head.next == null)
+    if (head == null) {
       return head;
+    }
     ListNode min = head;
     ListNode pre = null;
     ListNode p = head;

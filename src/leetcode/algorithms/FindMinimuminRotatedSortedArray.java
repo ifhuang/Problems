@@ -2,16 +2,16 @@ package leetcode.algorithms;
 
 // https://oj.leetcode.com/problems/find-minimum-in-rotated-sorted-array/
 public class FindMinimuminRotatedSortedArray {
-  public int findMin(int[] num) {
-    int low = 0;
-    int high = num.length - 1;
+  public int findMin(int[] nums) {
+    int low = 0, high = nums.length - 1;
     while (low < high) {
       int mid = (low + high) >>> 1;
-      if (num[mid] > num[high])
+      if (nums[mid] > nums[high]) {
         low = mid + 1;
-      else
+      } else {
         high = mid;
+      }
     }
-    return num[low];
+    return nums[low];
   }
 }
