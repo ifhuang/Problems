@@ -9,7 +9,7 @@ import java.util.Queue;
 
 // https://leetcode.com/problems/the-skyline-problem/
 public class TheSkylineProblem {
-  public List<int[]> getSkyline2(int[][] buildings) {
+  public List<int[]> getSkyline(int[][] buildings) {
     List<int[]> result = new ArrayList<>();
     List<int[]> height = new ArrayList<>();
     for (int[] b : buildings) {
