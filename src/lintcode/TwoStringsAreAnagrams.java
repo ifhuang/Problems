@@ -1,5 +1,6 @@
 package lintcode;
 
+// http://www.lintcode.com/problem/two-strings-are-anagrams
 public class TwoStringsAreAnagrams {
   /**
    * @param s: The first string
