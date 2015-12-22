@@ -1,1 +1,6 @@
 bin/
+.seettings/
+lib/
+
+.classpath
+.project
