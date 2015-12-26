@@ -1,6 +1,7 @@
 package lib.graphs;
 
-import java.util.Stack;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Determining whether an undirected graph is bipartite or whether it has an odd-length cycle.
@@ -14,7 +15,7 @@ public class Bipartite {
   private boolean[] color;
   private boolean isBipartite;
   private int[] edgeTo;
-  private Stack<Integer> cycle;
+  private List<Integer> cycle;
 
   public Bipartite(Graph graph) {
     marked = new boolean[graph.V()];
@@ -42,12 +43,12 @@ public class Bipartite {
         dfs(graph, t);
       } else if (color[t] == color[s]) {
         isBipartite = false;
-        cycle = new Stack<>();
-        cycle.push(t);
+        cycle = new LinkedList<>();
+        cycle.add(0, t);
         for (int v = s; v != t; v = edgeTo[v]) {
-          cycle.push(v);
+          cycle.add(0, v);
         }
-        cycle.push(t);
+        cycle.add(0, t);
       }
     }
   }

@@ -4,29 +4,29 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Finds paths from given source vertex to every other vertex in an undirected graph.
+ * Finds paths from given source vertex to every other vertex in a directed graph.
  * 
  * @author If
  *
  */
-public class DepthFirstPaths {
+public class DepthFirstDirectedPaths {
   private boolean[] marked;
   private int[] edgeTo;
   private final int s;
 
-  public DepthFirstPaths(Graph graph, int s) {
-    marked = new boolean[graph.V()];
-    edgeTo = new int[graph.V()];
+  public DepthFirstDirectedPaths(Digraph digraph, int s) {
+    marked = new boolean[digraph.V()];
+    edgeTo = new int[digraph.V()];
     this.s = s;
-    dfs(graph, s);
+    dfs(digraph, s);
   }
 
-  private void dfs(Graph graph, int s) {
+  private void dfs(Digraph digraph, int s) {
     marked[s] = true;
-    for (int t : graph.adj(s)) {
+    for (int t : digraph.adj(s)) {
       if (!marked[t]) {
         edgeTo[t] = s;
-        dfs(graph, t);
+        dfs(digraph, t);
       }
     }
   }
@@ -49,11 +49,12 @@ public class DepthFirstPaths {
   }
 
   public static void main(String[] args) {
-    Graph g = new Graph(4);
-    g.addEdge(0, 1);
-    g.addEdge(0, 2);
-    g.addEdge(2, 3);
-    DepthFirstPaths d = new DepthFirstPaths(g, 0);
-    System.out.println(d.pathTo(3));
+    Digraph d = new Digraph(4);
+    d.addEdge(0, 1);
+    d.addEdge(0, 2);
+    d.addEdge(2, 3);
+    d.addEdge(3, 0);
+    DepthFirstDirectedPaths dfs = new DepthFirstDirectedPaths(d, 0);
+    System.out.println(dfs.pathTo(3));
   }
 }
