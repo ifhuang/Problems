@@ -1,4 +1,4 @@
-package hackercup.util;
+package hackercup;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
