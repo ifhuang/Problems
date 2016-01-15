@@ -1,65 +1,32 @@
-package codeforces.util;
+package hackercup.util;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.StringTokenizer;
 
-public class LongestkGoodSegment {
+public class Template2 {
 
   static BufferedReader in;
   static PrintWriter out;
   static StringTokenizer tok;
 
-  static int left, right;
-
   static void solve() throws Exception {
-    int n = nextInt(), k = nextInt();
-    int[] a = nextIntArray(n, 0);
-    helper(a, k);
-    out.println(left + " " + right);
-  }
+    int T = nextInt();
+    for (int i = 1; i <= T; i++) {
 
-  static int helper(int[] s, int k) {
-    int n = s.length;
-    int ans = 0;
-    int i = 0, j = 0;
-    Map<Integer, Integer> map = new HashMap<>();
-    while (j < n) {
-      int c = s[j];
-      if (map.containsKey(c)) {
-        map.put(c, map.get(c) + 1);
-      } else {
-        while (map.size() == k) {
-          int old = s[i];
-          int count = map.get(old);
-          if (count == 1) {
-            map.remove(old);
-          } else {
-            map.put(old, count - 1);
-          }
-          i++;
-        }
-        map.put(c, 1);
-      }
-      if (j - i + 1 > ans) {
-        left = i + 1;
-        right = j + 1;
-        ans = j - i + 1;
-      }
-      j++;
+      out.println(String.format("Case #%d: ", i));
     }
-    return ans;
   }
 
   public static void main(String args[]) {
     try {
       in = new BufferedReader(new InputStreamReader(System.in));
+      // in = new BufferedReader(new FileReader(args[0]));
       out = new PrintWriter(new OutputStreamWriter(System.out));
+      // out = new PrintWriter(args[1]);
       solve();
       in.close();
       out.close();

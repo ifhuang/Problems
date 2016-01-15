@@ -1,4 +1,4 @@
-package codeforces.util;
+package codeforces;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,41 +7,27 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.StringTokenizer;
 
-public class ComparingTwoLongIntegers {
+public class DinnerwithEmma {
 
   static BufferedReader in;
   static PrintWriter out;
   static StringTokenizer tok;
 
   static void solve() throws Exception {
-    char[] a = next().toCharArray();
-    char[] b = next().toCharArray();
-    int ai = 0;
-    while (ai < a.length && a[ai] == '0') {
-      ai++;
+    int n = nextInt(), m = nextInt();
+    long[][] c = new long[n][m];
+    for (int i = 0; i < n; i++) {
+      c[i] = nextLongArray(m, 0);
     }
-    int bi = 0;
-    while (bi < b.length && b[bi] == '0') {
-      bi++;
-    }
-    int al = a.length - ai;
-    int bl = b.length - bi;
-    if (al > bl) {
-      out.println(">");
-    } else if (al < bl) {
-      out.println("<");
-    } else {
-      for (int i = 0; i < al; i++) {
-        if (a[ai + i] > b[bi + i]) {
-          out.println(">");
-          return;
-        } else if (a[ai + i] < b[bi + i]) {
-          out.println("<");
-          return;
-        }
+    long ans = 0;
+    for (int i = 0; i < n; i++) {
+      long min = Long.MAX_VALUE;
+      for (int j = 0; j < m; j++) {
+        min = Math.min(min, c[i][j]);
       }
-      out.println("=");
+      ans = Math.max(ans, min);
     }
+    out.println(ans);
   }
 
   public static void main(String args[]) {
