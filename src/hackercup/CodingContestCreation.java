@@ -1,4 +1,4 @@
-package hackercup.util;
+package hackercup;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,7 +7,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.StringTokenizer;
 
-public class Template2 {
+public class CodingContestCreation {
 
   static BufferedReader in;
   static PrintWriter out;
@@ -16,8 +16,39 @@ public class Template2 {
   static void solve() throws Exception {
     int T = nextInt();
     for (int t = 1; t <= T; t++) {
-
-      out.println(String.format("Case #%d: ", t));
+      int N = nextInt();
+      int[] D = nextIntArray(N, 0);
+      int pre = 0;
+      int cur = 0;
+      int i = 0;
+      while (i < N) {
+        // begin
+        if (cur % 4 == 0) {
+          int insert = Math.max(D[i] - 97, 0);
+          cur += insert + 1;
+          pre = D[i];
+          i++;
+        } else {
+          int diff = D[i] - pre;
+          if (diff <= 0) {
+            int append = 4 - cur % 4;
+            cur += append;
+            pre += append;
+          } else if (diff <= 10) {
+            cur++;
+            pre = D[i];
+            i++;
+          } else {
+            cur++;
+            pre += 10;
+          }
+        }
+      }
+      if (cur % 4 != 0) {
+        int append = 4 - cur % 4;
+        cur += append;
+      }
+      out.println(String.format("Case #%d: %d", t, cur - N));
     }
   }
 
