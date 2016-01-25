@@ -99,4 +99,92 @@ public class SurroundedRegions {
       }
     }
   }
+
+  class UF {
+    private int[] parent;
+    private byte[] rank;
+    private int count;
+
+    public UF(int n) {
+      parent = new int[n];
+      rank = new byte[n];
+      for (int i = 0; i < n; i++) {
+        parent[i] = i;
+        rank[i] = 0;
+      }
+      count = n;
+    }
+
+    public boolean connected(int p, int q) {
+      return find(p) == find(q);
+    }
+
+    public int count() {
+      return count;
+    }
+
+    public int find(int p) {
+      while (p != parent[p]) {
+        parent[p] = parent[parent[p]];
+        p = parent[p];
+      }
+      return p;
+    }
+
+    public void union(int p, int q) {
+      int pId = find(p);
+      int qId = find(q);
+      if (pId == qId) {
+        return;
+      }
+      if (rank[pId] > rank[qId]) {
+        parent[qId] = pId;
+      } else if (rank[pId] < rank[qId]) {
+        parent[pId] = qId;
+      } else {
+        parent[qId] = pId;
+        rank[pId]++;
+      }
+      count--;
+    }
+
+    public void solve3(char[][] board) {
+      int m = board.length;
+      if (m == 0) {
+        return;
+      }
+      int n = board[0].length;
+      UF uf = new UF(m * n + 1);
+      int[][] d = { {0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+      for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+          if (board[i][j] == 'O') {
+            int index = i * n + j + 1;
+            if (i == 0 || i == m - 1 || j == 0 || j == n - 1) {
+              uf.union(0, index);
+            } else {
+              for (int k = 0; k < d.length; k++) {
+                int x = i + d[k][0];
+                int y = j + d[k][1];
+                if (board[x][y] == 'O') {
+                  int z = x * n + y + 1;
+                  uf.union(index, z);
+                }
+              }
+            }
+          }
+        }
+      }
+      for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+          if (board[i][j] == 'O') {
+            int index = i * n + j + 1;
+            if (!uf.connected(0, index)) {
+              board[i][j] = 'X';
+            }
+          }
+        }
+      }
+    }
+  }
 }
