@@ -5,41 +5,27 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
-import lib.graphs.Graph;
-
-public class LongtailHedgehog {
+public class SlimeCombining {
 
   static BufferedReader in;
   static PrintWriter out;
   static StringTokenizer tok;
 
-  static Graph graph;
-  static long[] tail;
-
   static void solve() throws Exception {
-    int n = nextInt(), m = nextInt();
-    graph = new Graph(n);
-    for (int i = 0; i < m; i++) {
-      graph.addEdge(nextInt() - 1, nextInt() - 1);
-    }
-    tail = new long[n];
-    for (int v = 0; v < n; v++) {
-      comp(v);
-    }
-    long ans = 0;
-    for (int v = 0; v < n; v++) {
-      ans = Math.max(ans, (tail[v] + 1) * graph.degree(v));
-    }
-    out.println(ans);
-  }
-
-  static void comp(int v) {
-    for (int w : graph.adj(v)) {
-      if (w > v) {
-        tail[w] = Math.max(tail[w], tail[v] + 1);
+    int n = nextInt();
+    List<Integer> list = new ArrayList<>();
+    for (int i = 0; i < 32; i++) {
+      int x = 1 << i;
+      if ((x & n) > 0) {
+        list.add(i + 1);
       }
+    }
+    for (int i = list.size() - 1; i >= 0; i--) {
+      out.print(list.get(i) + " ");
     }
   }
 

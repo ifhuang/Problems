@@ -1,4 +1,4 @@
-package codeforces;
+package spoj;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,40 +7,24 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.StringTokenizer;
 
-import lib.graphs.Graph;
+import lib.graphs.Edge;
+import lib.graphs.EdgeWeightedGraph;
+import lib.graphs.KruskalMST;
 
-public class LongtailHedgehog {
+public class MinimumSpanningTree {
 
   static BufferedReader in;
   static PrintWriter out;
   static StringTokenizer tok;
 
-  static Graph graph;
-  static long[] tail;
-
   static void solve() throws Exception {
-    int n = nextInt(), m = nextInt();
-    graph = new Graph(n);
-    for (int i = 0; i < m; i++) {
-      graph.addEdge(nextInt() - 1, nextInt() - 1);
+    int N = nextInt(), M = nextInt();
+    EdgeWeightedGraph graph = new EdgeWeightedGraph(N);
+    for (int i = 0; i < M; i++) {
+      graph.addEdge(new Edge(nextInt() - 1, nextInt() - 1, nextInt()));
     }
-    tail = new long[n];
-    for (int v = 0; v < n; v++) {
-      comp(v);
-    }
-    long ans = 0;
-    for (int v = 0; v < n; v++) {
-      ans = Math.max(ans, (tail[v] + 1) * graph.degree(v));
-    }
-    out.println(ans);
-  }
-
-  static void comp(int v) {
-    for (int w : graph.adj(v)) {
-      if (w > v) {
-        tail[w] = Math.max(tail[w], tail[v] + 1);
-      }
-    }
+    KruskalMST mst = new KruskalMST(graph);
+    out.println(mst.weight());
   }
 
   public static void main(String args[]) {

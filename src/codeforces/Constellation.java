@@ -5,42 +5,47 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.StringTokenizer;
 
-import lib.graphs.Graph;
-
-public class LongtailHedgehog {
+public class Constellation {
 
   static BufferedReader in;
   static PrintWriter out;
   static StringTokenizer tok;
 
-  static Graph graph;
-  static long[] tail;
-
   static void solve() throws Exception {
-    int n = nextInt(), m = nextInt();
-    graph = new Graph(n);
-    for (int i = 0; i < m; i++) {
-      graph.addEdge(nextInt() - 1, nextInt() - 1);
+    int n = nextInt();
+    List<ConstellationCoordinates> list = new ArrayList<>();
+    for (int i = 0; i < n; i++) {
+      list.add(new ConstellationCoordinates(nextLong(), nextLong(), i + 1));
     }
-    tail = new long[n];
-    for (int v = 0; v < n; v++) {
-      comp(v);
-    }
-    long ans = 0;
-    for (int v = 0; v < n; v++) {
-      ans = Math.max(ans, (tail[v] + 1) * graph.degree(v));
-    }
-    out.println(ans);
-  }
-
-  static void comp(int v) {
-    for (int w : graph.adj(v)) {
-      if (w > v) {
-        tail[w] = Math.max(tail[w], tail[v] + 1);
+    Collections.sort(list);
+    int i = 0, j = 1;
+    for (int k = 2; k < n; k++) {
+      if (!check(list, i, j, k)) {
+        out.println(list.get(i).i + " " + list.get(j).i + " " + list.get(k).i);
+        return;
       }
     }
+  }
+
+  static boolean check(List<ConstellationCoordinates> list, int i, int j, int k) {
+    ConstellationCoordinates ci = list.get(i);
+    ConstellationCoordinates cj = list.get(j);
+    ConstellationCoordinates ck = list.get(k);
+    if (ci.x == cj.x && ci.x == ck.x) {
+      return true;
+    }
+    if (ci.y == cj.y && ci.y == ck.y) {
+      return true;
+    }
+    if ((cj.x - ci.x) * (ck.y - ci.y) == (ck.x - ci.x) * (cj.y - ci.y)) {
+      return true;
+    }
+    return false;
   }
 
   public static void main(String args[]) {
@@ -85,4 +90,22 @@ public class LongtailHedgehog {
     return tok.nextToken();
   }
 
+}
+
+
+class ConstellationCoordinates implements Comparable<ConstellationCoordinates> {
+  long x;
+  long y;
+  int i;
+
+  ConstellationCoordinates(long x, long y, int i) {
+    this.x = x;
+    this.y = y;
+    this.i = i;
+  }
+
+  @Override
+  public int compareTo(ConstellationCoordinates o) {
+    return x == o.x ? Long.compare(y, o.y) : Long.compare(x, o.x);
+  }
 }

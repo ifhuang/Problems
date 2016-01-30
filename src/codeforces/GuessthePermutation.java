@@ -7,39 +7,37 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.StringTokenizer;
 
-import lib.graphs.Graph;
-
-public class LongtailHedgehog {
+public class GuessthePermutation {
 
   static BufferedReader in;
   static PrintWriter out;
   static StringTokenizer tok;
 
-  static Graph graph;
-  static long[] tail;
-
   static void solve() throws Exception {
-    int n = nextInt(), m = nextInt();
-    graph = new Graph(n);
-    for (int i = 0; i < m; i++) {
-      graph.addEdge(nextInt() - 1, nextInt() - 1);
+    int n = nextInt();
+    int[][] a = new int[n][n];
+    for (int i = 0; i < n; i++) {
+      a[i] = nextIntArray(n, 0);
     }
-    tail = new long[n];
-    for (int v = 0; v < n; v++) {
-      comp(v);
-    }
-    long ans = 0;
-    for (int v = 0; v < n; v++) {
-      ans = Math.max(ans, (tail[v] + 1) * graph.degree(v));
-    }
-    out.println(ans);
-  }
-
-  static void comp(int v) {
-    for (int w : graph.adj(v)) {
-      if (w > v) {
-        tail[w] = Math.max(tail[w], tail[v] + 1);
+    int[] ans = new int[n];
+    for (int i = 0; i < n; i++) {
+      int max = 0;
+      for (int r = 0; r < n; r++) {
+        max = Math.max(max, a[r][i]);
       }
+      for (int c = 0; c < n; c++) {
+        max = Math.max(max, a[i][c]);
+      }
+      ans[i] = max;
+    }
+    for (int i = 0; i < n; i++) {
+      if (ans[i] == n - 1) {
+        ans[i] = n;
+        break;
+      }
+    }
+    for (int i = 0; i < n; i++) {
+      out.print(ans[i] + " ");
     }
   }
 

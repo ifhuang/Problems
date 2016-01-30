@@ -9,38 +9,51 @@ import java.util.StringTokenizer;
 
 import lib.graphs.Graph;
 
-public class LongtailHedgehog {
+public class HamiltonianSpanningTree {
 
   static BufferedReader in;
   static PrintWriter out;
   static StringTokenizer tok;
 
-  static Graph graph;
-  static long[] tail;
+  static long ans;
 
   static void solve() throws Exception {
-    int n = nextInt(), m = nextInt();
-    graph = new Graph(n);
-    for (int i = 0; i < m; i++) {
+    int n = nextInt();
+    long x = nextLong(), y = nextLong();
+    Graph graph = new Graph(n);
+    for (int i = 0; i < n - 1; i++) {
       graph.addEdge(nextInt() - 1, nextInt() - 1);
     }
-    tail = new long[n];
-    for (int v = 0; v < n; v++) {
-      comp(v);
-    }
-    long ans = 0;
-    for (int v = 0; v < n; v++) {
-      ans = Math.max(ans, (tail[v] + 1) * graph.degree(v));
+    ans = 0;
+    if (x == y) {
+      ans = x * (n - 1);
+    } else if (x > y) {
+      ans = y * (n - 1);
+      for (int i = 0; i < n; i++) {
+        if (graph.degree(i) == n - 1) {
+          ans += x - y;
+          break;
+        }
+      }
+    } else {
+      dfs(graph, 0, -1);
+      ans = x * ans + (n - 1 - ans) * y;
     }
     out.println(ans);
   }
 
-  static void comp(int v) {
-    for (int w : graph.adj(v)) {
-      if (w > v) {
-        tail[w] = Math.max(tail[w], tail[v] + 1);
+  static boolean dfs(Graph graph, int cur, int par) {
+    int edge = 2;
+    for (int x : graph.adj(cur)) {
+      if (x != par) {
+        boolean y = dfs(graph, x, cur);
+        if (edge > 0 && y) {
+          edge--;
+          ans++;
+        }
       }
     }
+    return edge > 0;
   }
 
   public static void main(String args[]) {
