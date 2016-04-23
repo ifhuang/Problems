@@ -1,41 +1,49 @@
-package codejam.util;
+package codeforces;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.StringTokenizer;
 
-public class TheLastWord {
+public class QualifyingContest {
 
   static BufferedReader in;
   static PrintWriter out;
   static StringTokenizer tok;
 
   static void solve() throws Exception {
-    int T = nextInt();
-    for (int t = 1; t <= T; t++) {
-      char[] c = next().toCharArray();
-      StringBuilder sb = new StringBuilder();
-      sb.append(c[0]);
-      for (int i = 1; i < c.length; i++) {
-        if (c[i] >= sb.charAt(0)) {
-          sb.insert(0, c[i]);
-        } else {
-          sb.append(c[i]);
-        }
+    int n = nextInt();
+    int m = nextInt();
+    List<List<Participant>> list = new ArrayList<>();
+    for (int i = 0; i < m; i++) {
+      list.add(new ArrayList<>());
+    }
+    for (int i = 0; i < n; i++) {
+      String a = next();
+      int b = nextInt() - 1;
+      int c = nextInt();
+      list.get(b).add(new Participant(a, c));
+    }
+    for (int i = 0; i < m; i++) {
+      List<Participant> each = list.get(i);
+      Collections.sort(each);
+      if (each.size() > 2 && each.get(1).c == each.get(2).c) {
+        out.println("?");
+      } else {
+        out.println(each.get(0).a + " " + each.get(1).a);
       }
-      out.println(String.format("Case #%d: %s", t, sb));
     }
   }
 
   public static void main(String args[]) {
     try {
       in = new BufferedReader(new InputStreamReader(System.in));
-      // in = new BufferedReader(new FileReader(args[0]));
       out = new PrintWriter(new OutputStreamWriter(System.out));
-      // out = new PrintWriter(args[1]);
       solve();
       in.close();
       out.close();
@@ -67,17 +75,6 @@ public class TheLastWord {
     return a;
   }
 
-  static double nextDouble() throws IOException {
-    return Double.parseDouble(next());
-  }
-
-  static double[] nextDoubleArray(int len, int start) throws IOException {
-    double[] a = new double[len];
-    for (int i = start; i < len; i++)
-      a[i] = nextDouble();
-    return a;
-  }
-
   static String next() throws IOException {
     while (tok == null || !tok.hasMoreTokens()) {
       tok = new StringTokenizer(in.readLine());
@@ -85,4 +82,20 @@ public class TheLastWord {
     return tok.nextToken();
   }
 
+}
+
+
+class Participant implements Comparable<Participant> {
+  String a;
+  int c;
+
+  Participant(String a, int c) {
+    this.a = a;
+    this.c = c;
+  }
+
+  @Override
+  public int compareTo(Participant o) {
+    return o.c - c;
+  }
 }
