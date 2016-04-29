@@ -16,3 +16,4 @@ It is used by myself to back up my solutions of online judges, including
 - [ACMcoder](http://acmcoder.com/)
 - [LintCode](http://lintcode.com/)
 - [SPOJ](http://www.spoj.com/)
+- [CodeHunt](http://www.codehunt.com/)
